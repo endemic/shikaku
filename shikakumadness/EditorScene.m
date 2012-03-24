@@ -76,7 +76,7 @@
         grid.position = ccp(window.width / 2, grid.contentSize.height / 2 + offset.y);
         [self addChild:grid];
         
-        // Add title/buttons for controlling the editor
+        /* Add title/buttons for controlling the editor */
         
         // "Quit" button
         CCMenuItemImage *quitButton = [CCMenuItemImage itemFromNormalImage:@"quit-button.png" selectedImage:@"quit-button.png" block:^(id sender) {
@@ -94,6 +94,18 @@
         
         CCMenuItemToggle *difficulty = [CCMenuItemToggle itemWithBlock:^(id sender) {
             NSLog(@"Selected difficulty: %i", [(CCMenuItemToggle *)sender selectedIndex]);
+            switch ([(CCMenuItemToggle *)sender selectedIndex]) 
+            {
+                case 0:
+                    levelDifficulty = @"easy";
+                    break;
+                case 1:
+                    levelDifficulty = @"medium";
+                    break;
+                case 2:
+                    levelDifficulty = @"hard";
+                    break;
+            }
         } items:easyButton, mediumButton, hardButton, nil];
 
         // "Tool" toggle button
@@ -102,18 +114,26 @@
         
         CCMenuItemToggle *tool = [CCMenuItemToggle itemWithBlock:^(id sender) {
             NSLog(@"Selected tool: %i", [(CCMenuItemToggle *)sender selectedIndex]);
+            switch ([(CCMenuItemToggle *)sender selectedIndex]) 
+            {
+                case 0:
+                    selectedTool = kToolSquare;
+                    break;
+                case 1:
+                    selectedTool = kToolClue;
+                    break;
+            }
         } items:squareButton, clueButton, nil];
         
         // Title graphic
         CCSprite *title = [CCSprite spriteWithFile:@"editor-title.png"];
-        title.position = ccp(title.contentSize.width / 2, window.height - title.contentSize.height / 2);
+        title.position = ccp(title.contentSize.width / 1.5, window.height - title.contentSize.height / 1.5);
         [self addChild:title];
                 
         // Menus for buttons
         CCMenu *quitMenu = [CCMenu menuWithItems:quitButton, nil];
-        quitMenu.position = ccp(window.width  - quitButton.contentSize.width / 2, window.height - quitButton.contentSize.height / 2);
+        quitMenu.position = ccp(window.width  - quitButton.contentSize.width / 1.5, window.height - quitButton.contentSize.height / 1.5);
         [self addChild:quitMenu];        
-        
 
         // "Tools" menu
         CCMenu *toolsMenu = [CCMenu menuWithItems:difficulty, tool, nil];
@@ -126,42 +146,14 @@
         toolsLabel.position = ccp(window.width / 2, toolsMenu.position.y + toolsLabel.contentSize.height * 2);
         [self addChild:toolsLabel];
         
-        // Set up a test level
-        level = [NSArray arrayWithObjects:
-                 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:2], @"x", [NSNumber numberWithInt:0], @"y", [NSNumber numberWithInt:3], @"value", nil],
-                 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:5], @"x", [NSNumber numberWithInt:0], @"y", [NSNumber numberWithInt:9], @"value", nil],
-                 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:9], @"x", [NSNumber numberWithInt:0], @"y", [NSNumber numberWithInt:4], @"value", nil],
-                 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:0], @"x", [NSNumber numberWithInt:2], @"y", [NSNumber numberWithInt:4], @"value", nil],
-                 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:5], @"x", [NSNumber numberWithInt:3], @"y", [NSNumber numberWithInt:6], @"value", nil],
-                 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:7], @"x", [NSNumber numberWithInt:3], @"y", [NSNumber numberWithInt:8], @"value", nil],
-                 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:9], @"x", [NSNumber numberWithInt:3], @"y", [NSNumber numberWithInt:12], @"value", nil],
-                 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:0], @"x", [NSNumber numberWithInt:6], @"y", [NSNumber numberWithInt:8], @"value", nil],
-                 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:2], @"x", [NSNumber numberWithInt:6], @"y", [NSNumber numberWithInt:6], @"value", nil],
-                 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:4], @"x", [NSNumber numberWithInt:6], @"y", [NSNumber numberWithInt:8], @"value", nil],
-                 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:0], @"x", [NSNumber numberWithInt:9], @"y", [NSNumber numberWithInt:9], @"value", nil],
-                 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:4], @"x", [NSNumber numberWithInt:9], @"y", [NSNumber numberWithInt:12], @"value", nil],
-                 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:7], @"x", [NSNumber numberWithInt:9], @"y", [NSNumber numberWithInt:5], @"value", nil],
-                 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:9], @"x", [NSNumber numberWithInt:7], @"y", [NSNumber numberWithInt:6], @"value", nil],
-                 nil];
+        // Set selected level editing tool
+        selectedTool = kToolSquare;
         
-        // Grab each clue out of the level dictionary, create a "clue" object from it, then add it to the layer
-        for (int i = 0; i < [level count]; i++)
-        {
-            NSDictionary *clue = [level objectAtIndex:i];
-            // Get x,y, and value for clue
-            int value = [(NSNumber *)[clue objectForKey:@"value"] intValue],
-            x = [(NSNumber *)[clue objectForKey:@"x"] intValue],
-            y = [(NSNumber *)[clue objectForKey:@"y"] intValue];
-            
-            Clue *c = [Clue clueWithNumber:value];
-            c.position = ccp(x * blockSize + offset.x + blockSize / 2, y * blockSize + offset.y + blockSize / 2);
-            [self addChild:c];
-            
-            // Add clue to the organization array
-            [clues addObject:c];
-        }
+        // Set default difficulty
+        levelDifficulty = @"easy";
         
-        [level retain];
+        // Set up an array to be serialized to a .plist as a level
+        level = [[NSArray array] retain];
 	}
 	return self;
 }
@@ -183,28 +175,69 @@
         // Figure out the row/column that was touched
         touchRow = startRow = previousRow = (touchPoint.y - offset.y) / blockSize;
         touchCol = startCol = previousCol = (touchPoint.x - offset.x) / blockSize;
-   
-        // Determine if we need to delete a square here
-        for (int i = 0; i < [squares count]; i++)
-        {
-            RoundRectNode *r = [squares objectAtIndex:i];
-
-            int width = r.size.width, height = r.size.height;
-            CGRect rectBounds = CGRectMake(r.position.x, r.position.y - height, width, height);
-            CGRect touchBounds = CGRectMake(touchPoint.x, touchPoint.y, 1, 1);		// 1x1 square
-            
-            // If the touch point is inside the bounds of an existing square, remove it
-            if (CGRectIntersectsRect(rectBounds, touchBounds))
-            {
-                [self removeChild:r cleanup:NO];
-                [squares removeObjectAtIndex:i];
-                i--;
-            }
-        }
         
-        selection.visible = YES;
-        selection.size = CGSizeMake(blockSize, blockSize);  // Default size
-        selection.position = ccp((touchCol * blockSize) + offset.x, (touchRow * blockSize) + (offset.y + blockSize));
+        if (selectedTool == kToolSquare)
+        {
+            // Determine if we need to delete a square here
+            for (int i = 0; i < [squares count]; i++)
+            {
+                RoundRectNode *r = [squares objectAtIndex:i];
+                
+                int width = r.size.width, height = r.size.height;
+                CGRect rectBounds = CGRectMake(r.position.x, r.position.y - height, width, height);
+                CGRect touchBounds = CGRectMake(touchPoint.x, touchPoint.y, 1, 1);		// 1x1 square
+                
+                // If the touch point is inside the bounds of an existing square, remove it
+                if (CGRectIntersectsRect(rectBounds, touchBounds))
+                {
+                    [self removeChild:r cleanup:NO];
+                    [squares removeObjectAtIndex:i];
+                    i--;
+                }
+            }
+            
+            selection.visible = YES;
+            selection.size = CGSizeMake(blockSize, blockSize);  // Default size
+            selection.position = ccp((touchCol * blockSize) + offset.x, (touchRow * blockSize) + (offset.y + blockSize));
+        }
+        else if (selectedTool == kToolClue)
+        {
+            // Check to see if touch was inside a square
+            for (int i = 0; i < [squares count]; i++)
+            {
+                RoundRectNode *r = [squares objectAtIndex:i];
+                
+                int width = r.size.width, height = r.size.height;
+                CGRect rectBounds = CGRectMake(r.position.x, r.position.y - height, width, height);
+                CGRect touchBounds = CGRectMake(touchPoint.x, touchPoint.y, 1, 1);		// 1x1 square
+                
+                // If the touch point is inside the bounds of an existing square, draw a clue
+                if (CGRectIntersectsRect(rectBounds, touchBounds))
+                { 
+                    // Determine if any other clues exist within the bounds of this square. If so, delete them
+                    for (int i = 0; i < [clues count]; i++)
+                    {
+                        Clue *c = [clues objectAtIndex:i];
+                        CGRect clueBounds = CGRectMake(c.position.x - blockSize / 2, c.position.y - blockSize / 2, blockSize, blockSize);   // Blocksize is same as clue size
+                        if (CGRectIntersectsRect(rectBounds, clueBounds))
+                        {
+                            [self removeChild:c cleanup:NO];
+                            [clues removeObject:c];
+                            i--;
+                        }
+                    }
+                    
+                    // Draw a new clue
+                    Clue *c = [Clue clueWithNumber:r.area];
+                    c.position = ccp(touchCol * blockSize + offset.x + blockSize / 2, touchRow * blockSize + offset.y + blockSize / 2);
+                    [self addChild:c z:2];
+                    
+                    // Add clue to the organization array
+                    [clues addObject:c];
+                }
+            }
+
+        }
 	}
 }
 
@@ -239,42 +272,71 @@
         touchCol = 0;
     }
     
-    // Determine the width/height of the selection by subtracting the start from the current touch row/col
-    int width = abs(startCol - touchCol) + 1,
-        height = abs(startRow - touchRow) + 1;
-    
-    // If touches move out of the initial square, determine direction and scale appropriately
-    // y-axis
-    if (touchRow != previousRow)
+    if (selectedTool == kToolSquare)
     {
-        // Change height
-        selection.size = CGSizeMake(selection.size.width, height * blockSize);
+        // Determine the width/height of the selection by subtracting the start from the current touch row/col
+        int width = abs(startCol - touchCol) + 1,
+            height = abs(startRow - touchRow) + 1;
         
-        // Determine if necessary to just draw (normal) or draw & move up (upwards movement)
-        if (touchRow >= startRow)
+        // If touches move out of the initial square, determine direction and scale appropriately
+        // y-axis
+        if (touchRow != previousRow)
         {
-            selection.position = ccp(selection.position.x, 
-                                     (touchRow * blockSize) + offset.y + blockSize);
+            // Change height
+            selection.size = CGSizeMake(selection.size.width, height * blockSize);
+            
+            // Determine if necessary to just draw (normal) or draw & move up (upwards movement)
+            if (touchRow >= startRow)
+            {
+                selection.position = ccp(selection.position.x, 
+                                         (touchRow * blockSize) + offset.y + blockSize);
+            }
+            
+            // Play SFX
+            [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
         }
         
-        // Play SFX
-        //        [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
+        // x-axis
+        if (touchCol != previousCol)
+        {
+            selection.size = CGSizeMake(width * blockSize, selection.size.height);
+            
+            // Determine if necessary to just draw (normal) or draw & move left (left movement)
+            if (touchCol <= startCol)
+            {
+                selection.position = ccp((touchCol * blockSize) + offset.x, 
+                                         selection.position.y);
+            }
+            
+            // Play SFX
+            [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
+        }
     }
-    
-    // x-axis
-    if (touchCol != previousCol)
+    else if (selectedTool == kToolClue)
     {
-        selection.size = CGSizeMake(width * blockSize, selection.size.height);
-        
-        // Determine if necessary to just draw (normal) or draw & move left (left movement)
-        if (touchCol <= startCol)
+        // If finger has moved significantly...
+        if (touchCol != previousCol || touchRow != previousRow)
         {
-            selection.position = ccp((touchCol * blockSize) + offset.x, 
-                                     selection.position.y);
+            // Find the clue in the current square and move it to the touch location
+            for (int i = 0; i < [squares count]; i++)
+            {
+                RoundRectNode *r = [squares objectAtIndex:i];
+                
+                int width = r.size.width, height = r.size.height;
+                CGRect rectBounds = CGRectMake(r.position.x, r.position.y - height, width, height);
+                
+                // Find the clue that's in this square and move it to the correct position
+                for (int i = 0; i < [clues count]; i++)
+                {
+                    Clue *c = [clues objectAtIndex:i];
+                    CGRect clueBounds = CGRectMake(c.position.x - blockSize / 2, c.position.y - blockSize / 2, blockSize, blockSize);   // Blocksize is same as clue size
+                    if (CGRectIntersectsRect(rectBounds, clueBounds))
+                    {
+                        c.position = ccp(touchCol * blockSize + offset.x + blockSize / 2, touchRow * blockSize + offset.y + blockSize / 2);
+                    }
+                }
+            }
         }
-        
-        // Play SFX
-        //        [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
     }
 
     // Store the "previous" value for each row/col
@@ -287,44 +349,51 @@
     UITouch *touch = [touches anyObject];
 	CGPoint touchPoint = [[CCDirector sharedDirector] convertToGL:[touch locationInView:[touch view]]];
     
-    // Create new roundrect w/ same props as "selection"
-    RoundRectNode *r = [RoundRectNode initWithRectSize:CGSizeMake(selection.size.width, selection.size.height)];
-    r.position = selection.position;
-    
-    // "Eat" any squares that overlap the newly created one
-    CGRect newRect = CGRectMake(r.position.x, r.position.y - r.size.height, r.size.width, r.size.height);
-    for (int i = 0; i < [squares count]; i++) 
+    if (selectedTool == kToolSquare)
     {
-        RoundRectNode *o = [squares objectAtIndex:i]; 
-        CGRect oldRect = CGRectMake(o.position.x, o.position.y - o.size.height, o.size.width, o.size.height);
+        // Create new roundrect w/ same props as "selection"
+        RoundRectNode *r = [RoundRectNode initWithRectSize:CGSizeMake(selection.size.width, selection.size.height)];
+        r.position = selection.position;
         
-        // Remove old squares that overlap
-        if (CGRectIntersectsRect(newRect, oldRect))
+        // "Eat" any squares that overlap the newly created one
+        CGRect newRect = CGRectMake(r.position.x, r.position.y - r.size.height, r.size.width, r.size.height);
+        for (int i = 0; i < [squares count]; i++) 
         {
-            [self removeChild:o cleanup:NO];
-            [squares removeObjectAtIndex:i];
-            i--;
+            RoundRectNode *o = [squares objectAtIndex:i]; 
+            CGRect oldRect = CGRectMake(o.position.x, o.position.y - o.size.height, o.size.width, o.size.height);
+            
+            // Remove old squares that overlap
+            if (CGRectIntersectsRect(newRect, oldRect))
+            {
+                [self removeChild:o cleanup:NO];
+                [squares removeObjectAtIndex:i];
+                i--;
+            }
         }
+        
+        // If player just tapped, simply remove the tapped square
+        if (CGPointEqualToPoint(touchStart, touchPoint) == NO)
+        {
+            // Add new square to layer
+            [self addChild:r z:1];
+            
+            // Store it in the "squares" array
+            [squares addObject:r];
+            
+            areaLabel.string = @"Area: ~";
+        }
+        
+        // Hide the original "selection" roundrect
+        selection.visible = NO;
     }
-    
-    // If player just tapped, simply remove the tapped square
-    if (CGPointEqualToPoint(touchStart, touchPoint) == NO)
+    else if (selectedTool == kToolClue)
     {
-        // Add new square to layer
-        [self addChild:r];
-        
-        // Store it in the "squares" array
-        [squares addObject:r];
-        
-        areaLabel.string = @"Area: ~";
+        // Do nothing
     }
-    
-    // Hide the original "selection" roundrect
-    selection.visible = NO;
 }
 
 /**
- * Determine if a puzzle has been completed by checking player-placed squares against clue objects
+ * Determine if a puzzle is valid by checking player-placed squares against clue objects
  */
 - (BOOL)checkSolution
 {
@@ -345,6 +414,10 @@
     {
         return NO;
     }
+    
+    // Squares must also cover 100% of grid; this is only important in the editor
+    int area = 0,
+        gridArea = gridSize * gridSize;
     
     // Otherwise, do our iterations
     for (RoundRectNode *s in squares)
@@ -377,11 +450,16 @@
         }
         
         // Fail if the square's area doesn't match the clue's value
-        // TODO: this borks
         if (validClue.value != s.area)
         {
             return NO;
         }
+    }
+    
+    // Finally, if there aren't enough squares to cover the whole grid...
+    if (area < gridArea)
+    {
+        return NO;
     }
     
     return YES;
@@ -392,6 +470,40 @@
  */
 - (BOOL)saveLevel
 {
+    /*
+     New level format:
+     NSDictionary
+        difficulty: @"something"
+        clues: NSArray
+            [0] -> NSNumber x, NSNumber y, NSNumber val
+     */
+    
+    
+    // Only save level if it's valid and can be solved
+    if ([self checkSolution] == NO)
+    {
+        return  NO;
+    }
+    
+    // Create an array to store clues in
+    NSMutableArray *c = [NSMutableArray array];
+    
+    // Iterate over the "clues" array to provide coords and value data
+    for (int i = 0; i < [clues count]; i++)
+    {
+        // Code that places clues; reverse to get x/y coords in grid
+        //c.position = ccp(x * blockSize + offset.x + blockSize / 2, y * blockSize + offset.y + blockSize / 2);
+        Clue *clue = [clues objectAtIndex:i];
+        [c addObject:[NSArray arrayWithObjects:
+                      [NSNumber numberWithInt:clue.position.x / blockSize - offset.x - blockSize / 2],                          
+                      [NSNumber numberWithInt:clue.position.y / blockSize - offset.y - blockSize / 2],
+                      [NSNumber numberWithInt:clue.value],
+                      nil]];
+    }
+    
+    // Create the overall dictionary that represents a level
+    NSDictionary *l = [NSDictionary dictionaryWithObjectsAndKeys:levelDifficulty, @"difficulty", c, @"clues", nil];
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -401,7 +513,7 @@
     if (![fileManager fileExistsAtPath:pathToFile])
     {
         NSLog(@"Trying to write %@", pathToFile);
-        return [level writeToFile:pathToFile atomically:YES];
+        return [l writeToFile:pathToFile atomically:YES];
     }
     // To read, use method "initWithContentsOfFile"
 

@@ -1,25 +1,12 @@
 TODO
 ====
 
-* Make initial commit to SVN repository
-
-* Add "edit" scene when square drawing code is solid
-    * Two modes - square drawing & clue drawing
-    * Don't allow saving the puzzle unless sum of placed clues == 100
-    * Don't allow more than one clue in a square
-    * Dropdown to indicate difficulty
-    * Save resulting NSDictionary objects as .json files
+* Design/implement scene which displays a list of user-created levels
     
 * Learn how to save files to an app bundle & transfer out using iTunes
     * Alternately, POST puzzle .json to a web service to save
-    
-* Create auto-generating puzzle algorithm
-    * Investigate "packing" algorithms
-    * Should create puzzles of a specified difficulty
-    * Need more ideas of what constitutes an easy/hard puzzle
-        * Easy puzzles have obvious hints in the corners
-        * Easy puzzles have odd hint numbers, such as 3, 5, 7, 9
-        * Easy puzzles have clues grouped closer together
+
+* Make roundrects slightly inset so they don't overlap each other
 
 * Notes on icon
     1. Border needs to be thicker
@@ -27,3 +14,22 @@ TODO
     3. More color... the white background is too flat
     4. Make grid lines a purple/red color
     5. Make clue backgrounds lighter so they don't look black
+    
+    
+FOR FIRST RELEASE
+=================
+20 "Beginner" difficulty levels
+IAP for 30 "easy" "medium" & "hard" levels - $0.99 ea
+
+FUTURE RELEASES
+===============
+* More IAP packs
+* Level editor/sharing
+
+* Create auto-generating puzzle algorithm
+    * Investigate "packing" algorithms
+    * Should create puzzles of a specified difficulty
+    * Need more ideas of what constitutes an easy/hard puzzle
+        * Easy puzzles have obvious hints in the corners
+        * Easy puzzles have odd hint numbers, such as 3, 5, 7, 9
+        * Easy puzzles have clues grouped closer together

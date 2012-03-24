@@ -121,7 +121,7 @@
             
             Clue *c = [Clue clueWithNumber:value];
             c.position = ccp(x * blockSize + offset.x + blockSize / 2, y * blockSize + offset.y + blockSize / 2);
-            [self addChild:c];
+            [self addChild:c z:2];
             
             // Add clue to the organization array
             [clues addObject:c];
@@ -234,7 +234,7 @@
         }
         
         // Play SFX
-//        [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
+        [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
     }
     
     // x-axis
@@ -250,7 +250,7 @@
         }
         
         // Play SFX
-//        [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
+        [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
     }
     
     // Update the "area" label
@@ -290,7 +290,7 @@
     if (CGPointEqualToPoint(touchStart, touchPoint) == NO)
     {
         // Add new square to layer
-        [self addChild:r];
+        [self addChild:r z:1];
         
         // Store it in the "squares" array
         [squares addObject:r];
@@ -368,7 +368,6 @@
         }
         
         // Fail if the square's area doesn't match the clue's value
-        // TODO: this borks
         if (validClue.value != s.area)
         {
             return NO;

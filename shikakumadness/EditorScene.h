@@ -12,6 +12,9 @@
 #import "TitleScene.h"
 #import "GameSingleton.h"
 
+#define kToolSquare 1
+#define kToolClue 2
+
 @interface EditorScene : CCLayer 
 {
     // This'll hold the loaded level
@@ -20,6 +23,10 @@
     // Display/store player moves and puzzle clues
     NSMutableArray *squares, *clues;
     RoundRectNode *selection;
+    
+    // Variables for use w/ editor
+    NSString *levelDifficulty;
+    int selectedTool;
     
     // Stores info about grid
     int blockSize, gridSize;

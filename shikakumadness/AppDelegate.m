@@ -74,9 +74,13 @@
     [GameSingleton loadState];
     
 //	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
-	if([director enableRetinaDisplay:YES] )
+	if ([director enableRetinaDisplay:YES])
     {
         [GameSingleton sharedGameSingleton].isRetina = YES;
+    }
+    else 
+    {
+        NSLog(@"Retina not supportd?");
     }
 	
 	//
