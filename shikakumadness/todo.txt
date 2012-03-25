@@ -1,8 +1,10 @@
 TODO
 ====
 
-* Design/implement scene which displays a list of user-created levels
-    
+* Level editor saves clue coords incorrectly! Fix that shiat
+
+* Does the level format need to store the "square" locations as well? For editing purposes?
+
 * Learn how to save files to an app bundle & transfer out using iTunes
     * Alternately, POST puzzle .json to a web service to save
 

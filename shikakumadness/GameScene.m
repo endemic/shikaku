@@ -93,6 +93,35 @@
         timer = 0;
         [self schedule:@selector(updateTimer:) interval:1.0];
         
+        // Load level dictionary
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[GameSingleton sharedGameSingleton].levelToLoad];
+        
+        level = [NSDictionary dictionaryWithContentsOfFile:pathToFile];
+//        NSLog(@"%@", pathToFile);
+//        NSLog(@"%@", level);
+        
+        // Get out the "clue" objects
+        NSArray *c = [level objectForKey:@"clues"];
+        
+        // Iterate and draw
+        for (int i = 0; i < [c count]; i++)
+        {
+            NSArray *val = [c objectAtIndex:i];
+            int value = [(NSNumber *)[val objectAtIndex:2] intValue],
+                x = [(NSNumber *)[val objectAtIndex:0] intValue],
+                y = [(NSNumber *)[val objectAtIndex:1] intValue];
+            
+            Clue *c = [Clue clueWithNumber:value];
+            c.position = ccp(x * blockSize + offset.x + blockSize / 2, y * blockSize + offset.y + blockSize / 2);
+            [self addChild:c z:2];
+            
+            // Add clue to the organization array
+            [clues addObject:c];
+        }
+        
+        /*
         // Set up a test level
         level = [NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:2], @"x", [NSNumber numberWithInt:0], @"y", [NSNumber numberWithInt:3], @"value", nil],
                                           [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:5], @"x", [NSNumber numberWithInt:0], @"y", [NSNumber numberWithInt:9], @"value", nil],
@@ -126,6 +155,7 @@
             // Add clue to the organization array
             [clues addObject:c];
         }
+        */
 	}
 	return self;
 }

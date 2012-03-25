@@ -21,7 +21,7 @@
 	// Boolean that's set to "true" if Retina display (iPhone4)
 	bool isRetina;
 	
-	int level;
+    NSString *levelToLoad;
 	
 	// Game Center properties
 	BOOL hasGameCenter;
@@ -37,10 +37,10 @@
 	UIViewController *myViewController;
 }
 
-@property (readwrite, nonatomic) bool isPad;
-@property (readwrite, nonatomic) bool isRetina;
+@property (readwrite) bool isPad;
+@property (readwrite) bool isRetina;
 
-@property (readwrite, nonatomic) int level;
+@property (readwrite, retain) NSString *levelToLoad;
 
 @property (readwrite) BOOL hasGameCenter;
 @property (nonatomic, retain) NSMutableArray *unsentScores;

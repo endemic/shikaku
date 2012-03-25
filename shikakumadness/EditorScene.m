@@ -81,7 +81,16 @@
         // "Quit" button
         CCMenuItemImage *quitButton = [CCMenuItemImage itemFromNormalImage:@"quit-button.png" selectedImage:@"quit-button.png" block:^(id sender) {
             // TODO: Pop up a modal asking if user wants to save the level
-            [self saveLevel];
+            BOOL results = [self saveLevel];
+            
+            if (results)
+            {
+                NSLog(@"Saved level successfully");
+            }
+            else 
+            {
+                NSLog(@"Could not save level!");
+            }
             
             CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[TitleScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
@@ -154,6 +163,12 @@
         
         // Set up an array to be serialized to a .plist as a level
         level = [[NSArray array] retain];
+        
+        // Load level if editing
+        if ([(NSString *)[GameSingleton sharedGameSingleton].levelToLoad isEqualToString:@""] == NO)
+        {
+            // Do level loading here
+        }
 	}
 	return self;
 }
@@ -422,6 +437,8 @@
     // Otherwise, do our iterations
     for (RoundRectNode *s in squares)
     {
+        area += s.area;
+        
         int cluesInSquare = 0;
         Clue *validClue;
         CGRect squareRect = CGRectMake(s.position.x, s.position.y - s.size.height, s.size.width, s.size.height);
@@ -482,6 +499,7 @@
     // Only save level if it's valid and can be solved
     if ([self checkSolution] == NO)
     {
+        CCLOG(@"Couldn't save level because it's not valid.");
         return  NO;
     }
     
@@ -504,18 +522,19 @@
     // Create the overall dictionary that represents a level
     NSDictionary *l = [NSDictionary dictionaryWithObjectsAndKeys:levelDifficulty, @"difficulty", c, @"clues", nil];
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *uuid = [self createUUID];
     NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist", uuid]];
     
+    NSLog(@"Trying to write %@", pathToFile);
     if (![fileManager fileExistsAtPath:pathToFile])
     {
-        NSLog(@"Trying to write %@", pathToFile);
         return [l writeToFile:pathToFile atomically:YES];
     }
-    // To read, use method "initWithContentsOfFile"
+    
+    CCLOG(@"Level couldn't be written because it already exists");
 
     return NO;
 }
@@ -534,16 +553,6 @@
     CFRelease(uuidObject);
     
     return uuidStr;
-}
-
-- (NSArray *)getDocumentsDirectoryContents
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSArray *directoryContent = [[NSFileManager defaultManager] directoryContentsAtPath:documentsDirectory];
-    
-    NSLog(@"%@", documentsDirectory);
-    return directoryContent;
 }
 
 // on "dealloc" you need to release all your retained objects

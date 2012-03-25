@@ -3,7 +3,7 @@
 //  shukakumadness
 //
 //  Created by Nathan Demick on 3/21/12.
-//  Copyright 2012 __MyCompanyName__. All rights reserved.
+//  Copyright 2012 Ganbaru Games. All rights reserved.
 //
 
 #import "TitleScene.h"
@@ -58,7 +58,7 @@
         
         // Add button/menu to take player to game scene
         CCMenuItemImage *playButton = [CCMenuItemImage itemFromNormalImage:@"play-button.png" selectedImage:@"play-button.png" block:^(id sender) {
-            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[GameScene scene]];
+            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
         
