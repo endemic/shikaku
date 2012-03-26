@@ -1,9 +1,11 @@
 TODO
 ====
 
-* Level editor saves clue coords incorrectly! Fix that shiat
-
-* Does the level format need to store the "square" locations as well? For editing purposes?
+* Can't actually save level on device
+* Store levels in directories named by difficulty
+* Only show files with .plist extension in level select
+* Make some levels
+* Gots to sketch out & design all these damned screens
 
 * Learn how to save files to an app bundle & transfer out using iTunes
     * Alternately, POST puzzle .json to a web service to save

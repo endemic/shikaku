@@ -189,6 +189,8 @@
 		7DF29885151F23AB008A08D8 /* prev-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF2987D151F23AB008A08D8 /* prev-button.png */; };
 		7DF29886151F23AB008A08D8 /* solve-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF2987E151F23AB008A08D8 /* solve-button-hd.png */; };
 		7DF29887151F23AB008A08D8 /* solve-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF2987F151F23AB008A08D8 /* solve-button.png */; };
+		7DF2988A15207B30008A08D8 /* preview-background-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF2988815207B30008A08D8 /* preview-background-hd.png */; };
+		7DF2988B15207B30008A08D8 /* preview-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF2988915207B30008A08D8 /* preview-background.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -505,6 +507,8 @@
 		7DF2987D151F23AB008A08D8 /* prev-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "prev-button.png"; sourceTree = "<group>"; };
 		7DF2987E151F23AB008A08D8 /* solve-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "solve-button-hd.png"; sourceTree = "<group>"; };
 		7DF2987F151F23AB008A08D8 /* solve-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "solve-button.png"; sourceTree = "<group>"; };
+		7DF2988815207B30008A08D8 /* preview-background-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "preview-background-hd.png"; sourceTree = "<group>"; };
+		7DF2988915207B30008A08D8 /* preview-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "preview-background.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -933,6 +937,8 @@
 			isa = PBXGroup;
 			children = (
 				7D064872151CB4D10081B074 /* buttons */,
+				7DF2988815207B30008A08D8 /* preview-background-hd.png */,
+				7DF2988915207B30008A08D8 /* preview-background.png */,
 				7D064870151CB4D10081B074 /* background-hd.png */,
 				7D064871151CB4D10081B074 /* background.png */,
 				7D064885151CB4D10081B074 /* clue-background-hd.png */,
@@ -1173,6 +1179,8 @@
 				7DF29885151F23AB008A08D8 /* prev-button.png in Resources */,
 				7DF29886151F23AB008A08D8 /* solve-button-hd.png in Resources */,
 				7DF29887151F23AB008A08D8 /* solve-button.png in Resources */,
+				7DF2988A15207B30008A08D8 /* preview-background-hd.png in Resources */,
+				7DF2988B15207B30008A08D8 /* preview-background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

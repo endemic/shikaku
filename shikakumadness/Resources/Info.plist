@@ -53,5 +53,16 @@
 	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>shikaku</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string>com.ganbarugames.shikaku</string>
+		</dict>
+	</array>
 </dict>
 </plist>

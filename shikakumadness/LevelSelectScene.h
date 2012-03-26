@@ -19,12 +19,18 @@
     int selectedLevelIndex;
     
     // TEMP: string to show currently chosen level
-    CCLabelTTF *selectedLevelLabel;
+//    CCLabelTTF *selectedLevelLabel;
     
-    // String to be appended to sprite filenames if running on iPad
+    // Helper vars to deal w/ iPad size diff
 	NSString *iPadSuffix;
 	int fontMultiplier;
+    CGPoint iPadOffset;
     CGSize windowSize;
+    
+    // Grid size for showing the level preview
+    int previewBlockSize;
+    CGPoint gridOffset;
+    NSMutableArray *clues;  // Store preview clues
 }
 
 + (CCScene *)scene;

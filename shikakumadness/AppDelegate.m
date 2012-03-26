@@ -39,6 +39,7 @@
 	
 #endif // GAME_AUTOROTATION == kGameAutorotationUIViewController	
 }
+
 - (void) applicationDidFinishLaunching:(UIApplication*)application
 {
 	// Init the window
@@ -72,6 +73,7 @@
 	
     // Init game singleton
     [GameSingleton loadState];
+    [GameSingleton sharedGameSingleton].levelToLoad = @"";  // Reset this value
     
 //	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
 	if ([director enableRetinaDisplay:YES])
@@ -99,8 +101,7 @@
 #endif
 	
 	[director setAnimationInterval:1.0/60];
-	[director setDisplayFPS:YES];
-	
+//	[director setDisplayFPS:YES];
 	
 	// make the OpenGLView a child of the view controller
 	[viewController setView:glView];
@@ -115,14 +116,29 @@
 	// You can change anytime.
 	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
 
-	
 	// Removes the startup flicker
 	[self removeStartupFlicker];
 	
 	// Run the intro Scene
-	[[CCDirector sharedDirector] runWithScene: [LogoScene scene]];
+	[[CCDirector sharedDirector] runWithScene:[LogoScene scene]];
 }
 
+/**
+ * Handle receiving shikaku:// URLs here
+ */
+//- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+//{
+//    NSLog(@"%@", launchOptions);
+//    return YES; 
+//}
+
+/**
+ * Handle opening URLs whilst the app is running in the background
+ */
+//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+//{
+//    return YES;
+//}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
 	[[CCDirector sharedDirector] pause];

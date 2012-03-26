@@ -85,11 +85,11 @@
             
             if (results)
             {
-                NSLog(@"Saved level successfully");
+                CCLOG(@"Saved level successfully");
             }
             else 
             {
-                NSLog(@"Could not save level!");
+                CCLOG(@"Could not save level!");
             }
             
             CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[TitleScene scene]];
@@ -102,7 +102,7 @@
         CCMenuItemImage *hardButton = [CCMenuItemImage itemFromNormalImage:@"hard-button.png" selectedImage:@"hard-button.png"];
         
         CCMenuItemToggle *difficulty = [CCMenuItemToggle itemWithBlock:^(id sender) {
-            NSLog(@"Selected difficulty: %i", [(CCMenuItemToggle *)sender selectedIndex]);
+            CCLOG(@"Selected difficulty: %i", [(CCMenuItemToggle *)sender selectedIndex]);
             switch ([(CCMenuItemToggle *)sender selectedIndex]) 
             {
                 case 0:
@@ -122,7 +122,7 @@
         CCMenuItemImage *clueButton = [CCMenuItemImage itemFromNormalImage:@"clue-button.png" selectedImage:@"clue-button.png"];
         
         CCMenuItemToggle *tool = [CCMenuItemToggle itemWithBlock:^(id sender) {
-            NSLog(@"Selected tool: %i", [(CCMenuItemToggle *)sender selectedIndex]);
+            CCLOG(@"Selected tool: %i", [(CCMenuItemToggle *)sender selectedIndex]);
             switch ([(CCMenuItemToggle *)sender selectedIndex]) 
             {
                 case 0:
@@ -162,12 +162,58 @@
         levelDifficulty = @"easy";
         
         // Set up an array to be serialized to a .plist as a level
-        level = [[NSArray array] retain];
+        level = [NSDictionary dictionary];
         
         // Load level if editing
         if ([(NSString *)[GameSingleton sharedGameSingleton].levelToLoad isEqualToString:@""] == NO)
         {
-            // Do level loading here
+            // Load level dictionary
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [paths objectAtIndex:0];
+            NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[GameSingleton sharedGameSingleton].levelToLoad];
+            
+            level = [NSDictionary dictionaryWithContentsOfFile:pathToFile];
+            CCLOG(@"Level data: %@", level);
+            
+            // Get out the "clue" objects
+            NSArray *c = [level objectForKey:@"clues"];
+            
+            // Iterate and draw
+            for (int i = 0; i < [c count]; i++)
+            {
+                NSArray *val = [c objectAtIndex:i];
+                
+                int value = [(NSNumber *)[val objectAtIndex:2] intValue],
+                    x = [(NSNumber *)[val objectAtIndex:0] intValue],
+                    y = [(NSNumber *)[val objectAtIndex:1] intValue];
+                
+                Clue *c = [Clue clueWithNumber:value];
+                c.position = ccp(x * blockSize + offset.x + blockSize / 2, y * blockSize + offset.y + blockSize / 2);
+                [self addChild:c z:2];
+                
+                // Add clue to the organization array
+                [clues addObject:c];
+            }
+            
+            // Get out "square" objects -- this is for the editor only (and perhaps if users want a "hint" whilst solving)
+            NSArray *s = [level objectForKey:@"squares"];
+            for (int i = 0; i < [s count]; i++)
+            {
+                NSArray *val = [s objectAtIndex:i];
+                
+                // Get dimensions of the square
+                int x = [(NSNumber *)[val objectAtIndex:0] intValue],
+                    y = [(NSNumber *)[val objectAtIndex:1] intValue],
+                    w = [(NSNumber *)[val objectAtIndex:2] intValue],
+                    h = [(NSNumber *)[val objectAtIndex:3] intValue];
+                
+                RoundRectNode *r = [RoundRectNode initWithRectSize:CGSizeMake(w * blockSize, h * blockSize)];
+                r.position = ccp((x * blockSize) + offset.x, (y * blockSize) + (offset.y + blockSize));
+                [self addChild:r z:1];
+                
+                // Add clue to the organization array
+                [squares addObject:r];
+            }
         }
 	}
 	return self;
@@ -488,11 +534,13 @@
 - (BOOL)saveLevel
 {
     /*
-     New level format:
+     level format:
      NSDictionary
         difficulty: @"something"
         clues: NSArray
             [0] -> NSNumber x, NSNumber y, NSNumber val
+        squares: NSArray
+            [0] -> NSNumber x, NSNumber y, NSNumber w, NSNumber h
      */
     
     
@@ -513,28 +561,58 @@
         //c.position = ccp(x * blockSize + offset.x + blockSize / 2, y * blockSize + offset.y + blockSize / 2);
         Clue *clue = [clues objectAtIndex:i];
         [c addObject:[NSArray arrayWithObjects:
-                      [NSNumber numberWithInt:clue.position.x / blockSize - offset.x - blockSize / 2],                          
-                      [NSNumber numberWithInt:clue.position.y / blockSize - offset.y - blockSize / 2],
+                      [NSNumber numberWithInt:(clue.position.x - offset.x - blockSize / 2) / blockSize],
+                      [NSNumber numberWithInt:(clue.position.y - offset.y - blockSize / 2) / blockSize],
                       [NSNumber numberWithInt:clue.value],
                       nil]];
     }
     
+    // Create an array to store squares in
+    NSMutableArray *s = [NSMutableArray array];
+    for (int i = 0; i < [squares count]; i++)
+    {
+        // Code that places squares; reverse to get x/y coords in grid
+        //ccp((touchCol * blockSize) + offset.x, (touchRow * blockSize) + (offset.y + blockSize));
+        RoundRectNode *square = [squares objectAtIndex:i];
+        [s addObject:[NSArray arrayWithObjects:
+                      [NSNumber numberWithInt:(square.position.x - offset.x) / blockSize],
+                      [NSNumber numberWithInt:(square.position.y - offset.y - blockSize) / blockSize],
+                      [NSNumber numberWithInt:square.size.width / blockSize],
+                      [NSNumber numberWithInt:square.size.height / blockSize],
+                      nil]];
+    }
+    
     // Create the overall dictionary that represents a level
-    NSDictionary *l = [NSDictionary dictionaryWithObjectsAndKeys:levelDifficulty, @"difficulty", c, @"clues", nil];
+    NSDictionary *l = [NSDictionary dictionaryWithObjectsAndKeys:levelDifficulty, @"difficulty", c, @"clues", s, @"squares", nil];
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *uuid = [self createUUID];
-    NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist", uuid]];
+//    NSFileManager *fileManager = [NSFileManager defaultManager];
     
-    NSLog(@"Trying to write %@", pathToFile);
-    if (![fileManager fileExistsAtPath:pathToFile])
+    // Determine here whether to create a new level or overwrite an existing one
+    NSString *filename;
+    if ([(NSString *)[GameSingleton sharedGameSingleton].levelToLoad isEqualToString:@""] == NO)
+    {
+        filename = [GameSingleton sharedGameSingleton].levelToLoad;
+        CCLOG(@"Overwriting existing file!");
+    }
+    else 
+    {
+        filename = [NSString stringWithFormat:@"%@.plist", [self createUUID]];
+        CCLOG(@"Creating new file!");
+    }
+    
+    NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:filename];
+    
+    CCLOG(@"Trying to write %@", pathToFile);
+    CCLOG(@"Level data: %@", l);
+    
+//    if (![fileManager fileExistsAtPath:pathToFile])
     {
         return [l writeToFile:pathToFile atomically:YES];
     }
     
-    CCLOG(@"Level couldn't be written because it already exists");
+//    CCLOG(@"Level couldn't be written because it already exists");
 
     return NO;
 }
@@ -563,7 +641,6 @@
 	// cocos2d will automatically release all the children (Label)
 	[squares release];
     [clues release];
-    [level release];
     
 	// don't forget to call "super dealloc"
 	[super dealloc];

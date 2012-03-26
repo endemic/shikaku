@@ -18,7 +18,7 @@
 @interface EditorScene : CCLayer 
 {
     // This'll hold the loaded level
-    NSArray *level;
+    NSDictionary *level;
     
     // Display/store player moves and puzzle clues
     NSMutableArray *squares, *clues;

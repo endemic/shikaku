@@ -39,11 +39,15 @@
         {
             iPadSuffix = @"-ipad";
             fontMultiplier = 2;
+            previewBlockSize = 52;
+            iPadOffset = ccp(64, 32);   // 64px gutters on left/right, 32px on top/bottom
         }
         else 
         {
             iPadSuffix = @"";
             fontMultiplier = 1;
+            previewBlockSize = 26;
+            iPadOffset = ccp(0, 0);
         }
         
         // Add background
@@ -51,6 +55,13 @@
         background.position = ccp(windowSize.width / 2, windowSize.height / 2);
         [self addChild:background];
         
+        // Add the background for the level preview
+        CCSprite *previewBackground = [CCSprite spriteWithFile:@"preview-background.png"];
+        previewBackground.position = ccp(windowSize.width / 2, windowSize.height / 1.5);
+        [self addChild:previewBackground];
+        
+        // Determine the (0, 0) offset for the grid
+        gridOffset = ccp(previewBackground.position.x - previewBackground.contentSize.width / 2, previewBackground.position.y - previewBackground.contentSize.height / 2);
         
         // TEMP: Get an array of levels!
         levels = [[NSMutableArray arrayWithArray:[self getDocumentsDirectoryContents]] retain];
@@ -105,9 +116,9 @@
         [self addChild:actionsMenu];
         
         // TEMP - set up string/label that shows the selected filename
-        selectedLevelLabel = [CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(windowSize.width, windowSize.height / 2) alignment:CCTextAlignmentCenter fontName:@"insolent.otf" fontSize:20.0];
-        selectedLevelLabel.position = ccp(windowSize.width / 2, windowSize.height / 1.5);
-        [self addChild:selectedLevelLabel];
+//        selectedLevelLabel = [CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(windowSize.width, windowSize.height / 2) alignment:CCTextAlignmentCenter fontName:@"insolent.otf" fontSize:20.0];
+//        selectedLevelLabel.position = ccp(windowSize.width / 2, windowSize.height / 1.5);
+//        [self addChild:selectedLevelLabel];
         
         // Call to immediately update the label's contents
         [self updateLevelPreview];
@@ -122,6 +133,8 @@
         CCMenu *backMenu = [CCMenu menuWithItems:backButton, nil];
         backMenu.position = ccp(backButton.contentSize.width / 2, windowSize.height - backButton.contentSize.height / 2);
         [self addChild:backMenu];
+        
+        clues = [[NSMutableArray array] retain];
 	}
 	return self;
 }
@@ -131,7 +144,44 @@
  */
 - (void)updateLevelPreview
 {
-    selectedLevelLabel.string = [levels objectAtIndex:selectedLevelIndex];
+//    selectedLevelLabel.string = [levels objectAtIndex:selectedLevelIndex];
+    
+    // Clear out previous clues
+    for (int i = 0; i < [clues count]; i++)
+    {
+        [self removeChild:[clues objectAtIndex:i] cleanup:NO];
+    }
+    [clues removeAllObjects];
+    
+    // TODO: Read in the file here
+    // Load level dictionary
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    // TODO: Store the documents directory string so you don't have to keep getting it here
+    NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[GameSingleton sharedGameSingleton].levelToLoad];
+    
+    NSDictionary *level = [NSDictionary dictionaryWithContentsOfFile:pathToFile];
+//    CCLOG(@"Level data: %@", level);
+    
+    // Get out the "clue" objects
+    NSArray *c = [level objectForKey:@"clues"];
+    
+    // Iterate and draw
+    for (int i = 0; i < [c count]; i++)
+    {
+        NSArray *val = [c objectAtIndex:i];
+        
+        int value = [(NSNumber *)[val objectAtIndex:2] intValue],
+            x = [(NSNumber *)[val objectAtIndex:0] intValue],
+            y = [(NSNumber *)[val objectAtIndex:1] intValue];
+        
+        Clue *c = [Clue clueWithNumber:value];
+        c.position = ccp(x * previewBlockSize + gridOffset.x + previewBlockSize / 2, y * previewBlockSize + gridOffset.y + previewBlockSize / 2);
+        c.scale = 0.8125;
+        [self addChild:c z:2];
+        
+        [clues addObject:c];
+    }
 }
 
 /**
@@ -151,6 +201,8 @@
 - (void)dealloc
 {
     [levels release];
+    [clues release];
+    
     [super dealloc];
 }
 

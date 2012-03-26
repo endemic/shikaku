@@ -1,9 +1,9 @@
 //
 //  GameScene.m
-//  shukakumadness
+//  Shikaku Madness
 //
 //  Created by Nathan Demick on 3/18/12.
-//  Copyright __MyCompanyName__ 2012. All rights reserved.
+//  Copyright Ganbaru Games 2012. All rights reserved.
 //
 
 
@@ -99,8 +99,7 @@
         NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[GameSingleton sharedGameSingleton].levelToLoad];
         
         level = [NSDictionary dictionaryWithContentsOfFile:pathToFile];
-//        NSLog(@"%@", pathToFile);
-//        NSLog(@"%@", level);
+        CCLOG(@"Level data: %@", level);
         
         // Get out the "clue" objects
         NSArray *c = [level objectForKey:@"clues"];
@@ -120,42 +119,6 @@
             // Add clue to the organization array
             [clues addObject:c];
         }
-        
-        /*
-        // Set up a test level
-        level = [NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:2], @"x", [NSNumber numberWithInt:0], @"y", [NSNumber numberWithInt:3], @"value", nil],
-                                          [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:5], @"x", [NSNumber numberWithInt:0], @"y", [NSNumber numberWithInt:9], @"value", nil],
-                                          [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:9], @"x", [NSNumber numberWithInt:0], @"y", [NSNumber numberWithInt:4], @"value", nil],
-                                          [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:0], @"x", [NSNumber numberWithInt:2], @"y", [NSNumber numberWithInt:4], @"value", nil],
-                                          [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:5], @"x", [NSNumber numberWithInt:3], @"y", [NSNumber numberWithInt:6], @"value", nil],
-                                          [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:7], @"x", [NSNumber numberWithInt:3], @"y", [NSNumber numberWithInt:8], @"value", nil],
-                                          [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:9], @"x", [NSNumber numberWithInt:3], @"y", [NSNumber numberWithInt:12], @"value", nil],
-                                          [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:0], @"x", [NSNumber numberWithInt:6], @"y", [NSNumber numberWithInt:8], @"value", nil],
-                                          [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:2], @"x", [NSNumber numberWithInt:6], @"y", [NSNumber numberWithInt:6], @"value", nil],
-                                          [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:4], @"x", [NSNumber numberWithInt:6], @"y", [NSNumber numberWithInt:8], @"value", nil],
-                                          [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:0], @"x", [NSNumber numberWithInt:9], @"y", [NSNumber numberWithInt:9], @"value", nil],
-                                          [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:4], @"x", [NSNumber numberWithInt:9], @"y", [NSNumber numberWithInt:12], @"value", nil],
-                                          [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:7], @"x", [NSNumber numberWithInt:9], @"y", [NSNumber numberWithInt:5], @"value", nil],
-                                          [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:9], @"x", [NSNumber numberWithInt:7], @"y", [NSNumber numberWithInt:6], @"value", nil],
-                                          nil];
-
-        // Grab each clue out of the level dictionary, create a "clue" object from it, then add it to the layer
-        for (int i = 0; i < [level count]; i++)
-        {
-            NSDictionary *clue = [level objectAtIndex:i];
-            // Get x,y, and value for clue
-            int value = [(NSNumber *)[clue objectForKey:@"value"] intValue],
-                x = [(NSNumber *)[clue objectForKey:@"x"] intValue],
-                y = [(NSNumber *)[clue objectForKey:@"y"] intValue];
-            
-            Clue *c = [Clue clueWithNumber:value];
-            c.position = ccp(x * blockSize + offset.x + blockSize / 2, y * blockSize + offset.y + blockSize / 2);
-            [self addChild:c z:2];
-            
-            // Add clue to the organization array
-            [clues addObject:c];
-        }
-        */
 	}
 	return self;
 }
