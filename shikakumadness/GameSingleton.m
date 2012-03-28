@@ -334,8 +334,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(GameSingleton);
 	@synchronized([GameSingleton class]) 
 	{
 		// just in case loadState is called before GameSingleton inits
-		if(!sharedGameSingleton)
+		if (!sharedGameSingleton)
+        {
 			[GameSingleton sharedGameSingleton];
+        }
 
 		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 		NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -343,7 +345,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(GameSingleton);
 		NSString *file = [documentsDirectory stringByAppendingPathComponent:@"GameSingleton.bin"];
 		Boolean saveFileExists = [[NSFileManager defaultManager] fileExistsAtPath:file];
 		
-		if(saveFileExists) 
+		if (saveFileExists) 
 		{
 			// don't need to set the result to anything here since we're just getting initwithCoder to be called.
 			// if you try to overwrite sharedGameSingleton here, an assert will be thrown.

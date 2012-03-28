@@ -14,6 +14,7 @@
 #import "GameScene.h"
 #import "RootViewController.h"
 #import "GameSingleton.h"
+#import "StoreKitSingleton.h"
 
 @implementation AppDelegate
 
@@ -116,6 +117,10 @@
     // Init game singleton
     [GameSingleton loadState];
     [GameSingleton sharedGameSingleton].levelToLoad = @"";  // Reset this value
+    
+    // Load the store to get products
+    [StoreKitSingleton loadState];
+    [[StoreKitSingleton sharedStoreKitSingleton] loadStore];
     
 	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
 	if ([director enableRetinaDisplay:YES])

@@ -1,6 +1,6 @@
 //
 //  LevelSelectScene.m
-//  shikakumadness
+//  Shikaku Madness
 //
 //  Created by Nathan Demick on 3/24/12.
 //  Copyright 2012 Ganbaru Games. All rights reserved.

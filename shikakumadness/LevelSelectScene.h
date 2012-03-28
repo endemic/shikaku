@@ -18,9 +18,6 @@
     // Current position in the level array
     int selectedLevelIndex;
     
-    // TEMP: string to show currently chosen level
-//    CCLabelTTF *selectedLevelLabel;
-    
     // Helper vars to deal w/ iPad size diff
 	NSString *iPadSuffix;
 	int fontMultiplier;

@@ -131,7 +131,6 @@
 		7D064807151CB3630081B074 /* LogoScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0647F8151CB3620081B074 /* LogoScene.m */; };
 		7D064808151CB3630081B074 /* RoundRectNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0647FA151CB3620081B074 /* RoundRectNode.m */; };
 		7D064809151CB3630081B074 /* StoreKitSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0647FC151CB3620081B074 /* StoreKitSingleton.m */; };
-		7D06480A151CB3630081B074 /* StoreObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0647FE151CB3620081B074 /* StoreObserver.m */; };
 		7D06480B151CB3630081B074 /* TitleScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D064801151CB3620081B074 /* TitleScene.m */; };
 		7D06480C151CB3630081B074 /* todo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D064802151CB3620081B074 /* todo.txt */; };
 		7D06489F151CB4D10081B074 /* Default-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D06486A151CB4D10081B074 /* Default-hd.png */; };
@@ -183,6 +182,7 @@
 		7D570A731523197400691612 /* reset-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D570A711523197400691612 /* reset-button-hd.png */; };
 		7D570A741523197400691612 /* reset-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D570A721523197400691612 /* reset-button.png */; };
 		7D5C137E151DD6650094AAB4 /* LevelSelectScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D5C137D151DD6650094AAB4 /* LevelSelectScene.m */; };
+		7DF0D8A815238B3600279D84 /* DifficultySelectScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF0D8A715238B3600279D84 /* DifficultySelectScene.m */; };
 		7DF29880151F23AB008A08D8 /* edit-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF29878151F23AB008A08D8 /* edit-button-hd.png */; };
 		7DF29881151F23AB008A08D8 /* edit-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF29879151F23AB008A08D8 /* edit-button.png */; };
 		7DF29882151F23AB008A08D8 /* next-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF2987A151F23AB008A08D8 /* next-button-hd.png */; };
@@ -447,8 +447,6 @@
 		7D0647FA151CB3620081B074 /* RoundRectNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoundRectNode.m; sourceTree = "<group>"; };
 		7D0647FB151CB3620081B074 /* StoreKitSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoreKitSingleton.h; sourceTree = "<group>"; };
 		7D0647FC151CB3620081B074 /* StoreKitSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoreKitSingleton.m; sourceTree = "<group>"; };
-		7D0647FD151CB3620081B074 /* StoreObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoreObserver.h; sourceTree = "<group>"; };
-		7D0647FE151CB3620081B074 /* StoreObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoreObserver.m; sourceTree = "<group>"; };
 		7D0647FF151CB3620081B074 /* SynthesizeSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthesizeSingleton.h; sourceTree = "<group>"; };
 		7D064800151CB3620081B074 /* TitleScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleScene.h; sourceTree = "<group>"; };
 		7D064801151CB3620081B074 /* TitleScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleScene.m; sourceTree = "<group>"; };
@@ -503,6 +501,8 @@
 		7D570A721523197400691612 /* reset-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reset-button.png"; sourceTree = "<group>"; };
 		7D5C137C151DD6650094AAB4 /* LevelSelectScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelSelectScene.h; sourceTree = "<group>"; };
 		7D5C137D151DD6650094AAB4 /* LevelSelectScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LevelSelectScene.m; sourceTree = "<group>"; };
+		7DF0D8A615238B3600279D84 /* DifficultySelectScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DifficultySelectScene.h; sourceTree = "<group>"; };
+		7DF0D8A715238B3600279D84 /* DifficultySelectScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DifficultySelectScene.m; sourceTree = "<group>"; };
 		7DF29878151F23AB008A08D8 /* edit-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit-button-hd.png"; sourceTree = "<group>"; };
 		7DF29879151F23AB008A08D8 /* edit-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit-button.png"; sourceTree = "<group>"; };
 		7DF2987A151F23AB008A08D8 /* next-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next-button-hd.png"; sourceTree = "<group>"; };
@@ -581,6 +581,8 @@
 				7D0647F4151CB3620081B074 /* GameScene.m */,
 				7D064800151CB3620081B074 /* TitleScene.h */,
 				7D064801151CB3620081B074 /* TitleScene.m */,
+				7DF0D8A615238B3600279D84 /* DifficultySelectScene.h */,
+				7DF0D8A715238B3600279D84 /* DifficultySelectScene.m */,
 				7D5C137C151DD6650094AAB4 /* LevelSelectScene.h */,
 				7D5C137D151DD6650094AAB4 /* LevelSelectScene.m */,
 				7D064802151CB3620081B074 /* todo.txt */,
@@ -1047,8 +1049,6 @@
 				7D0647F6151CB3620081B074 /* GameSingleton.m */,
 				7D0647FB151CB3620081B074 /* StoreKitSingleton.h */,
 				7D0647FC151CB3620081B074 /* StoreKitSingleton.m */,
-				7D0647FD151CB3620081B074 /* StoreObserver.h */,
-				7D0647FE151CB3620081B074 /* StoreObserver.m */,
 			);
 			name = GameKit/StoreKit;
 			sourceTree = "<group>";
@@ -1304,9 +1304,9 @@
 				7D064807151CB3630081B074 /* LogoScene.m in Sources */,
 				7D064808151CB3630081B074 /* RoundRectNode.m in Sources */,
 				7D064809151CB3630081B074 /* StoreKitSingleton.m in Sources */,
-				7D06480A151CB3630081B074 /* StoreObserver.m in Sources */,
 				7D06480B151CB3630081B074 /* TitleScene.m in Sources */,
 				7D5C137E151DD6650094AAB4 /* LevelSelectScene.m in Sources */,
+				7DF0D8A815238B3600279D84 /* DifficultySelectScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1353,6 +1353,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1363,6 +1364,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1372,6 +1374,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = shikakumadness/Prefix.pch;
@@ -1381,6 +1385,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
