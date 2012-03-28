@@ -391,8 +391,11 @@
                 {
                     Clue *c = [clues objectAtIndex:i];
                     CGRect clueBounds = CGRectMake(c.position.x - blockSize / 2, c.position.y - blockSize / 2, blockSize, blockSize);   // Blocksize is same as clue size
+                    
+                    // If a clue is within this square, move it
                     if (CGRectIntersectsRect(rectBounds, clueBounds))
                     {
+                        CCLOG(@"Trying to move clue");
                         c.position = ccp(touchCol * blockSize + offset.x + blockSize / 2, touchRow * blockSize + offset.y + blockSize / 2);
                     }
                 }
@@ -611,8 +614,6 @@
     {
         return [l writeToFile:pathToFile atomically:YES];
     }
-    
-//    CCLOG(@"Level couldn't be written because it already exists");
 
     return NO;
 }

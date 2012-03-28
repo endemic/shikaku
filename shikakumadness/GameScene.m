@@ -40,15 +40,17 @@
         // Determine offset of grid
         if ([GameSingleton sharedGameSingleton].isPad)
         {
+            iPadOffset = ccp(32, 16);
             // Determine offset of grid
-            offset = ccp(64, 192);
+            offset = ccp(32, 66);
             blockSize = 64;
             iPadSuffix = @"-ipad";
             fontMultiplier = 2;
         }
         else 
         {
-            offset = ccp(0, 80);
+            iPadOffset = ccp(0, 0);
+            offset = ccp(0, 25);
             blockSize = 32;
             iPadSuffix = @"";
             fontMultiplier = 1;
@@ -74,19 +76,49 @@
         
         // Add grid
         CCSprite *grid = [CCSprite spriteWithFile:@"grid.png"];
-        grid.position = ccp(window.width / 2, window.height / 2);
+        grid.position = ccp(window.width / 2, grid.contentSize.height / 2 + iPadOffset.y + (25 * fontMultiplier));
         [self addChild:grid z:0];
         
+        // Add "reset" and "quit" buttons
+        CCMenuItemImage *resetButton = [CCMenuItemImage itemFromNormalImage:@"reset-button.png" selectedImage:@"reset-button.png" block:^(id sender) {
+            // TODO: Show confirmation popup here
+            // Remove squares from layer
+            for (int i = 0; i < [squares count]; i++) 
+            {
+                RoundRectNode *r = [squares objectAtIndex:i];
+                [self removeChild:r cleanup:YES];
+            }
+            
+            // Remove from organizational array
+            [squares removeAllObjects];
+            
+            [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+        }];
+        
+        CCMenuItemImage *quitButton = [CCMenuItemImage itemFromNormalImage:@"quit-button.png" selectedImage:@"quit-button.png" block:^(id sender) {
+            // TODO: Show confirmation popup here
+            
+            [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+            
+            CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
+            [[CCDirector sharedDirector] replaceScene:transition];
+        }];
+        
+        CCMenu *menu = [CCMenu menuWithItems:quitButton, resetButton, nil];
+        menu.position = ccp(window.width / 2, window.height - quitButton.contentSize.height / 1.5);
+        [menu alignItemsHorizontallyWithPadding:20.0];
+        [self addChild:menu];
+        
         // Add "area" label
-        areaLabel = [CCLabelTTF labelWithString:@"Area: ~" fontName:@"insolent.otf" fontSize:36.0 * fontMultiplier];
+        areaLabel = [CCLabelTTF labelWithString:@"Area:\n   -" dimensions:CGSizeMake(window.width / 2, 300 * fontMultiplier) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:24.0 * fontMultiplier];
         areaLabel.color = ccc3(255, 255, 255);
-        areaLabel.position = ccp(areaLabel.contentSize.width / 2, window.height - areaLabel.contentSize.height / 2);
+        areaLabel.position = ccp(areaLabel.contentSize.width / 2, menu.position.y - areaLabel.contentSize.height / 1.5);
         [self addChild:areaLabel];
         
         // Add "timer" label
-        timerLabel = [CCLabelTTF labelWithString:@"Time: 00:00" fontName:@"insolent.otf" fontSize:36.0 * fontMultiplier];
+        timerLabel = [CCLabelTTF labelWithString:@"Time:\n   00:00" dimensions:CGSizeMake(window.width / 2, 300 * fontMultiplier) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:24.0 * fontMultiplier];
         timerLabel.color = ccc3(255, 255, 255);
-        timerLabel.position = ccp(timerLabel.contentSize.width / 2, timerLabel.contentSize.height / 2);
+        timerLabel.position = ccp(window.width - timerLabel.contentSize.width / 2, menu.position.y - timerLabel.contentSize.height / 1.5);
         [self addChild:timerLabel];
         
         // Schedule update method for timer
@@ -121,6 +153,15 @@
         }
 	}
 	return self;
+}
+
+/**
+ * Method that gets called every second, to update the "timer" label
+ */
+- (void)updateTimer:(ccTime)dt
+{
+    timer++;
+    timerLabel.string = [NSString stringWithFormat:@"Time:\n   %02i:%02i", timer / 60, timer % 60];
 }
 
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -166,15 +207,6 @@
         selection.size = CGSizeMake(blockSize, blockSize);  // Default size
         selection.position = ccp((touchCol * blockSize) + offset.x, (touchRow * blockSize) + (offset.y + blockSize));
 	}
-}
-
-/**
- * Method that gets called every second, to update the "timer" label
- */
-- (void)updateTimer:(ccTime)dt
-{
-    timer++;
-    timerLabel.string = [NSString stringWithFormat:@"%02i:%02i", timer / 60, timer % 60];
 }
 
 - (void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -247,7 +279,7 @@
     }
     
     // Update the "area" label
-    areaLabel.string = [NSString stringWithFormat:@"Area: %i", width * height];
+    areaLabel.string = [NSString stringWithFormat:@"Area:\n   %i", width * height];
     
     // Store the "previous" value for each row/col
     previousCol = touchCol;
@@ -288,7 +320,7 @@
         // Store it in the "squares" array
         [squares addObject:r];
         
-        areaLabel.string = @"Area: ~";
+        areaLabel.string = @"Area:\n   -";
     }
     
     // Hide the original "selection" roundrect
@@ -298,12 +330,8 @@
     if ([self checkSolution])
     {
         NSLog(@"You win!");
-        CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[TitleScene scene]];
+        CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
         [[CCDirector sharedDirector] replaceScene:transition];
-    }
-    else 
-    {
-        NSLog(@"Not yet, sucka!");
     }
 }
 

@@ -63,12 +63,18 @@
         // Determine the (0, 0) offset for the grid
         gridOffset = ccp(previewBackground.position.x - previewBackground.contentSize.width / 2, previewBackground.position.y - previewBackground.contentSize.height / 2);
         
-        // TEMP: Get an array of levels!
+        // Get list of levels!
         levels = [[NSMutableArray arrayWithArray:[self getDocumentsDirectoryContents]] retain];
+        
+        // Create array to store clues that are displayed w/ level preview
+        clues = [[NSMutableArray array] retain];
         
         // Set up previous/next buttons here to cycle thru files
         selectedLevelIndex = 0;
         [GameSingleton sharedGameSingleton].levelToLoad = [levels objectAtIndex:selectedLevelIndex];
+        
+        // Immediately update the label's contents
+        [self updateLevelPreview];
         
         CCMenuItemImage *prevButton = [CCMenuItemImage itemFromNormalImage:@"prev-button.png" selectedImage:@"prev-button.png" block:^(id sender) {
             if (selectedLevelIndex > 0)
@@ -115,14 +121,6 @@
         [actionsMenu alignItemsVertically];
         [self addChild:actionsMenu];
         
-        // TEMP - set up string/label that shows the selected filename
-//        selectedLevelLabel = [CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(windowSize.width, windowSize.height / 2) alignment:CCTextAlignmentCenter fontName:@"insolent.otf" fontSize:20.0];
-//        selectedLevelLabel.position = ccp(windowSize.width / 2, windowSize.height / 1.5);
-//        [self addChild:selectedLevelLabel];
-        
-        // Call to immediately update the label's contents
-        [self updateLevelPreview];
-        
         // Set up a "back" button
         [CCMenuItemFont setFontName:@"insolent.otf"];
         [CCMenuItemFont setFontSize:24.0];
@@ -133,10 +131,34 @@
         CCMenu *backMenu = [CCMenu menuWithItems:backButton, nil];
         backMenu.position = ccp(backButton.contentSize.width / 2, windowSize.height - backButton.contentSize.height / 2);
         [self addChild:backMenu];
-        
-        clues = [[NSMutableArray array] retain];
 	}
 	return self;
+}
+
+/*! 
+ @method shareLevel:(NSString *)filename
+ @abstract Sends a level to a web service
+ @result Whether the request was successful or not
+ */
+- (void)shareLevel:(NSString *)filename
+{
+    NSURL *url = [NSURL URLWithString:@"http://ganbarugames.com/shikaku-madness/post.php"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[NSData dataWithContentsOfFile:filename]];
+    
+    NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
+    [connection start];
+}
+
+/*! 
+ @method connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+ @abstract NSURLConnection delegate methdo
+ @result Executes when "sharing" connection fails
+ */
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    CCLOG(@"Connection failed! %@", error);
 }
 
 /**
@@ -144,16 +166,13 @@
  */
 - (void)updateLevelPreview
 {
-//    selectedLevelLabel.string = [levels objectAtIndex:selectedLevelIndex];
-    
     // Clear out previous clues
     for (int i = 0; i < [clues count]; i++)
     {
-        [self removeChild:[clues objectAtIndex:i] cleanup:NO];
+        [self removeChild:[clues objectAtIndex:i] cleanup:YES];
     }
     [clues removeAllObjects];
     
-    // TODO: Read in the file here
     // Load level dictionary
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -161,7 +180,6 @@
     NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[GameSingleton sharedGameSingleton].levelToLoad];
     
     NSDictionary *level = [NSDictionary dictionaryWithContentsOfFile:pathToFile];
-//    CCLOG(@"Level data: %@", level);
     
     // Get out the "clue" objects
     NSArray *c = [level objectForKey:@"clues"];

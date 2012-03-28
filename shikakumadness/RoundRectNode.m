@@ -30,7 +30,7 @@
 
 @implementation RoundRectNode
 
-@synthesize size, area, radius, borderWidth, cornerSegments, borderColor, fillColor;
+@synthesize size, area, blockSize, radius, borderWidth, cornerSegments, borderColor, fillColor;
 
 #define kappa 0.552228474
 
@@ -38,13 +38,32 @@
 {
     if ((self = [super init]))
     {
-        size = CGSizeMake(32, 32);
+        if ([GameSingleton sharedGameSingleton].isPad)
+        {
+            blockSize = 64;
+        }
+        else 
+        {
+            blockSize = 32;
+        }
+        
+        size = CGSizeMake(blockSize, blockSize);
         area = 1;
         radius = 10;
         borderWidth = 2;
         cornerSegments = 5;
-        borderColor = ccc4(227,102,18,200);    //opacity_/255
-        fillColor = ccc4(227,102,18,50);
+        // Orange
+//        borderColor = ccc4(227,102,18,200);    //opacity_/255
+//        fillColor = ccc4(227,102,18,50);
+        // Red
+        borderColor = ccc4(255,51,51,200);    //opacity_/255
+        fillColor = ccc4(255,51,51,50);
+        
+        // Double border width iff'n hi-rez
+        if ([GameSingleton sharedGameSingleton].isRetina)
+        {
+            borderWidth *= 2;
+        }
     }
     return self;
 }
@@ -52,7 +71,7 @@
 + (id)initWithRectSize:(CGSize)size  {
     RoundRectNode *r = [RoundRectNode node];
     r.size = size;
-    r.area = size.width * size.height / (32 * 32);
+    r.area = size.width * size.height / (r.blockSize * r.blockSize);
     return r;
 }
 
@@ -95,27 +114,28 @@ void ccFillPoly( CGPoint *poli, int points, BOOL closePolygon )
 }
 
 -(void) draw {
+    int offset = 1;
 	CGPoint vertices[16];
     
-    vertices[0] = ccp(0, -radius);
-    vertices[1] = ccp(0, -radius * (1 - kappa));
-    vertices[2] = ccp(radius * (1 - kappa), 0);
-    vertices[3] = ccp(radius, 0);
+    vertices[0] = ccp(offset, -radius);
+    vertices[1] = ccp(offset, -radius * (1 - kappa));
+    vertices[2] = ccp(radius * (1 - kappa), -offset);
+    vertices[3] = ccp(radius, -offset);
     
-    vertices[4] = ccp(size.width - radius, 0);
-    vertices[5] = ccp(size.width - radius * (1 - kappa), 0);
-    vertices[6] = ccp(size.width, -radius * (1 - kappa));
-    vertices[7] = ccp(size.width, -radius);
+    vertices[4] = ccp(size.width - radius, -offset);
+    vertices[5] = ccp(size.width - radius * (1 - kappa), -offset);
+    vertices[6] = ccp(size.width - offset, -radius * (1 - kappa));
+    vertices[7] = ccp(size.width - offset, -radius);
     
-    vertices[8] = ccp(size.width, -size.height + radius);
-    vertices[9] = ccp(size.width, -size.height + radius * (1 - kappa));
-    vertices[10] = ccp(size.width - radius * (1 - kappa), -size.height);
-    vertices[11] = ccp(size.width - radius, -size.height);
+    vertices[8] = ccp(size.width - offset, -size.height + radius);
+    vertices[9] = ccp(size.width - offset, -size.height + radius * (1 - kappa));
+    vertices[10] = ccp(size.width - radius * (1 - kappa), -size.height + offset);
+    vertices[11] = ccp(size.width - radius, -size.height + offset);
     
-    vertices[12] = ccp(radius, -size.height);
-    vertices[13] = ccp(radius * (1 - kappa), -size.height);                   
-    vertices[14] = ccp(0, -size.height + radius * (1 - kappa));                   
-    vertices[15] = ccp(0, -size.height + radius);    
+    vertices[12] = ccp(radius, -size.height + offset);
+    vertices[13] = ccp(radius * (1 - kappa), -size.height + offset);
+    vertices[14] = ccp(offset, -size.height + radius * (1 - kappa));                   
+    vertices[15] = ccp(offset, -size.height + radius);    
     
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     

@@ -27,11 +27,13 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import "GameSingleton.h"
 
 @interface RoundRectNode : CCNode 
 {
     CGSize size;
     int area;
+    int blockSize;
     float radius;
     
     ccColor4B borderColor;
@@ -45,6 +47,7 @@
 
 @property (nonatomic,assign) CGSize size;
 @property (nonatomic,assign) int area;
+@property (nonatomic,assign) int blockSize;
 @property (nonatomic,assign) float radius;
 @property (nonatomic,assign) ccColor4B borderColor;
 @property (nonatomic,assign) ccColor4B fillColor;

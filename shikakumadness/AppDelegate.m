@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "GameConfig.h"
 #import "LogoScene.h"
+#import "GameScene.h"
 #import "RootViewController.h"
 #import "GameSingleton.h"
 
@@ -18,38 +19,82 @@
 
 @synthesize window;
 
-- (void) removeStartupFlicker
-{
-	//
-	// THIS CODE REMOVES THE STARTUP FLICKER
-	//
-	// Uncomment the following code if you Application only supports landscape mode
-	//
-#if GAME_AUTOROTATION == kGameAutorotationUIViewController
-
-//	CC_ENABLE_DEFAULT_GL_STATES();
+//- (void) applicationDidFinishLaunching:(UIApplication*)application
+//{
+//	// Init the window
+//	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//	
+//	// Try to use CADisplayLink director
+//	// if it fails (SDK < 3.1) use the default director
+//	if (![CCDirector setDirectorType:kCCDirectorTypeDisplayLink])
+//    {
+//        [CCDirector setDirectorType:kCCDirectorTypeDefault];
+//    }
+//	
 //	CCDirector *director = [CCDirector sharedDirector];
-//	CGSize size = [director winSize];
-//	CCSprite *sprite = [CCSprite spriteWithFile:@"Default.png"];
-//	sprite.position = ccp(size.width/2, size.height/2);
-//	sprite.rotation = -90;
-//	[sprite visit];
-//	[[director openGLView] swapBuffers];
-//	CC_ENABLE_DEFAULT_GL_STATES();
-	
-#endif // GAME_AUTOROTATION == kGameAutorotationUIViewController	
-}
+//	
+//	// Init the View Controller
+//	viewController = [[RootViewController alloc] initWithNibName:nil bundle:nil];
+//	viewController.wantsFullScreenLayout = YES;
+//	
+//	// Create the EAGLView manually
+//	//  1. Create a RGB565 format. Alternative: RGBA8
+//	//	2. depth format of 0 bit. Use 16 or 24 bit for 3d effects, like CCPageTurnTransition
+//	EAGLView *glView = [EAGLView viewWithFrame:[window bounds]
+//								   pixelFormat:kEAGLColorFormatRGB565	// kEAGLColorFormatRGBA8
+//								   depthFormat:0						// GL_DEPTH_COMPONENT16_OES
+//						];
+//	
+//	// attach the openglView to the director
+//	[director setOpenGLView:glView];
+//	
+//    // Init game singleton
+//    [GameSingleton loadState];
+//    [GameSingleton sharedGameSingleton].levelToLoad = @"";  // Reset this value
+//    
+//	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
+//	if ([director enableRetinaDisplay:YES])
+//    {
+//        [GameSingleton sharedGameSingleton].isRetina = YES;
+//    }
+//
+//	// Rotation controlled by UIViewController
+//	[director setDeviceOrientation:kCCDeviceOrientationPortrait];
+//	
+//	[director setAnimationInterval:1.0/60];
+//    [director setDisplayFPS:NO];
+//	
+//	// make the OpenGLView a child of the view controller
+//	[viewController setView:glView];
+//	
+//	// make the View Controller a child of the main window
+//	[window addSubview:viewController.view];
+//	[window makeKeyAndVisible];
+//	
+//	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
+//	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
+//	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
+//
+//	// Run the intro Scene
+//	[[CCDirector sharedDirector] runWithScene:[LogoScene scene]];
+//}
 
-- (void) applicationDidFinishLaunching:(UIApplication*)application
+/**
+ * Handle receiving shikaku:// URLs here
+ */
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	// Init the window
+    NSLog(@"%@", launchOptions);
+    
+    // Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
 	// Try to use CADisplayLink director
 	// if it fails (SDK < 3.1) use the default director
-	if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
-		[CCDirector setDirectorType:kCCDirectorTypeDefault];
-	
+	if (![CCDirector setDirectorType:kCCDirectorTypeDisplayLink])
+    {
+        [CCDirector setDirectorType:kCCDirectorTypeDefault];
+    }
 	
 	CCDirector *director = [CCDirector sharedDirector];
 	
@@ -57,12 +102,9 @@
 	viewController = [[RootViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.wantsFullScreenLayout = YES;
 	
-	//
 	// Create the EAGLView manually
 	//  1. Create a RGB565 format. Alternative: RGBA8
 	//	2. depth format of 0 bit. Use 16 or 24 bit for 3d effects, like CCPageTurnTransition
-	//
-	//
 	EAGLView *glView = [EAGLView viewWithFrame:[window bounds]
 								   pixelFormat:kEAGLColorFormatRGB565	// kEAGLColorFormatRGBA8
 								   depthFormat:0						// GL_DEPTH_COMPONENT16_OES
@@ -75,92 +117,184 @@
     [GameSingleton loadState];
     [GameSingleton sharedGameSingleton].levelToLoad = @"";  // Reset this value
     
-//	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
+	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
 	if ([director enableRetinaDisplay:YES])
     {
         [GameSingleton sharedGameSingleton].isRetina = YES;
     }
-    else 
-    {
-        NSLog(@"Retina not supportd?");
-    }
-	
-	//
-	// VERY IMPORTANT:
-	// If the rotation is going to be controlled by a UIViewController
-	// then the device orientation should be "Portrait".
-	//
-	// IMPORTANT:
-	// By default, this template only supports Landscape orientations.
-	// Edit the RootViewController.m file to edit the supported orientations.
-	//
-#if GAME_AUTOROTATION == kGameAutorotationUIViewController
+    
+	// Rotation controlled by UIViewController
 	[director setDeviceOrientation:kCCDeviceOrientationPortrait];
-#else
-	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
-#endif
 	
 	[director setAnimationInterval:1.0/60];
-//	[director setDisplayFPS:YES];
+    [director setDisplayFPS:NO];
 	
 	// make the OpenGLView a child of the view controller
 	[viewController setView:glView];
 	
 	// make the View Controller a child of the main window
-	[window addSubview: viewController.view];
-	
+	[window addSubview:viewController.view];
 	[window makeKeyAndVisible];
 	
 	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
-	// You can change anytime.
 	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
-
-	// Removes the startup flicker
-	[self removeStartupFlicker];
-	
-	// Run the intro Scene
-	[[CCDirector sharedDirector] runWithScene:[LogoScene scene]];
+    
+    /**
+     
+     If URL in options dictionary can be opened, return YES and let the application:openURL method handle opening the URL
+     
+     **/
+    
+    NSURL *url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+    if ([[url scheme] isEqualToString:@"shikaku"])
+    {
+        return YES;
+    }
+    else 
+    {
+        // Run the intro Scene
+        [[CCDirector sharedDirector] runWithScene:[LogoScene scene]];
+        
+        return NO;
+    }
 }
 
-/**
- * Handle receiving shikaku:// URLs here
+/*! 
+ @method application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+ @abstract Handles opening URLs when app is running
+ @result Starts downloading remote data if URL is valid, otherwise starts app normally
  */
-//- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-//{
-//    NSLog(@"%@", launchOptions);
-//    return YES; 
-//}
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    if ([[url scheme] isEqualToString:@"shikaku"])
+    {
+        // Replace the shikaku:// scheme with http://
+        NSString *newUrlString = [NSString stringWithFormat:@"http://%@%@", [url host], [url path]];
+        
+        url = [NSURL URLWithString:newUrlString];
+        CCLOG(@"URL: %@", url);
+        
+        // Set up a request/connection to download the level
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+        [request setHTTPMethod:@"GET"];
+        
+        NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
+        downloadData = [[NSMutableData data] retain];
+        
+        [connection start];
 
-/**
- * Handle opening URLs whilst the app is running in the background
+        return YES;
+    }
+    else 
+    {
+        // Invalid URL; not sure when this would happen, since app only registers the shikaku:// scheme
+        // If app is already initialized, replace the scene instead of running a new one
+        if ([CCDirector sharedDirector].runningScene)
+        {
+            [[CCDirector sharedDirector] replaceScene:[LogoScene scene]];
+        }
+        else 
+        {
+            [[CCDirector sharedDirector] runWithScene:[LogoScene scene]];
+        }
+        
+        return NO;
+    }
+}
+
+/* 
+ * NSURLConnection delegate methods 
  */
-//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-//{
-//    return YES;
-//}
 
-- (void)applicationWillResignActive:(UIApplication *)application {
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response 
+{
+    CCLOG(@"NSURLConnection didReceiveResponse!");
+    [downloadData setLength:0]; 
+}
+
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data 
+{
+    CCLOG(@"NSURLConnection didReceiveData!");
+    [downloadData appendData:data];
+}
+
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection 
+{
+    CCLOG(@"NSURLConnection finished loading!");
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filename = @"tmp.plist";  // This will always be overwritten (for now)
+    
+    NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:filename];
+    
+    if ([downloadData writeToFile:pathToFile atomically:YES])
+    {
+        [GameSingleton sharedGameSingleton].levelToLoad = filename;
+        
+        // If app is already initialized, replace the scene instead of running a new one
+        if ([CCDirector sharedDirector].runningScene)
+        {
+            [[CCDirector sharedDirector] replaceScene:[GameScene scene]];
+        }
+        else 
+        {
+            [[CCDirector sharedDirector] runWithScene:[GameScene scene]];
+        }
+    }
+}
+
+-(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error 
+{
+    CCLOG(@"NSURLConnection error!");
+    CCLOG(@"%@", error);
+    
+    // If app is already initialized, replace the scene instead of running a new one
+    if ([CCDirector sharedDirector].runningScene)
+    {
+        [[CCDirector sharedDirector] replaceScene:[LogoScene scene]];
+    }
+    else 
+    {
+        [[CCDirector sharedDirector] runWithScene:[LogoScene scene]];
+    }
+}
+
+/*
+ * End NSURLConnection delegate methods
+ */
+
+- (void)applicationWillResignActive:(UIApplication *)application 
+{
 	[[CCDirector sharedDirector] pause];
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (void)applicationDidBecomeActive:(UIApplication *)application 
+{
 	[[CCDirector sharedDirector] resume];
 }
 
-- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application 
+{
 	[[CCDirector sharedDirector] purgeCachedData];
 }
 
--(void) applicationDidEnterBackground:(UIApplication*)application {
+-(void) applicationDidEnterBackground:(UIApplication*)application 
+{
+    [GameSingleton saveState];
 	[[CCDirector sharedDirector] stopAnimation];
 }
 
--(void) applicationWillEnterForeground:(UIApplication*)application {
+-(void) applicationWillEnterForeground:(UIApplication*)application 
+{
+    [GameSingleton loadState];
 	[[CCDirector sharedDirector] startAnimation];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application {
+- (void)applicationWillTerminate:(UIApplication *)application 
+{
+    [GameSingleton saveState];
+    
 	CCDirector *director = [CCDirector sharedDirector];
 	
 	[[director openGLView] removeFromSuperview];
@@ -172,12 +306,15 @@
 	[director end];	
 }
 
-- (void)applicationSignificantTimeChange:(UIApplication *)application {
+- (void)applicationSignificantTimeChange:(UIApplication *)application 
+{
 	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
 }
 
-- (void)dealloc {
+- (void)dealloc 
+{
 	[[CCDirector sharedDirector] end];
+    [downloadData release];
 	[window release];
 	[super dealloc];
 }

@@ -10,7 +10,7 @@
 #import "cocos2d.h"
 #import "GameScene.h"
 
-@interface LevelSelectScene : CCLayer 
+@interface LevelSelectScene : CCLayer <NSURLConnectionDelegate>
 {
     // Array to store level filenames
     NSMutableArray *levels;
@@ -36,5 +36,6 @@
 + (CCScene *)scene;
 - (NSArray *)getDocumentsDirectoryContents;
 - (void)updateLevelPreview;
+- (void)shareLevel:(NSString *)filename;
 
 @end

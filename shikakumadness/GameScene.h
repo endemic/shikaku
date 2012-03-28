@@ -45,6 +45,7 @@
     // Info about platform
     NSString *iPadSuffix;
     int fontMultiplier;
+    CGPoint iPadOffset;
 }
 
 // returns a CCScene that contains the GameScene as the only child

@@ -1,16 +1,14 @@
 TODO
 ====
 
-* Can't actually save level on device
-* Store levels in directories named by difficulty
-* Only show files with .plist extension in level select
+* Finish StoreKit implementation
 * Make some levels
 * Gots to sketch out & design all these damned screens
 
+* Default-shikaku.png & Default-shikaku@2x.png is the convention for custom launch screens when using URLs to load content
+
 * Learn how to save files to an app bundle & transfer out using iTunes
     * Alternately, POST puzzle .json to a web service to save
-
-* Make roundrects slightly inset so they don't overlap each other
 
 * Notes on icon
     1. Border needs to be thicker

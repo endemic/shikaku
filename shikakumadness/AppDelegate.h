@@ -10,9 +10,12 @@
 
 @class RootViewController;
 
-@interface AppDelegate : NSObject <UIApplicationDelegate> {
+@interface AppDelegate : NSObject <UIApplicationDelegate, NSURLConnectionDelegate> 
+{
 	UIWindow			*window;
 	RootViewController	*viewController;
+    
+    NSMutableData *downloadData;
 }
 
 @property (nonatomic, retain) UIWindow *window;
