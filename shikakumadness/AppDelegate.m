@@ -212,6 +212,9 @@
  * NSURLConnection delegate methods 
  */
 
+#pragma mark -
+#pragma mark NSURLConnection delegate methods
+
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response 
 {
     CCLOG(@"NSURLConnection didReceiveResponse!");

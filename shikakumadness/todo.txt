@@ -1,9 +1,13 @@
 TODO
 ====
 
-* Finish StoreKit implementation
+* Figure out how to grab levels from device
+* Update level saving code to save in "difficulty" directories
+* Add "Beginner" difficulty flag to level editor
+* Test out what TouchJSON encoding looks like
 * Make some levels
 * Gots to sketch out & design all these damned screens
+* Make a Rails app that can accept POST'd puzzle data
 
 * Default-shikaku.png & Default-shikaku@2x.png is the convention for custom launch screens when using URLs to load content
 

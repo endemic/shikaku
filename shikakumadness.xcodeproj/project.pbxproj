@@ -179,6 +179,7 @@
 		7D0648CA151CB4D10081B074 /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D06489C151CB4D10081B074 /* hit.wav */; };
 		7D0648CB151CB4D10081B074 /* mark.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D06489D151CB4D10081B074 /* mark.wav */; };
 		7D0648CC151CB4D10081B074 /* miss.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D06489E151CB4D10081B074 /* miss.wav */; };
+		7D17279C1524680F00F109FA /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D17279A152467F900F109FA /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7D570A731523197400691612 /* reset-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D570A711523197400691612 /* reset-button-hd.png */; };
 		7D570A741523197400691612 /* reset-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D570A721523197400691612 /* reset-button.png */; };
 		7D5C137E151DD6650094AAB4 /* LevelSelectScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D5C137D151DD6650094AAB4 /* LevelSelectScene.m */; };
@@ -497,6 +498,7 @@
 		7D06489C151CB4D10081B074 /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
 		7D06489D151CB4D10081B074 /* mark.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = mark.wav; sourceTree = "<group>"; };
 		7D06489E151CB4D10081B074 /* miss.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = miss.wav; sourceTree = "<group>"; };
+		7D17279A152467F900F109FA /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		7D570A711523197400691612 /* reset-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reset-button-hd.png"; sourceTree = "<group>"; };
 		7D570A721523197400691612 /* reset-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reset-button.png"; sourceTree = "<group>"; };
 		7D5C137C151DD6650094AAB4 /* LevelSelectScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelSelectScene.h; sourceTree = "<group>"; };
@@ -521,6 +523,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D0647EE151CB2CC0081B074 /* GameKit.framework in Frameworks */,
+				7D17279C1524680F00F109FA /* Twitter.framework in Frameworks */,
 				7D0647EC151CB2C70081B074 /* StoreKit.framework in Frameworks */,
 				7D064678151CB29D0081B074 /* QuartzCore.framework in Frameworks */,
 				7D06467A151CB29D0081B074 /* OpenGLES.framework in Frameworks */,
@@ -556,6 +559,7 @@
 		7D064676151CB29D0081B074 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7D17279A152467F900F109FA /* Twitter.framework */,
 				7D0647ED151CB2CC0081B074 /* GameKit.framework */,
 				7D0647EB151CB2C70081B074 /* StoreKit.framework */,
 				7D064677151CB29D0081B074 /* QuartzCore.framework */,
@@ -1362,6 +1366,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = shikakumadness/Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = shikakumadness/Resources/Info.plist;
@@ -1387,6 +1392,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = shikakumadness/Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = shikakumadness/Resources/Info.plist;

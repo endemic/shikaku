@@ -147,8 +147,26 @@
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[NSData dataWithContentsOfFile:filename]];
     
+    // Init var that will store response
+    responseData = [[NSMutableData data] retain];
+    
     NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
     [connection start];
+}
+
+#pragma mark -
+#pragma mark NSURLConnection delegate methods
+
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response 
+{
+    CCLOG(@"NSURLConnection didReceiveResponse!");
+    [responseData setLength:0]; 
+}
+
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data 
+{
+    CCLOG(@"NSURLConnection didReceiveData!");
+    [responseData appendData:data];
 }
 
 /*! 
@@ -159,6 +177,40 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     CCLOG(@"Connection failed! %@", error);
+}
+
+/*! 
+ @method connectionDidFinishLoading:(NSURLConnection *)connection
+ @abstract NSURLConnection delegate method
+ @result Executes when "sharing" connection completes
+ */
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    CCLOG(@"Connection finished! %@", connection);
+    
+    if ([TWTweetComposeViewController class])
+    {
+        if ([TWTweetComposeViewController canSendTweet])
+        {
+            CCLOG(@"Reponse from server: %@", responseData);
+            
+            TWTweetComposeViewController *tweetSheet = [[TWTweetComposeViewController alloc] init];
+            [tweetSheet setInitialText: @"Try solving the puzzle I just created in #shikakumadness! "];
+            
+            // Create an additional UIViewController to attach the TWTweetComposeViewController to
+			myViewController = [[UIViewController alloc] init];
+			
+			// Add the temporary UIViewController to the main OpenGL view
+			[[[CCDirector sharedDirector] openGLView] addSubview:myViewController.view];
+			
+            [myViewController presentModalViewController:tweetSheet animated:YES];
+        }
+        else
+        {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can't Send Tweet!" message:@"You can't send a tweet right now, make sure your device has an internet connection and you have  at least one Twitter account setup" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
+        }
+    }
 }
 
 /**
@@ -220,6 +272,7 @@
 {
     [levels release];
     [clues release];
+    [responseData release];
     
     [super dealloc];
 }

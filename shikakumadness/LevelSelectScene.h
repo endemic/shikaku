@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Twitter/Twitter.h>
 #import "cocos2d.h"
 #import "GameScene.h"
 
@@ -28,6 +29,12 @@
     int previewBlockSize;
     CGPoint gridOffset;
     NSMutableArray *clues;  // Store preview clues
+    
+    // View controller to attach Twitter view
+    UIViewController *myViewController;
+    
+    // Stores the response from the POST to server
+    NSMutableData *responseData;
 }
 
 + (CCScene *)scene;
