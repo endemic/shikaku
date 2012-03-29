@@ -18,6 +18,9 @@
     // Store local representations of product objects, to be passed to the StoreKitSingleton if necessary
     SKProduct *easyProduct, *mediumProduct, *hardProduct;
     
+    // Store buttons in order to change their contents based on purchase
+    CCMenuItemFont *easyButton, *mediumButton, *hardButton;
+    
     // Helper vars to deal w/ iPad size diff
 	NSString *iPadSuffix;
 	int fontMultiplier;

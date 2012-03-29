@@ -96,21 +96,62 @@
             }
         }
         
-        CCMenuItemFont *easyButton = [CCMenuItemFont itemFromString:@"Easy" block:^(id sender) {
-            // TODO: Check user defaults for receipt to see if we need to purchase when user taps
-            [[StoreKitSingleton sharedStoreKitSingleton] addToPaymentQueue:easyProduct];
+        // Check for IAP receipts to "unlock" buttons
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
+        easyButton = [CCMenuItemFont itemFromString:@"Easy (locked)" block:^(id sender) {
+            if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.easy.receipt"])
+            {
+                CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
+                [[CCDirector sharedDirector] replaceScene:transition];
+            }
+            else
+            {
+                [[StoreKitSingleton sharedStoreKitSingleton] addToPaymentQueue:easyProduct];
+            }
         }];
         
-        CCMenuItemFont *mediumButton = [CCMenuItemFont itemFromString:@"Medium" block:^(id sender) {
-            // TODO: Check user defaults for receipt to see if we need to purchase when user taps
-            [[StoreKitSingleton sharedStoreKitSingleton] addToPaymentQueue:mediumProduct];
+        mediumButton = [CCMenuItemFont itemFromString:@"Medium (locked)" block:^(id sender) {
+            if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.medium.receipt"])
+            {
+                CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
+                [[CCDirector sharedDirector] replaceScene:transition];
+            }
+            else
+            {
+                [[StoreKitSingleton sharedStoreKitSingleton] addToPaymentQueue:mediumProduct];
+            }
         }];
         
-        CCMenuItemFont *hardButton = [CCMenuItemFont itemFromString:@"Hard" block:^(id sender) {
-            // TODO: Check user defaults for receipt to see if we need to purchase when user taps
-            [[StoreKitSingleton sharedStoreKitSingleton] addToPaymentQueue:hardProduct];
+        hardButton = [CCMenuItemFont itemFromString:@"Hard (locked)" block:^(id sender) {
+            if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.hard.receipt"])
+            {
+                CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
+                [[CCDirector sharedDirector] replaceScene:transition];
+            }
+            else
+            {
+                [[StoreKitSingleton sharedStoreKitSingleton] addToPaymentQueue:hardProduct];
+            }
         }];
         
+        if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.easy.receipt"])
+        {
+            CCLOG(@"User has easy receipt!");
+            easyButton.label.string = @"Easy";
+        }
+        
+        if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.medium.receipt"])
+        {
+            CCLOG(@"User has medium receipt!");
+            mediumButton.label.string = @"Medium";
+        }
+        
+        if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.hard.receipt"])
+        {
+            CCLOG(@"User has hard receipt!");
+            hardButton.label.string = @"Hard";
+        }
         
         CCMenu *difficultyMenu = [CCMenu menuWithItems:beginnerButton, easyButton, mediumButton, hardButton, nil];
         difficultyMenu.position = ccp(windowSize.width / 2, windowSize.height / 2);
@@ -123,8 +164,7 @@
 /*! 
  @method storeKitSuccess:(NSNotification *)notification
  @abstract Called when the StoreKitSingleton posts a "success" message
- @result A modal window is presented that informs the user that their purchase was successful, then the
-         contents of the menu item that corresponds to the purchased item is updated
+ @result The contents of the menu item that corresponds to the purchased item is updated
  */
 - (void)storeKitSuccess:(NSNotification *)notification
 {
@@ -133,7 +173,25 @@
         // Modify the UI so that the "locked" menu options appear "unlocked" and can be tapped to access content
         NSDictionary *userInfo = notification.userInfo;
         SKPaymentTransaction *transaction = [userInfo objectForKey:@"transaction"];
-        CCLOG(@"Transaction data: %@", transaction);
+        
+        NSString *productId = transaction.payment.productIdentifier;
+        
+        if ([productId isEqualToString:@"com.ganbarugames.shikakumadness.easy"])
+        {
+            // Change graphic on the "easy" button
+            easyButton.label.string = @"Easy";
+        }
+        else if ([productId isEqualToString:@"com.ganbarugames.shikakumadness.medium"])
+        {
+            // Change graphic on the "medium" button
+            mediumButton.label.string = @"Medium";
+        }
+        else if ([productId isEqualToString:@"com.ganbarugames.shikakumadness.hard"])
+        {
+            // Change graphic on the "hard" button
+            hardButton.label.string = @"Hard";
+        }
+        
     }
 }
 
@@ -147,6 +205,9 @@
     if ([[notification name] isEqualToString:@"StoreKitFailure"])
     {
         CCLOG(@"Failed purchase!");
+        // TODO: Create UIAlertView to inform user of failure
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, there was a problem completing your purchase. Please try again!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
     }
 }
 

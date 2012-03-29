@@ -295,6 +295,9 @@
                     
                     // Add clue to the organization array
                     [clues addObject:c];
+                    
+                    // Play a sound effect
+                    [[SimpleAudioEngine sharedEngine] playEffect:@"hit.caf"];
                 }
             }
 

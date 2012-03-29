@@ -137,7 +137,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(StoreKitSingleton);
 - (void)recordTransaction:(SKPaymentTransaction *)transaction
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setValue:transaction.transactionReceipt forKey:[NSString stringWithFormat:@"%@.receipt", transaction.transactionIdentifier]];
+    [defaults setValue:transaction.transactionReceipt forKey:[NSString stringWithFormat:@"%@.receipt", transaction.payment.productIdentifier]];
+    NSLog(@"Storing receipt in NSUserDefaults: %@", [NSString stringWithFormat:@"%@.receipt", transaction.payment.productIdentifier]);
     [defaults synchronize];
 }
 
