@@ -128,9 +128,19 @@
         // Load level dictionary
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[GameSingleton sharedGameSingleton].levelToLoad];
+        NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@/%@", [GameSingleton sharedGameSingleton].difficulty, [GameSingleton sharedGameSingleton].levelToLoad]];
         
-        level = [NSDictionary dictionaryWithContentsOfFile:pathToFile];
+        // Get JSON data out of file, and parse into dictionary
+        NSData *json = [NSData dataWithContentsOfFile:pathToFile];
+        NSError *error = nil;
+        level = [NSDictionary dictionaryWithJSONData:json error:&error];
+        
+        if (error != nil)
+        {
+            CCLOG(@"Error deserializing JSON data: %@", error);
+        }
+        
+//        level = [NSDictionary dictionaryWithContentsOfFile:pathToFile];
         CCLOG(@"Level data: %@", level);
         
         // Get out the "clue" objects

@@ -135,6 +135,74 @@
 	return self;
 }
 
+
+/**
+ * Depending on the selected level, a "minimap" or preview or something will be updated here
+ */
+- (void)updateLevelPreview
+{
+    // Clear out previous clues
+    for (int i = 0; i < [clues count]; i++)
+    {
+        [self removeChild:[clues objectAtIndex:i] cleanup:YES];
+    }
+    [clues removeAllObjects];
+    
+    // Load level dictionary
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    // TODO: Store the documents directory string so you don't have to keep getting it here
+    NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@/%@", [GameSingleton sharedGameSingleton].difficulty, [GameSingleton sharedGameSingleton].levelToLoad]];
+    
+    // Get JSON data out of file, and parse into dictionary
+    NSData *json = [NSData dataWithContentsOfFile:pathToFile];
+    NSError *error = nil;
+    NSDictionary *level = [NSDictionary dictionaryWithJSONData:json error:&error];
+    
+    if (error != nil)
+    {
+        CCLOG(@"Error deserializing JSON data: %@", error);
+    }
+    
+    //    NSDictionary *level = [NSDictionary dictionaryWithContentsOfFile:pathToFile];
+    
+    // Get out the "clue" objects
+    NSArray *c = [level objectForKey:@"clues"];
+    
+    // Iterate and draw
+    for (int i = 0; i < [c count]; i++)
+    {
+        NSArray *val = [c objectAtIndex:i];
+        
+        int value = [(NSNumber *)[val objectAtIndex:2] intValue],
+        x = [(NSNumber *)[val objectAtIndex:0] intValue],
+        y = [(NSNumber *)[val objectAtIndex:1] intValue];
+        
+        Clue *c = [Clue clueWithNumber:value];
+        c.position = ccp(x * previewBlockSize + gridOffset.x + previewBlockSize / 2, y * previewBlockSize + gridOffset.y + previewBlockSize / 2);
+        c.scale = 0.8125;
+        [self addChild:c z:2];
+        
+        [clues addObject:c];
+    }
+}
+
+/**
+ * Returns an array of all files in the "Documents" directory
+ */
+- (NSArray *)getDocumentsDirectoryContents
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [[paths objectAtIndex:0] stringByAppendingPathComponent:[GameSingleton sharedGameSingleton].difficulty];
+    
+    NSError *error;
+    NSArray *directoryContent = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:&error];
+    
+    NSLog(@"%@", documentsDirectory);
+    return directoryContent;
+}
+
 /*! 
  @method shareLevel:(NSString *)filename
  @abstract Sends a level to a web service
@@ -186,6 +254,7 @@
  */
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    // TODO: Get the response here!
     CCLOG(@"Connection finished! %@", connection);
     
     if ([TWTweetComposeViewController class])
@@ -195,7 +264,8 @@
             CCLOG(@"Reponse from server: %@", responseData);
             
             TWTweetComposeViewController *tweetSheet = [[TWTweetComposeViewController alloc] init];
-            [tweetSheet setInitialText: @"Try solving the puzzle I just created in #shikakumadness! "];
+            [tweetSheet setInitialText: @"Try solving the puzzle I just created in #shikakumadness!"];
+            [tweetSheet addURL:[NSURL URLWithString:@"http://ganbarugames.com"]];
             
             // Create an additional UIViewController to attach the TWTweetComposeViewController to
 			myViewController = [[UIViewController alloc] init];
@@ -204,6 +274,9 @@
 			[[[CCDirector sharedDirector] openGLView] addSubview:myViewController.view];
 			
             [myViewController presentModalViewController:tweetSheet animated:YES];
+            
+            [tweetSheet release];
+            [myViewController release];
         }
         else
         {
@@ -211,61 +284,69 @@
             [alertView show];
         }
     }
-}
-
-/**
- * Depending on the selected level, a "minimap" or preview or something will be updated here
- */
-- (void)updateLevelPreview
-{
-    // Clear out previous clues
-    for (int i = 0; i < [clues count]; i++)
+    
+    if ([MFMailComposeViewController canSendMail])
     {
-        [self removeChild:[clues objectAtIndex:i] cleanup:YES];
+        MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
+        
+        mailer.mailComposeDelegate = self;
+        
+        [mailer setSubject:@"Try solving this shikaku puzzle!"];
+        
+//        NSArray *toRecipients = [NSArray arrayWithObjects:@"fisrtMail@example.com", @"secondMail@example.com", nil];
+//        [mailer setToRecipients:toRecipients];
+        
+        NSString *emailBody = @"I created a puzzle in Shikaku Madness for you to solve. Tap this link to play it!";
+        [mailer setMessageBody:emailBody isHTML:NO];
+        
+        myViewController = [[UIViewController alloc] init];
+        
+        // Add the temporary UIViewController to the main OpenGL view
+        [[[CCDirector sharedDirector] openGLView] addSubview:myViewController.view];
+        
+        if ([GameSingleton sharedGameSingleton].isPad)
+        {
+            mailer.modalPresentationStyle = UIModalPresentationPageSheet;
+        }
+        
+        [myViewController presentModalViewController:mailer animated:YES];
+        
+        [mailer release];
+        [myViewController release];
     }
-    [clues removeAllObjects];
-    
-    // Load level dictionary
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    // TODO: Store the documents directory string so you don't have to keep getting it here
-    NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[GameSingleton sharedGameSingleton].levelToLoad];
-    
-    NSDictionary *level = [NSDictionary dictionaryWithContentsOfFile:pathToFile];
-    
-    // Get out the "clue" objects
-    NSArray *c = [level objectForKey:@"clues"];
-    
-    // Iterate and draw
-    for (int i = 0; i < [c count]; i++)
+    else 
     {
-        NSArray *val = [c objectAtIndex:i];
-        
-        int value = [(NSNumber *)[val objectAtIndex:2] intValue],
-            x = [(NSNumber *)[val objectAtIndex:0] intValue],
-            y = [(NSNumber *)[val objectAtIndex:1] intValue];
-        
-        Clue *c = [Clue clueWithNumber:value];
-        c.position = ccp(x * previewBlockSize + gridOffset.x + previewBlockSize / 2, y * previewBlockSize + gridOffset.y + previewBlockSize / 2);
-        c.scale = 0.8125;
-        [self addChild:c z:2];
-        
-        [clues addObject:c];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can't Send Email!" message:@"You can't send an email right now, make sure your device has an internet connection!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
     }
 }
 
-/**
- * Returns an array of all files in the "Documents" directory
- */
-- (NSArray *)getDocumentsDirectoryContents
+#pragma mark -
+#pragma mark MFMailComposeViewController delegate methods
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSError *error;
-    NSArray *directoryContent = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:&error];
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail cancelled: you cancelled the operation and no email message was queued.");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved: you saved the email message in the drafts folder.");
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail send: the email message is queued in the outbox. It is ready to send.");
+            break;
+        case MFMailComposeResultFailed:
+            NSLog(@"Mail failed: the email message was not saved or queued, possibly due to an error.");
+            break;
+        default:
+            NSLog(@"Mail not sent.");
+            break;
+    }
     
-    NSLog(@"%@", documentsDirectory);
-    return directoryContent;
+    // Remove the mail view
+    [myViewController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)dealloc

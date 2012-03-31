@@ -51,7 +51,7 @@
         area = 1;
         radius = 10;
         borderWidth = 2;
-        cornerSegments = 5;
+        cornerSegments = 8;
         // Orange
 //        borderColor = ccc4(227,102,18,200);    //opacity_/255
 //        fillColor = ccc4(227,102,18,50);

@@ -97,6 +97,11 @@
         }];
         
         // Difficulty toggle button
+//        CCMenuItemImage *beginnerButton = [CCMenuItemImage itemFromNormalImage:@"easy-button.png" selectedImage:@"easy-button.png"];
+        [CCMenuItemFont setFontName:@"insolent.otf"];
+        [CCMenuItemFont setFontSize:24.0];
+        
+        CCMenuItemFont *beginnerButton = [CCMenuItemFont itemFromString:@"BEGINNER"];
         CCMenuItemImage *easyButton = [CCMenuItemImage itemFromNormalImage:@"easy-button.png" selectedImage:@"easy-button.png"];
         CCMenuItemImage *mediumButton = [CCMenuItemImage itemFromNormalImage:@"medium-button.png" selectedImage:@"medium-button.png"];
         CCMenuItemImage *hardButton = [CCMenuItemImage itemFromNormalImage:@"hard-button.png" selectedImage:@"hard-button.png"];
@@ -106,16 +111,19 @@
             switch ([(CCMenuItemToggle *)sender selectedIndex]) 
             {
                 case 0:
-                    levelDifficulty = @"easy";
+                    levelDifficulty = @"beginner";
                     break;
                 case 1:
-                    levelDifficulty = @"medium";
+                    levelDifficulty = @"easy";
                     break;
                 case 2:
+                    levelDifficulty = @"medium";
+                    break;
+                case 3:
                     levelDifficulty = @"hard";
                     break;
             }
-        } items:easyButton, mediumButton, hardButton, nil];
+        } items:beginnerButton, easyButton, mediumButton, hardButton, nil];
 
         // "Tool" toggle button
         CCMenuItemImage *squareButton = [CCMenuItemImage itemFromNormalImage:@"square-button.png" selectedImage:@"square-button.png"];
@@ -159,7 +167,7 @@
         selectedTool = kToolSquare;
         
         // Set default difficulty
-        levelDifficulty = @"easy";
+        levelDifficulty = @"beginner";
         
         // Set up an array to be serialized to a .plist as a level
         level = [NSDictionary dictionary];
@@ -170,9 +178,19 @@
             // Load level dictionary
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             NSString *documentsDirectory = [paths objectAtIndex:0];
-            NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[GameSingleton sharedGameSingleton].levelToLoad];
+            NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@/%@", [GameSingleton sharedGameSingleton].difficulty, [GameSingleton sharedGameSingleton].levelToLoad]];
             
-            level = [NSDictionary dictionaryWithContentsOfFile:pathToFile];
+            // Get JSON data out of file, and parse into dictionary
+            NSData *json = [NSData dataWithContentsOfFile:pathToFile];
+            NSError *error = nil;
+            level = [NSDictionary dictionaryWithJSONData:json error:&error];
+            
+            if (error != nil)
+            {
+                CCLOG(@"Error deserializing JSON data: %@", error);
+            }
+            
+//            level = [NSDictionary dictionaryWithContentsOfFile:pathToFile];
             CCLOG(@"Level data: %@", level);
             
             // Get out the "clue" objects
@@ -590,32 +608,46 @@
     
     // Create the overall dictionary that represents a level
     NSDictionary *l = [NSDictionary dictionaryWithObjectsAndKeys:levelDifficulty, @"difficulty", c, @"clues", s, @"squares", nil];
+    NSError *error = nil;
+    NSData *json = [[CJSONSerializer serializer] serializeObject:l error:&error];
+    if (error != nil)
+    {
+        CCLOG(@"Error serializing level data to JSON: %@", error);
+    }
     
+    // Get path to Documents directory
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-//    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    // Create an appropriate folder here if necessary
+    NSString *directory = [documentsDirectory stringByAppendingPathComponent:levelDifficulty];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:directory] == NO) 
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:NO attributes:nil error:nil];
+    }
     
     // Determine here whether to create a new level or overwrite an existing one
     NSString *filename;
     if ([(NSString *)[GameSingleton sharedGameSingleton].levelToLoad isEqualToString:@""] == NO)
     {
-        filename = [GameSingleton sharedGameSingleton].levelToLoad;
+        filename = [NSString stringWithFormat:@"/%@/%@", levelDifficulty, [GameSingleton sharedGameSingleton].levelToLoad];
         CCLOG(@"Overwriting existing file!");
     }
     else 
     {
-        filename = [NSString stringWithFormat:@"%@.plist", [self createUUID]];
+        filename = [NSString stringWithFormat:@"/%@/%@.json", levelDifficulty, [self createUUID]];
         CCLOG(@"Creating new file!");
     }
     
     NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:filename];
     
     CCLOG(@"Trying to write %@", pathToFile);
-    CCLOG(@"Level data: %@", l);
+    CCLOG(@"Level data: %@", json);
     
 //    if (![fileManager fileExistsAtPath:pathToFile])
     {
-        return [l writeToFile:pathToFile atomically:YES];
+        return [json writeToFile:pathToFile atomically:YES];
+        //return [l writeToFile:pathToFile atomically:YES];
     }
 
     return NO;

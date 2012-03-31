@@ -54,27 +54,39 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeKitFailure:) name:@"StoreKitFailure" object:nil];
         
         // Set up text-based menu items
-        [CCMenuItemFont setFontName:@"insolent.otf"];
-        [CCMenuItemFont setFontSize:24.0];
+//        [CCMenuItemFont setFontName:@"insolent.otf"];
+//        [CCMenuItemFont setFontSize:24.0];
         
         // Add background
         CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
         background.position = ccp(windowSize.width / 2, windowSize.height / 2);
         [self addChild:background];
         
-        // Set up a "back" button
-        CCMenuItemFont *backButton = [CCMenuItemFont itemFromString:@"back" block:^(id sender) {
+        // Set up "back" & "restore" buttons
+        CCMenuItemImage *backButton = [CCMenuItemImage itemFromNormalImage:@"back-button.png" selectedImage:@"back-button.png" block:^(id sender) {
             CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[TitleScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
-        CCMenu *backMenu = [CCMenu menuWithItems:backButton, nil];
-        backMenu.position = ccp(backButton.contentSize.width / 2, windowSize.height - backButton.contentSize.height / 2);
-        [self addChild:backMenu];
         
-        // TODO: Set up a menu based on products returned from the StoreKit singleton
-        // A "beginner" option will always be available
+        CCMenuItemImage *restoreButton = [CCMenuItemImage itemFromNormalImage:@"restore-button.png" selectedImage:@"restore-button.png" block:^(id sender) {
+            // TODO: init restore here!
+        }];
         
-        CCMenuItemFont *beginnerButton = [CCMenuItemFont itemFromString:@"Beginner" block:^(id sender) {
+        CCMenu *topMenu = [CCMenu menuWithItems:backButton, restoreButton, nil];
+        [topMenu alignItemsHorizontallyWithPadding:windowSize.width / 3];
+        topMenu.position = ccp(windowSize.width / 2, windowSize.height - backButton.contentSize.height / 1.5);
+        [self addChild:topMenu];
+        
+        // Add a title graphic
+        CCSprite *title = [CCSprite spriteWithFile:@"difficulty-title.png"];
+        title.position = ccp(windowSize.width / 2, windowSize.height - title.contentSize.height);
+        [self addChild:title];
+        
+        // Set up a menu based on products returned from the StoreKit singleton
+        CCMenuItemImage *beginnerButton = [CCMenuItemImage itemFromNormalImage:@"beginner-button.png" selectedImage:@"beginner-button.png" block:^(id sender) {
+            // Set difficulty in singleton
+            [GameSingleton sharedGameSingleton].difficulty = @"beginner";
+            
             CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
@@ -99,9 +111,12 @@
         // Check for IAP receipts to "unlock" buttons
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        easyButton = [CCMenuItemFont itemFromString:@"Easy (locked)" block:^(id sender) {
+        easyButton = [CCMenuItemImage itemFromNormalImage:@"easy-button-locked.png" selectedImage:@"easy-button-locked.png" block:^(id sender) {
             if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.easy.receipt"])
             {
+                // Set difficulty in singleton
+                [GameSingleton sharedGameSingleton].difficulty = @"easy";
+                
                 CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
                 [[CCDirector sharedDirector] replaceScene:transition];
             }
@@ -111,9 +126,18 @@
             }
         }];
         
-        mediumButton = [CCMenuItemFont itemFromString:@"Medium (locked)" block:^(id sender) {
+        // Try to add text onto button
+        CCLabelTTF *test = [CCLabelTTF labelWithString:@"0/30\ncomplete" dimensions:CGSizeMake(easyButton.contentSize.width / 2, easyButton.contentSize.height / 2) alignment:CCTextAlignmentRight fontName:@"insolent.otf" fontSize:14.0];
+        test.color = ccc3(0, 0, 0);
+        test.position = ccp(easyButton.contentSize.width - test.contentSize.width / 1.5, easyButton.contentSize.height / 2);
+        [easyButton addChild:test];
+        
+        mediumButton = [CCMenuItemImage itemFromNormalImage:@"medium-button-locked.png" selectedImage:@"medium-button-locked.png" block:^(id sender) {
             if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.medium.receipt"])
             {
+                // Set difficulty in singleton
+                [GameSingleton sharedGameSingleton].difficulty = @"medium";
+                
                 CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
                 [[CCDirector sharedDirector] replaceScene:transition];
             }
@@ -123,9 +147,12 @@
             }
         }];
         
-        hardButton = [CCMenuItemFont itemFromString:@"Hard (locked)" block:^(id sender) {
+        hardButton = [CCMenuItemImage itemFromNormalImage:@"hard-button-locked.png" selectedImage:@"hard-button-locked.png" block:^(id sender) {
             if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.hard.receipt"])
             {
+                // Set difficulty in singleton
+                [GameSingleton sharedGameSingleton].difficulty = @"hard";
+                
                 CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
                 [[CCDirector sharedDirector] replaceScene:transition];
             }
@@ -138,23 +165,26 @@
         if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.easy.receipt"])
         {
             CCLOG(@"User has easy receipt!");
-            easyButton.label.string = @"Easy";
+            CCSprite *s = [CCSprite spriteWithFile:@"easy-button.png"];
+            [easyButton setNormalImage:s];
         }
         
         if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.medium.receipt"])
         {
             CCLOG(@"User has medium receipt!");
-            mediumButton.label.string = @"Medium";
+            CCSprite *s = [CCSprite spriteWithFile:@"medium-button.png"];
+            [mediumButton setNormalImage:s];
         }
         
         if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.hard.receipt"])
         {
             CCLOG(@"User has hard receipt!");
-            hardButton.label.string = @"Hard";
+            CCSprite *s = [CCSprite spriteWithFile:@"hard-button.png"];
+            [hardButton setNormalImage:s];
         }
         
         CCMenu *difficultyMenu = [CCMenu menuWithItems:beginnerButton, easyButton, mediumButton, hardButton, nil];
-        difficultyMenu.position = ccp(windowSize.width / 2, windowSize.height / 2);
+        difficultyMenu.position = ccp(windowSize.width / 2, windowSize.height / 3);
         [difficultyMenu alignItemsVerticallyWithPadding:20.0];
         [self addChild:difficultyMenu];
 	}
@@ -179,17 +209,20 @@
         if ([productId isEqualToString:@"com.ganbarugames.shikakumadness.easy"])
         {
             // Change graphic on the "easy" button
-            easyButton.label.string = @"Easy";
+            CCSprite *s = [CCSprite spriteWithFile:@"easy-button.png"];
+            [easyButton setNormalImage:s];
         }
         else if ([productId isEqualToString:@"com.ganbarugames.shikakumadness.medium"])
         {
             // Change graphic on the "medium" button
-            mediumButton.label.string = @"Medium";
+            CCSprite *s = [CCSprite spriteWithFile:@"medium-button.png"];
+            [mediumButton setNormalImage:s];
         }
         else if ([productId isEqualToString:@"com.ganbarugames.shikakumadness.hard"])
         {
             // Change graphic on the "hard" button
-            hardButton.label.string = @"Hard";
+            CCSprite *s = [CCSprite spriteWithFile:@"hard-button.png"];
+            [hardButton setNormalImage:s];
         }
         
     }

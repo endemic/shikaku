@@ -19,7 +19,7 @@
     SKProduct *easyProduct, *mediumProduct, *hardProduct;
     
     // Store buttons in order to change their contents based on purchase
-    CCMenuItemFont *easyButton, *mediumButton, *hardButton;
+    CCMenuItemImage *easyButton, *mediumButton, *hardButton;
     
     // Helper vars to deal w/ iPad size diff
 	NSString *iPadSuffix;

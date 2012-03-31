@@ -22,6 +22,7 @@
 	bool isRetina;
 	
     NSString *levelToLoad;
+    NSString *difficulty;
 	
 	// Game Center properties
 	BOOL hasGameCenter;
@@ -41,6 +42,7 @@
 @property (readwrite) bool isRetina;
 
 @property (readwrite, retain) NSString *levelToLoad;
+@property (readwrite, retain) NSString *difficulty;
 
 @property (readwrite) BOOL hasGameCenter;
 @property (nonatomic, retain) NSMutableArray *unsentScores;

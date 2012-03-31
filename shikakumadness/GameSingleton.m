@@ -10,7 +10,7 @@
 
 @implementation GameSingleton
 
-@synthesize levelToLoad, isPad, isRetina, hasGameCenter, unsentScores, unsentAchievements, achievementsDictionary;
+@synthesize levelToLoad, difficulty, isPad, isRetina, hasGameCenter, unsentScores, unsentAchievements, achievementsDictionary;
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(GameSingleton);
 
@@ -377,6 +377,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(GameSingleton);
 	[coder encodeObject:self.unsentScores forKey:@"unsentScores"];
 	[coder encodeObject:self.unsentAchievements forKey:@"unsentAchievements"];
 	[coder encodeObject:self.levelToLoad forKey:@"levelToLoad"];
+    [coder encodeObject:self.difficulty forKey:@"difficulty"];
 }
 
 - (id)initWithCoder:(NSCoder *)coder
@@ -386,6 +387,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(GameSingleton);
 		self.unsentScores = [coder decodeObjectForKey:@"unsentScores"];
 		self.unsentAchievements = [coder decodeObjectForKey:@"unsentAchievements"];
 		self.levelToLoad = [coder decodeObjectForKey:@"level"];
+        self.difficulty = [coder decodeObjectForKey:@"difficulty"];
 	}
 	return self;
 }

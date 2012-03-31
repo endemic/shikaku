@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <Twitter/Twitter.h>
+#import <MessageUI/MessageUI.h>
 #import "cocos2d.h"
 #import "GameScene.h"
 
-@interface LevelSelectScene : CCLayer <NSURLConnectionDelegate>
+@interface LevelSelectScene : CCLayer <NSURLConnectionDelegate, MFMailComposeViewControllerDelegate>
 {
     // Array to store level filenames
     NSMutableArray *levels;

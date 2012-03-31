@@ -56,7 +56,7 @@
         title.position = ccp(windowSize.width / 2, windowSize.height - title.contentSize.height);
         [self addChild:title];
         
-        // Add button/menu to take player to game scene
+        // Create some buttons
         CCMenuItemImage *playButton = [CCMenuItemImage itemFromNormalImage:@"play-button.png" selectedImage:@"play-button.png" block:^(id sender) {
             CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[DifficultySelectScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
@@ -69,10 +69,26 @@
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
         
-        CCMenu *menu = [CCMenu menuWithItems:playButton, editorButton, nil];
-        [menu alignItemsVerticallyWithPadding:20.0];
+        CCMenuItemImage *helpButton = [CCMenuItemImage itemFromNormalImage:@"help-button.png" selectedImage:@"help-button.png" block:^(id sender) {
+            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[DifficultySelectScene scene]];
+            [[CCDirector sharedDirector] replaceScene:transition];
+        }];
+        
+        CCMenuItemImage *aboutButton = [CCMenuItemImage itemFromNormalImage:@"about-button.png" selectedImage:@"about-button.png" block:^(id sender) {
+            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[DifficultySelectScene scene]];
+            [[CCDirector sharedDirector] replaceScene:transition];
+        }];
+        
+        CCMenu *menu = [CCMenu menuWithItems:playButton, editorButton, helpButton, aboutButton, nil];
+//        [menu alignItemsVerticallyWithPadding:20.0];
+        [menu alignItemsInColumns:[NSNumber numberWithInt:2], [NSNumber numberWithInt:2], nil];
         menu.position = ccp(windowSize.width / 2, windowSize.height / 3);
         [self addChild:menu];
+        
+        // Add copyright text
+        CCLabelTTF *copyright = [CCLabelTTF labelWithString:@"©2012 GANBARU GAMES" fontName:@"insolent.otf" fontSize:18.0];
+        copyright.position = ccp(windowSize.width / 2, copyright.contentSize.height);
+        [self addChild:copyright];
 	}
 	return self;
 }

@@ -1,24 +1,19 @@
 TODO
 ====
 
-* Figure out how to grab levels from device
-* Update level saving code to save in "difficulty" directories
-* Add "Beginner" difficulty flag to level editor
-* Test out what TouchJSON encoding looks like
 * Make some levels
 * Gots to sketch out & design all these damned screens
+    * Make a "my levels" view
+* Do a shit-ton of UI programming
 * Make a Rails app that can accept POST'd puzzle data
-
+* Look up rules for Cocoa memory management again... do I have to "release" objects that I don't retain?
+* Program a tutorial
+* Add a "Restore" button to the diff selection screen
 * Default-shikaku.png & Default-shikaku@2x.png is the convention for custom launch screens when using URLs to load content
-
-* Learn how to save files to an app bundle & transfer out using iTunes
-    * Alternately, POST puzzle .json to a web service to save
 
 * Notes on icon
     1. Border needs to be thicker
-    2. Border on square needs to be thicker
     3. More color... the white background is too flat
-    4. Make grid lines a purple/red color
     5. Make clue backgrounds lighter so they don't look black
     
     

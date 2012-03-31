@@ -12,6 +12,11 @@
 #import "TitleScene.h"
 #import "GameSingleton.h"
 
+// For JSON serializing/deserializing
+#import "CJSONSerializer.h"
+#import "CJSONDeserializer.h"
+#import "NSDictionary_JSONExtensions.h"
+
 #define kToolSquare 1
 #define kToolClue 2
 
