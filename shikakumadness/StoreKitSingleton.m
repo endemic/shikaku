@@ -181,7 +181,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(StoreKitSingleton);
 
 /**
  * Removes transaction from queue and posts notification
- * TODO: Need the purchase scene to subscribe to the NSNotificationCenter
  */
 - (void)finishTransaction:(SKPaymentTransaction *)transaction wasSuccessful:(BOOL)success
 {

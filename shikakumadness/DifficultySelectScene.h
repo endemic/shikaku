@@ -21,6 +21,12 @@
     // Store buttons in order to change their contents based on purchase
     CCMenuItemImage *easyButton, *mediumButton, *hardButton;
     
+    // Either show the cost for the item, or else show how many levels completed
+    CCLabelTTF *beginnerLabel, *easyLabel, *mediumLabel, *hardLabel;
+    
+    // Store price strings
+    NSString *easyPrice, *mediumPrice, *hardPrice;
+    
     // Helper vars to deal w/ iPad size diff
 	NSString *iPadSuffix;
 	int fontMultiplier;

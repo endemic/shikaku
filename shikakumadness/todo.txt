@@ -2,13 +2,12 @@ TODO
 ====
 
 * Make some levels
-* Gots to sketch out & design all these damned screens
-    * Make a "my levels" view
-* Do a shit-ton of UI programming
+* Fix the "clue" placement in the editor
+* Make it so editing a level's difficulty will delete the old level
 * Make a Rails app that can accept POST'd puzzle data
 * Look up rules for Cocoa memory management again... do I have to "release" objects that I don't retain?
 * Program a tutorial
-* Add a "Restore" button to the diff selection screen
+* Add a "Restore" button to the diff selection screen - how to do this?
 * Default-shikaku.png & Default-shikaku@2x.png is the convention for custom launch screens when using URLs to load content
 
 * Notes on icon

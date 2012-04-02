@@ -39,11 +39,13 @@
         {
             iPadSuffix = @"-ipad";
             fontMultiplier = 2;
+            iPadOffset = ccp(64, 32);
         }
         else 
         {
             iPadSuffix = @"";
             fontMultiplier = 1;
+            iPadOffset = ccp(0, 0);
         }
         
         // Add background
@@ -58,11 +60,14 @@
         
         // Create some buttons
         CCMenuItemImage *playButton = [CCMenuItemImage itemFromNormalImage:@"play-button.png" selectedImage:@"play-button.png" block:^(id sender) {
+            [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+            
             CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[DifficultySelectScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
         
         CCMenuItemImage *editorButton = [CCMenuItemImage itemFromNormalImage:@"editor-button.png" selectedImage:@"editor-button.png" block:^(id sender) {
+            [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             [GameSingleton sharedGameSingleton].levelToLoad = @"";  // Reset this value so user can always create new puzzles
             
             CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[EditorScene scene]];
@@ -70,20 +75,28 @@
         }];
         
         CCMenuItemImage *helpButton = [CCMenuItemImage itemFromNormalImage:@"help-button.png" selectedImage:@"help-button.png" block:^(id sender) {
+            [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+            
             CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[DifficultySelectScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
         
         CCMenuItemImage *aboutButton = [CCMenuItemImage itemFromNormalImage:@"about-button.png" selectedImage:@"about-button.png" block:^(id sender) {
+            [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+            
             CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[DifficultySelectScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
         
-        CCMenu *menu = [CCMenu menuWithItems:playButton, editorButton, helpButton, aboutButton, nil];
-//        [menu alignItemsVerticallyWithPadding:20.0];
-        [menu alignItemsInColumns:[NSNumber numberWithInt:2], [NSNumber numberWithInt:2], nil];
-        menu.position = ccp(windowSize.width / 2, windowSize.height / 3);
-        [self addChild:menu];
+        CCMenu *leftMenu = [CCMenu menuWithItems:playButton, helpButton, nil];
+        [leftMenu alignItemsVerticallyWithPadding:10.0];
+        leftMenu.position = ccp(85 * fontMultiplier + iPadOffset.x, windowSize.height / 3);
+        [self addChild:leftMenu];
+        
+        CCMenu *rightMenu = [CCMenu menuWithItems:editorButton, aboutButton, nil];
+        [rightMenu alignItemsVerticallyWithPadding:10.0];
+        rightMenu.position = ccp(235 * fontMultiplier + iPadOffset.x, windowSize.height / 3);
+        [self addChild:rightMenu];
         
         // Add copyright text
         CCLabelTTF *copyright = [CCLabelTTF labelWithString:@"©2012 GANBARU GAMES" fontName:@"insolent.otf" fontSize:18.0];

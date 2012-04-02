@@ -21,6 +21,7 @@
 	int fontMultiplier;
     
     CGSize windowSize;
+    CGPoint iPadOffset;
 }
 
 +(CCScene *) scene;
