@@ -179,6 +179,7 @@
 		7D0648CB151CB4D10081B074 /* mark.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D06489D151CB4D10081B074 /* mark.wav */; };
 		7D0648CC151CB4D10081B074 /* miss.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D06489E151CB4D10081B074 /* miss.wav */; };
 		7D17279C1524680F00F109FA /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D17279A152467F900F109FA /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		7D2E324D1529B8B30060869E /* AboutScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2E324C1529B8B30060869E /* AboutScene.m */; };
 		7D570A731523197400691612 /* reset-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D570A711523197400691612 /* reset-button-hd.png */; };
 		7D570A741523197400691612 /* reset-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D570A721523197400691612 /* reset-button.png */; };
 		7D5C137E151DD6650094AAB4 /* LevelSelectScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D5C137D151DD6650094AAB4 /* LevelSelectScene.m */; };
@@ -515,6 +516,8 @@
 		7D06489D151CB4D10081B074 /* mark.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = mark.wav; sourceTree = "<group>"; };
 		7D06489E151CB4D10081B074 /* miss.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = miss.wav; sourceTree = "<group>"; };
 		7D17279A152467F900F109FA /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
+		7D2E324B1529B8B30060869E /* AboutScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutScene.h; sourceTree = "<group>"; };
+		7D2E324C1529B8B30060869E /* AboutScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutScene.m; sourceTree = "<group>"; };
 		7D570A711523197400691612 /* reset-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reset-button-hd.png"; sourceTree = "<group>"; };
 		7D570A721523197400691612 /* reset-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reset-button.png"; sourceTree = "<group>"; };
 		7D5C137C151DD6650094AAB4 /* LevelSelectScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelSelectScene.h; sourceTree = "<group>"; };
@@ -619,6 +622,8 @@
 				7D0647F2151CB3610081B074 /* EditorScene.m */,
 				7D0647F3151CB3610081B074 /* GameScene.h */,
 				7D0647F4151CB3620081B074 /* GameScene.m */,
+				7D2E324B1529B8B30060869E /* AboutScene.h */,
+				7D2E324C1529B8B30060869E /* AboutScene.m */,
 				7D064800151CB3620081B074 /* TitleScene.h */,
 				7D064801151CB3620081B074 /* TitleScene.m */,
 				7DF0D8A615238B3600279D84 /* DifficultySelectScene.h */,
@@ -1379,6 +1384,7 @@
 				7D06480B151CB3630081B074 /* TitleScene.m in Sources */,
 				7D5C137E151DD6650094AAB4 /* LevelSelectScene.m in Sources */,
 				7DF0D8A815238B3600279D84 /* DifficultySelectScene.m in Sources */,
+				7D2E324D1529B8B30060869E /* AboutScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

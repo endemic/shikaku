@@ -60,6 +60,18 @@
         previewBackground.position = ccp(windowSize.width / 2, windowSize.height / 1.5);
         [self addChild:previewBackground];
         
+        // Set up "back" button
+        CCMenuItemImage *backButton = [CCMenuItemImage itemFromNormalImage:@"back-button.png" selectedImage:@"back-button.png" block:^(id sender) {
+            [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+            
+            CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[TitleScene scene]];
+            [[CCDirector sharedDirector] replaceScene:transition];
+        }];
+        
+        CCMenu *topMenu = [CCMenu menuWithItems:backButton, nil];
+        topMenu.position = ccp((55 * fontMultiplier) + iPadOffset.x, windowSize.height - (20 * fontMultiplier) - iPadOffset.y);
+        [self addChild:topMenu];
+        
         // Determine the (0, 0) offset for the grid
         gridOffset = ccp(previewBackground.position.x - previewBackground.contentSize.width / 2, previewBackground.position.y - previewBackground.contentSize.height / 2);
         
@@ -107,8 +119,9 @@
         
         // Set up the solve/edit buttons
         CCMenuItemImage *solveButton = [CCMenuItemImage itemFromNormalImage:@"solve-button.png" selectedImage:@"solve-button.png" block:^(id sender) {
-            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[GameScene scene]];
-            [[CCDirector sharedDirector] replaceScene:transition];
+//            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[GameScene scene]];
+//            [[CCDirector sharedDirector] replaceScene:transition];
+            [self shareLevel:[GameSingleton sharedGameSingleton].levelToLoad];
         }];
         
         CCMenuItemImage *editButton = [CCMenuItemImage itemFromNormalImage:@"edit-button.png" selectedImage:@"edit-button.png" block:^(id sender) {
@@ -120,17 +133,6 @@
         actionsMenu.position = ccp(windowSize.width / 2, navMenu.position.y + solveButton.contentSize.height * 2);
         [actionsMenu alignItemsVertically];
         [self addChild:actionsMenu];
-        
-        // Set up a "back" button
-        [CCMenuItemFont setFontName:@"insolent.otf"];
-        [CCMenuItemFont setFontSize:24.0];
-        CCMenuItemFont *backButton = [CCMenuItemFont itemFromString:@"back" block:^(id sender) {
-            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[TitleScene scene]];
-            [[CCDirector sharedDirector] replaceScene:transition];
-        }];
-        CCMenu *backMenu = [CCMenu menuWithItems:backButton, nil];
-        backMenu.position = ccp(backButton.contentSize.width / 2, windowSize.height - backButton.contentSize.height / 2);
-        [self addChild:backMenu];
 	}
 	return self;
 }
@@ -210,7 +212,7 @@
  */
 - (void)shareLevel:(NSString *)filename
 {
-    NSURL *url = [NSURL URLWithString:@"http://ganbarugames.com/shikaku-madness/post.php"];
+    NSURL *url = [NSURL URLWithString:@"http://localhost:3000/puzzles.json"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[NSData dataWithContentsOfFile:filename]];
@@ -257,26 +259,23 @@
     // TODO: Get the response here!
     CCLOG(@"Connection finished! %@", connection);
     
-    if ([TWTweetComposeViewController class])
+    if ([TWTweetComposeViewController class] && false)
     {
         if ([TWTweetComposeViewController canSendTweet])
         {
             CCLOG(@"Reponse from server: %@", responseData);
             
-            TWTweetComposeViewController *tweetSheet = [[TWTweetComposeViewController alloc] init];
+            TWTweetComposeViewController *tweetSheet = [[[TWTweetComposeViewController alloc] init] autorelease];
             [tweetSheet setInitialText: @"Try solving the puzzle I just created in #shikakumadness!"];
             [tweetSheet addURL:[NSURL URLWithString:@"http://ganbarugames.com"]];
             
             // Create an additional UIViewController to attach the TWTweetComposeViewController to
-			myViewController = [[UIViewController alloc] init];
+			myViewController = [[[UIViewController alloc] init] autorelease];
 			
 			// Add the temporary UIViewController to the main OpenGL view
 			[[[CCDirector sharedDirector] openGLView] addSubview:myViewController.view];
 			
             [myViewController presentModalViewController:tweetSheet animated:YES];
-            
-            [tweetSheet release];
-            [myViewController release];
         }
         else
         {
@@ -299,7 +298,7 @@
         NSString *emailBody = @"I created a puzzle in Shikaku Madness for you to solve. Tap this link to play it!";
         [mailer setMessageBody:emailBody isHTML:NO];
         
-        myViewController = [[UIViewController alloc] init];
+        myViewController = [[[UIViewController alloc] init] autorelease];
         
         // Add the temporary UIViewController to the main OpenGL view
         [[[CCDirector sharedDirector] openGLView] addSubview:myViewController.view];
@@ -310,9 +309,6 @@
         }
         
         [myViewController presentModalViewController:mailer animated:YES];
-        
-        [mailer release];
-        [myViewController release];
     }
     else 
     {

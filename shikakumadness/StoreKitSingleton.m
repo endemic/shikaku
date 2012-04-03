@@ -42,7 +42,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(StoreKitSingleton);
 
 /**
  * Add a product to the payment queue
- * TODO: Probably change this to accept a product ID string instead of SKProduct object
  */
 - (void)addToPaymentQueue:(SKProduct *)product
 {
@@ -54,6 +53,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(StoreKitSingleton);
         // Starts to process the payment
         [[SKPaymentQueue defaultQueue] addPayment:item];
     }
+}
+
+/**
+ * Restore previously purchased items
+ */
+- (void)restore
+{
+    [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
 }
 
 #pragma mark -

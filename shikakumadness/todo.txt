@@ -2,29 +2,19 @@ TODO
 ====
 
 * Make some levels
-* Fix the "clue" placement in the editor
-* Make it so editing a level's difficulty will delete the old level
 * Make a Rails app that can accept POST'd puzzle data
-* Look up rules for Cocoa memory management again... do I have to "release" objects that I don't retain?
 * Program a tutorial
-* Add a "Restore" button to the diff selection screen - how to do this?
+* Try implementing CCScrollLayer for level picker
 * Default-shikaku.png & Default-shikaku@2x.png is the convention for custom launch screens when using URLs to load content
 
 * Notes on icon
     1. Border needs to be thicker
     3. More color... the white background is too flat
     5. Make clue backgrounds lighter so they don't look black
-    
-    
-FOR FIRST RELEASE
-=================
-20 "Beginner" difficulty levels
-IAP for 30 "easy" "medium" & "hard" levels - $0.99 ea
 
 FUTURE RELEASES
 ===============
 * More IAP packs
-* Level editor/sharing
 
 * Create auto-generating puzzle algorithm
     * Investigate "packing" algorithms

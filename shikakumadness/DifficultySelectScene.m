@@ -71,8 +71,10 @@
         }];
         
         CCMenuItemImage *restoreButton = [CCMenuItemImage itemFromNormalImage:@"restore-button.png" selectedImage:@"restore-button.png" block:^(id sender) {
-            // TODO: init restore here!
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+            
+            // Init restoreCompletedTransactions
+            [[StoreKitSingleton sharedStoreKitSingleton] restore];
         }];
         
         CCMenu *topMenu = [CCMenu menuWithItems:backButton, restoreButton, nil];

@@ -1,6 +1,6 @@
 //
 //  GameScene.h
-//  shukakumadness
+//  Shikaku Madness
 //
 //  Created by Nathan Demick on 3/18/12.
 //  Copyright Ganbaru Games 2012. All rights reserved.
@@ -38,8 +38,27 @@
     // Stores amount of time taken
     int timer;
     
+	// A sprite used as a background for a popup text window
+	CCSprite *textWindowBackground;
+	
+	// Text that appears on popup text window
+	CCLabelTTF *textWindowLabel;
+	
+	// Simple bool to check whether the tutorial is happening
+	BOOL isTutorial;
+	
+	// Tracks the progress of the in-game tutorial
+	int tutorialStep;
+	
+	// Allows player to progress through the tutorial instructions
+	CCMenu *tutorialMenu;
+	CCMenuItemImage *tutorialButton;
+	
+	// Highlights correct answers to progress thru tutorial
+	CCSprite *tutorialHighlight;
+    
     // Store coord crap
-    CGSize window;
+    CGSize windowSize;
     CGPoint offset;
     
     // Info about platform
@@ -52,5 +71,11 @@
 + (CCScene *)scene;
 - (BOOL)checkSolution;
 - (void)updateTimer:(ccTime)dt;
+
+- (void)removeNodeFromParent:(CCNode *)node;
+
+- (void)showTutorial;
+- (void)showTextWindowAt:(CGPoint)position withText:(NSString *)text;
+- (void)dismissTextWindow;
 
 @end

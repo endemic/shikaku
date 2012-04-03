@@ -400,14 +400,26 @@
         if (touchCol != previousCol || touchRow != previousRow)
         {
             // Find the clue in the current square and move it to the touch location
+            CGRect touchBounds = CGRectMake(touchPoint.x, touchPoint.y, 1, 1);		// 1x1 square
+            CGRect rectBounds;
+            
+            // TODO: Find touched square
             for (int i = 0; i < [squares count]; i++)
             {
                 RoundRectNode *r = [squares objectAtIndex:i];
                 
                 int width = r.size.width, height = r.size.height;
-                CGRect rectBounds = CGRectMake(r.position.x, r.position.y - height, width, height);
-                
-                // Find the clue that's in this square and move it to the correct position
+                CGRect tmpBounds = CGRectMake(r.position.x, r.position.y - height, width, height);
+                if (CGRectIntersectsRect(tmpBounds, touchBounds))
+                {
+                    rectBounds = tmpBounds;
+                }
+            }
+            
+            // If the player actually touched a square...
+            if (CGRectIsEmpty(rectBounds) == NO)
+            {
+                // Find the clue that's in touched square and move to position
                 for (int i = 0; i < [clues count]; i++)
                 {
                     Clue *c = [clues objectAtIndex:i];
@@ -416,12 +428,13 @@
                     // If a clue is within this square, move it
                     if (CGRectIntersectsRect(rectBounds, clueBounds))
                     {
-                        CCLOG(@"Trying to move clue");
+                        CCLOG(@"Trying to move clue %i", i);
                         c.position = ccp(touchCol * blockSize + offset.x + blockSize / 2, touchRow * blockSize + offset.y + blockSize / 2);
                     }
                 }
             }
-        }
+            
+        }   // End if col or row has changed
     }
 
     // Store the "previous" value for each row/col

@@ -13,6 +13,7 @@
 #import "EditorScene.h"
 #import "LevelSelectScene.h"
 #import "DifficultySelectScene.h"
+#import "AboutScene.h"
 
 @interface TitleScene : CCLayer 
 {

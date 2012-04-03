@@ -31,11 +31,9 @@
 // on "init" you need to initialize your instance
 -(id) init
 {
-	// always call "super" init
-	// Apple recommends to re-assign "self" with the "super" return value
-	if( (self=[super init])) {
+	if ((self = [super init])) {
         // Get window size
-        window = [CCDirector sharedDirector].winSize;
+        windowSize = [CCDirector sharedDirector].winSize;
         
         // Determine offset of grid
         if ([GameSingleton sharedGameSingleton].isPad)
@@ -71,12 +69,12 @@
         
         // Add background
 		CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
-        background.position = ccp(window.width / 2, window.height / 2);
+        background.position = ccp(windowSize.width / 2, windowSize.height / 2);
         [self addChild:background z:0];
         
         // Add grid
         CCSprite *grid = [CCSprite spriteWithFile:@"grid.png"];
-        grid.position = ccp(window.width / 2, grid.contentSize.height / 2 + iPadOffset.y + (25 * fontMultiplier));
+        grid.position = ccp(windowSize.width / 2, grid.contentSize.height / 2 + iPadOffset.y + (25 * fontMultiplier));
         [self addChild:grid z:0];
         
         // Add "reset" and "quit" buttons
@@ -105,20 +103,20 @@
         }];
         
         CCMenu *menu = [CCMenu menuWithItems:quitButton, resetButton, nil];
-        menu.position = ccp(window.width / 2, window.height - quitButton.contentSize.height / 1.5);
+        menu.position = ccp(windowSize.width / 2, windowSize.height - quitButton.contentSize.height / 1.5);
         [menu alignItemsHorizontallyWithPadding:20.0];
         [self addChild:menu];
         
         // Add "area" label
-        areaLabel = [CCLabelTTF labelWithString:@"Area:\n   -" dimensions:CGSizeMake(window.width / 2, 300 * fontMultiplier) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:24.0 * fontMultiplier];
+        areaLabel = [CCLabelTTF labelWithString:@"Area:\n   -" dimensions:CGSizeMake(windowSize.width / 2, 300 * fontMultiplier) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:24.0 * fontMultiplier];
         areaLabel.color = ccc3(255, 255, 255);
         areaLabel.position = ccp(areaLabel.contentSize.width / 2, menu.position.y - areaLabel.contentSize.height / 1.5);
         [self addChild:areaLabel];
         
         // Add "timer" label
-        timerLabel = [CCLabelTTF labelWithString:@"Time:\n   00:00" dimensions:CGSizeMake(window.width / 2, 300 * fontMultiplier) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:24.0 * fontMultiplier];
+        timerLabel = [CCLabelTTF labelWithString:@"Time:\n   00:00" dimensions:CGSizeMake(windowSize.width / 2, 300 * fontMultiplier) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:24.0 * fontMultiplier];
         timerLabel.color = ccc3(255, 255, 255);
-        timerLabel.position = ccp(window.width - timerLabel.contentSize.width / 2, menu.position.y - timerLabel.contentSize.height / 1.5);
+        timerLabel.position = ccp(windowSize.width - timerLabel.contentSize.width / 2, menu.position.y - timerLabel.contentSize.height / 1.5);
         [self addChild:timerLabel];
         
         // Schedule update method for timer
@@ -142,6 +140,57 @@
         
 //        level = [NSDictionary dictionaryWithContentsOfFile:pathToFile];
         CCLOG(@"Level data: %@", level);
+        
+        // Determine if the level is the tutorial or not
+        if ([[GameSingleton sharedGameSingleton].levelToLoad isEqualToString:@"tutorial.json"])
+        {
+            isTutorial = YES;
+			tutorialStep = 1;
+            
+			// Set up the "next" button that progresses thru tutorial steps
+			tutorialButton = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"tutorial-next-button%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"tutorial-next-button-selected%@.png", iPadSuffix] block:^(id sender) {
+				// Play SFX
+				[[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+				
+				[self dismissTextWindow];
+				
+				// Show tutorial text on steps that don't require action
+				// i.e. the steps here all require the player to mark or fill certain rows/columns
+				// The corresponding step increment code is in the update: method
+				if (tutorialStep != 6 && 
+					tutorialStep != 10 && 
+					tutorialStep != 13 && tutorialStep != 14 && tutorialStep != 15 && tutorialStep != 17 && tutorialStep != 18 && tutorialStep != 19)
+				{
+					// Show current instructions
+					[self showTutorial];
+					
+					// Increment counter
+					tutorialStep++;
+				}
+				else
+				{
+					// Hide the button and set it to inactive
+					tutorialButton.isEnabled = YES;
+					tutorialButton.opacity = 255;
+				}
+			}];
+			
+			tutorialButton.opacity = 0;
+			
+			tutorialMenu = [CCMenu menuWithItems:tutorialButton, nil];
+			tutorialMenu.position = ccp(windowSize.width - tutorialButton.contentSize.width / 1.5 - iPadOffset.x, windowSize.height / 2.5);
+			[self addChild:tutorialMenu z:3];
+			
+			// Show current instructions + "next" button after a slight delay
+			[self runAction:[CCSequence actions:[CCDelayTime actionWithDuration:1.0], [CCCallBlock actionWithBlock:^(void) {
+				[self showTutorial];
+				
+				[tutorialButton runAction:[CCFadeIn actionWithDuration:0.2]];
+				
+				// Increment counter
+				tutorialStep++;
+			}], nil]];
+        }
         
         // Get out the "clue" objects
         NSArray *c = [level objectForKey:@"clues"];
@@ -172,6 +221,44 @@
 {
     timer++;
     timerLabel.string = [NSString stringWithFormat:@"Time:\n   %02i:%02i", timer / 60, timer % 60];
+    
+    // This method also checks to progress through the tutorial
+    if (isTutorial)
+	{
+		switch (tutorialStep) 
+		{
+			case 6:
+            {
+                // Check whether the first column is filled
+                BOOL success = YES;
+                for (int i = 0; i < gridSize * gridSize; i += gridSize)
+                {
+                    // If any one of the blocks isn't filled, the check fails
+//                    if ([[gridStatus objectAtIndex:i] intValue] != kBlockFilled)
+                    {
+                        success = NO;
+                    }
+                }
+                
+                // However, if the check passes, go to the next step
+                if (success)
+                {
+                    // Show instructional text
+                    [self showTutorial];
+                    
+                    // Increment step counter
+                    tutorialStep++;
+                    
+                    // Enable/show button
+                    tutorialButton.isEnabled = YES;
+                    tutorialButton.opacity = 255;
+                }
+            }
+				break;
+			default:
+				break;
+		}
+	}
 }
 
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -408,6 +495,219 @@
     return YES;
 }
 
+/**
+ * Progresses through the steps in the tutorial
+ */
+- (void)showTutorial
+{
+	NSArray *instructions = [NSArray arrayWithObjects:@"Welcome to Nonogram Madness! Nonograms are logic puzzles that reveal an image when solved.", 
+                             /* 2 */			@"Solve each puzzle using the numeric clues on the top and left of the grid.",
+                             /* 3 */			@"Each number represents squares in the grid that are \"filled\" in a row or column.",
+                             /* 4 */			@"Clues with multiple numbers mean a gap of one (or more) between filled squares.",
+                             /* 5 */			@"Look at the first column. The clue is \"5\". Tap \"fill\" then tap all 5 squares.",
+                             // Action
+                             /* 6 */			@"The second column is harder. We don't know where the two single filled squares are.",
+                             /* 7 */			@"Skip difficult rows or columns and come back to them later.",
+                             /* 8 */			@"Look at the third column. The clue is \"1 1 1\". There's a gap between each filled square.",
+                             /* 9 */			@"Make sure the \"fill\" button is selected, then fill in three squares with a gap between each.",
+                             // Action
+                             /* 10 */		@"You can use the \"mark\" action to protect blocks that are supposed to be empty.",
+                             /* 11 */		@"Erase a marked square by tapping it again. Don't worry about making a mistake.",
+                             /* 12 */		@"Tap \"mark\" and mark the empty squares so you don't accidentally try to fill them in later.",
+                             // Action
+                             /* 13 */		@"Check out the fourth column. The clue is \"1 3\". Fill one square, leave a gap, then fill three more.",
+                             // Action
+                             /* 14 */		@"The fifth column is empty. \"Mark\" all those squares to show they don't need to be filled in.",
+                             // Action
+                             /* 15 */		@"Let's move on to clues in the rows. The first row has four sequential filled squares.",
+                             /* 16 */		@"Fill in the only open square in this row to complete it.",
+                             // Action
+                             /* 17 */		@"The second, third, and fourth rows are already complete. Mark all the open squares in them.",
+                             // Action
+                             /* 18 */		@"Use what you've learned so far to finish the puzzle. I'm sure you can figure it out.",
+                             // Action
+							 nil];	
+	
+	// Show the instructional text for the current step
+	if (tutorialStep - 1 < [instructions count])
+	{
+		[self showTextWindowAt:ccp(windowSize.width / 2, (110 * fontMultiplier) + iPadOffset.y) withText:[instructions objectAtIndex:tutorialStep - 1]];
+	}
+	
+    //	CCLOG(@"Step %i", tutorialStep);
+	
+	// Determine if any additional graphics or effects need to be shown
+	switch (tutorialStep) 
+	{
+		case 1:
+			break;
+		case 2:
+			// Blink over clue areas
+			tutorialHighlight = [CCSprite spriteWithFile:[NSString stringWithFormat:@"2%@.png", iPadSuffix]];
+			tutorialHighlight.position = ccp(100 * fontMultiplier + iPadOffset.x, 269 * fontMultiplier + iPadOffset.y);
+			[self addChild:tutorialHighlight z:1];
+			break;
+		case 3:
+			break;
+		case 4:
+			// Hide clue highlihgt
+			tutorialHighlight.opacity = 0;
+			break;
+		case 5:
+			// Highlight first column blocks
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"5%@.png", iPadSuffix]]];
+			tutorialHighlight.opacity = 255;
+			
+			// Hide the button and set it to inactive
+			tutorialButton.opacity = 0;
+			[tutorialButton setIsEnabled:NO];
+			break;
+		case 6:
+			// Highlight second column clues
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"6%@.png", iPadSuffix]]];
+			break;
+		case 7:
+			// Highlight second column clues
+			break;
+		case 8:
+			// Hightlight third column clues
+            
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"8%@.png", iPadSuffix]]];
+			break;
+		case 9:
+			// Highlight correct third column blocks
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"9%@.png", iPadSuffix]]];
+			tutorialHighlight.opacity = 255;
+			
+			// Hide the button and set it to inactive
+			tutorialButton.opacity = 0;
+			[tutorialButton setIsEnabled:NO];
+			break;
+		case 10:
+			break;
+		case 11:
+			break;
+		case 12:
+			// Blink on correct fourth column blocks
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"12%@.png", iPadSuffix]]];
+			
+			// Hide the button and set it to inactive
+			tutorialButton.opacity = 0;
+			[tutorialButton setIsEnabled:NO];
+			break;
+		case 13:
+			// Hide the button and set it to inactive
+			tutorialButton.opacity = 0;
+			[tutorialButton setIsEnabled:NO];
+			
+			// Highlight open blocks in fourth column
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"13%@.png", iPadSuffix]]];
+			break;
+		case 14:
+			// Hide the button and set it to inactive
+			tutorialButton.opacity = 0;
+			[tutorialButton setIsEnabled:NO];
+			
+			// Highlight all open blocks in fifth column
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"14%@.png", iPadSuffix]]];
+			break;
+		case 15:
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"15%@.png", iPadSuffix]]];
+			// Hide the button and set it to inactive
+			tutorialButton.opacity = 0;
+			[tutorialButton setIsEnabled:NO];
+			break;
+		case 16:
+			// Blink over open square in first row
+			tutorialHighlight.opacity = 255;
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"16%@.png", iPadSuffix]]];
+			
+			tutorialButton.opacity = 0;
+			[tutorialButton setIsEnabled:NO];
+			break;
+		case 17:
+			// Blink over 2nd, 3rd, and 4th rows
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"17%@.png", iPadSuffix]]];
+			
+			tutorialButton.opacity = 0;
+			[tutorialButton setIsEnabled:NO];
+			break;
+		case 18:
+			// Turn off highlights
+			tutorialHighlight.opacity = 0;
+			
+			tutorialButton.opacity = 0;
+			[tutorialButton setIsEnabled:NO];
+			break;
+		default:
+			break;
+	}
+}
+
+/**
+ * Shows a blob of text over a "window" background, then animates it on to the screen
+ * (sprite and label vars are class properties)
+ */
+- (void)showTextWindowAt:(CGPoint)position withText:(NSString *)text
+{
+	// Create the background sprite if it doesn't exist
+	if (!textWindowBackground)
+	{
+		textWindowBackground = [CCSprite spriteWithFile:[NSString stringWithFormat:@"text-window-background%@.png", iPadSuffix]];
+		[self addChild:textWindowBackground z:5];		// Should be on top of everything
+	}
+	
+	// Create the label if it doesn't exist
+	if (!textWindowLabel)
+	{
+		int defaultFontSize = 12;
+		textWindowLabel = [CCLabelTTF labelWithString:text dimensions:CGSizeMake(textWindowBackground.contentSize.width - 20 * fontMultiplier, textWindowBackground.contentSize.height - 20 * fontMultiplier) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:defaultFontSize * fontMultiplier];
+		textWindowLabel.position = ccp(textWindowBackground.contentSize.width / 2, textWindowBackground.contentSize.height / 2);
+		textWindowLabel.color = ccc3(0, 0, 0);
+		[textWindowBackground addChild:textWindowLabel];
+	}
+	// Otherwise, just update its' text
+	else
+	{
+		[textWindowLabel setString:text];
+	}
+	
+	// Hide the window initially
+	textWindowBackground.opacity = 0;
+	
+	// Hide the text initially
+	textWindowLabel.opacity = 0;
+	
+	// Position below its' intended final location
+	textWindowBackground.position = ccp(position.x, position.y - (100 * fontMultiplier));
+	
+	id move = [CCMoveTo actionWithDuration:0.4 position:position];
+	id ease = [CCEaseBackOut actionWithAction:move];
+	id fadeIn = [CCFadeIn actionWithDuration:0.3];
+	
+	[textWindowBackground runAction:[CCSpawn actions:ease, fadeIn, nil]];
+	[textWindowLabel runAction:[CCFadeIn actionWithDuration:0.3]];
+}
+
+/**
+ * Animates the text window off screen
+ */
+- (void)dismissTextWindow
+{
+	id fadeOut = [CCFadeOut actionWithDuration:0.2];
+	id move = [CCMoveTo actionWithDuration:0.4 position:ccp(textWindowBackground.position.x, textWindowBackground.position.y - (100 * fontMultiplier))];
+	
+	[textWindowBackground runAction:[CCSpawn actions:move, fadeOut, nil]];
+	[textWindowLabel runAction:[CCFadeOut actionWithDuration:0.2]];
+}
+
+/**
+ * Method that is chained at the end of action sequences to remove a sprite after it has been displayed
+ */
+- (void)removeNodeFromParent:(CCNode *)node
+{
+	[node.parent removeChild:node cleanup:YES];
+}
 
 // on "dealloc" you need to release all your retained objects
 - (void) dealloc

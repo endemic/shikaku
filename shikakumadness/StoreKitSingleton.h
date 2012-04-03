@@ -21,6 +21,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(StoreKitSingleton);
 - (void)loadStore;
 - (void)requestProductData;
 - (void)addToPaymentQueue:(SKProduct *)product;
+- (void)restore;
 
 // Helper methods to finish/record transactions
 - (void)recordTransaction:(SKPaymentTransaction *)transaction;

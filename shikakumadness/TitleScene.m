@@ -68,6 +68,7 @@
         
         CCMenuItemImage *editorButton = [CCMenuItemImage itemFromNormalImage:@"editor-button.png" selectedImage:@"editor-button.png" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+            
             [GameSingleton sharedGameSingleton].levelToLoad = @"";  // Reset this value so user can always create new puzzles
             
             CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[EditorScene scene]];
@@ -77,14 +78,16 @@
         CCMenuItemImage *helpButton = [CCMenuItemImage itemFromNormalImage:@"help-button.png" selectedImage:@"help-button.png" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
-            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[DifficultySelectScene scene]];
+            [GameSingleton sharedGameSingleton].levelToLoad = @"tutorial.json"; // Load the tutorial
+            
+            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[GameScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
         
         CCMenuItemImage *aboutButton = [CCMenuItemImage itemFromNormalImage:@"about-button.png" selectedImage:@"about-button.png" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
-            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[DifficultySelectScene scene]];
+            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[AboutScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
         
