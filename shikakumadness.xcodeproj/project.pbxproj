@@ -191,6 +191,7 @@
 		7DD47D4B152E6FB200580F8F /* delete-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DD47D47152E6FB200580F8F /* delete-button.png */; };
 		7DD47D4C152E6FB200580F8F /* new-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DD47D48152E6FB200580F8F /* new-button-hd.png */; };
 		7DD47D4D152E6FB200580F8F /* new-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DD47D49152E6FB200580F8F /* new-button.png */; };
+		7DD53090152EFBFE007DD3B7 /* CCShadowLabelTTF.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DD5308F152EFBFE007DD3B7 /* CCShadowLabelTTF.m */; };
 		7DF0D8A815238B3600279D84 /* DifficultySelectScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF0D8A715238B3600279D84 /* DifficultySelectScene.m */; };
 		7DF29880151F23AB008A08D8 /* edit-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF29878151F23AB008A08D8 /* edit-button-hd.png */; };
 		7DF29881151F23AB008A08D8 /* edit-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF29879151F23AB008A08D8 /* edit-button.png */; };
@@ -539,6 +540,8 @@
 		7DD47D47152E6FB200580F8F /* delete-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete-button.png"; sourceTree = "<group>"; };
 		7DD47D48152E6FB200580F8F /* new-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new-button-hd.png"; sourceTree = "<group>"; };
 		7DD47D49152E6FB200580F8F /* new-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new-button.png"; sourceTree = "<group>"; };
+		7DD5308E152EFBFE007DD3B7 /* CCShadowLabelTTF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCShadowLabelTTF.h; sourceTree = "<group>"; };
+		7DD5308F152EFBFE007DD3B7 /* CCShadowLabelTTF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCShadowLabelTTF.m; sourceTree = "<group>"; };
 		7DF0D8A615238B3600279D84 /* DifficultySelectScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DifficultySelectScene.h; sourceTree = "<group>"; };
 		7DF0D8A715238B3600279D84 /* DifficultySelectScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DifficultySelectScene.m; sourceTree = "<group>"; };
 		7DF29878151F23AB008A08D8 /* edit-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit-button-hd.png"; sourceTree = "<group>"; };
@@ -649,6 +652,8 @@
 				7D5C137C151DD6650094AAB4 /* LevelSelectScene.h */,
 				7D5C137D151DD6650094AAB4 /* LevelSelectScene.m */,
 				7D064802151CB3620081B074 /* todo.txt */,
+				7DD5308E152EFBFE007DD3B7 /* CCShadowLabelTTF.h */,
+				7DD5308F152EFBFE007DD3B7 /* CCShadowLabelTTF.m */,
 				7D064688151CB29D0081B074 /* Resources */,
 				7D06469C151CB29D0081B074 /* libs */,
 				7D0647D8151CB2A00081B074 /* Supporting Files */,
@@ -1427,6 +1432,7 @@
 				7DF0D8A815238B3600279D84 /* DifficultySelectScene.m in Sources */,
 				7D2E324D1529B8B30060869E /* AboutScene.m in Sources */,
 				7D840729152BE6C700321943 /* CCScrollLayer.m in Sources */,
+				7DD53090152EFBFE007DD3B7 /* CCShadowLabelTTF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

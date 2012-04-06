@@ -92,18 +92,19 @@
         }];
         
         CCMenu *leftMenu = [CCMenu menuWithItems:playButton, helpButton, nil];
-        [leftMenu alignItemsVerticallyWithPadding:10.0];
+        [leftMenu alignItemsVerticallyWithPadding:10.0 * fontMultiplier];
         leftMenu.position = ccp(85 * fontMultiplier + iPadOffset.x, windowSize.height / 3);
         [self addChild:leftMenu];
         
         CCMenu *rightMenu = [CCMenu menuWithItems:editorButton, aboutButton, nil];
-        [rightMenu alignItemsVerticallyWithPadding:10.0];
+        [rightMenu alignItemsVerticallyWithPadding:10.0 * fontMultiplier];
         rightMenu.position = ccp(235 * fontMultiplier + iPadOffset.x, windowSize.height / 3);
         [self addChild:rightMenu];
         
         // Add copyright text
-        CCLabelTTF *copyright = [CCLabelTTF labelWithString:@"©2012 GANBARU GAMES" fontName:@"insolent.otf" fontSize:18.0];
-        copyright.position = ccp(windowSize.width / 2, copyright.contentSize.height);
+//        CCLabelTTF *copyright = [CCLabelTTF labelWithString:@"©2012 GANBARU GAMES" fontName:@"insolent.otf" fontSize:18.0];
+        CCShadowLabelTTF *copyright = [CCShadowLabelTTF labelWithString:@"©2012 GANBARU GAMES" fontName:@"insolent.otf" fontSize:18.0];
+        copyright.position = ccp(windowSize.width / 2, 50);
         [self addChild:copyright];
 	}
 	return self;

@@ -78,7 +78,7 @@
         }];
         
         CCMenu *topMenu = [CCMenu menuWithItems:backButton, restoreButton, nil];
-        [topMenu alignItemsHorizontallyWithPadding:120];
+        [topMenu alignItemsHorizontallyWithPadding:120 * fontMultiplier];
         topMenu.position = ccp(windowSize.width / 2, windowSize.height - (20 * fontMultiplier) - iPadOffset.y);
         [self addChild:topMenu];
         

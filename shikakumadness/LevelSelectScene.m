@@ -50,9 +50,6 @@
             iPadOffset = ccp(0, 0);
         }
         
-        // Set touch enabled?
-//        [self setIsTouchEnabled:YES];
-        
         // Add background
         CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
         background.position = ccp(windowSize.width / 2, windowSize.height / 2);
@@ -62,15 +59,15 @@
         levels = [[NSMutableArray arrayWithArray:[self getDocumentsDirectoryContents]] retain];
         
         // Create array to store clues that are displayed w/ level preview
-        clues = [[NSMutableArray array] retain];
+//        clues = [[NSMutableArray array] retain];
         
         // Add the background for the level preview
-        CCSprite *previewBackground = [CCSprite spriteWithFile:@"preview-background.png"];
-        previewBackground.position = ccp(windowSize.width / 2, windowSize.height / 1.5);
+//        CCSprite *previewBackground = [CCSprite spriteWithFile:@"preview-background.png"];
+//        previewBackground.position = ccp(windowSize.width / 2, windowSize.height / 1.5);
 //        [self addChild:previewBackground];
         
         // Create an array of layers with level preview contents
-        CCScrollLayer *scrollLayer = [CCScrollLayer nodeWithLayers:[self createPreviewLayers] widthOffset:windowSize.width / 4];
+        scrollLayer = [CCScrollLayer nodeWithLayers:[self createPreviewLayers] widthOffset:windowSize.width / 4];
         scrollLayer.delegate = self;
         scrollLayer.minimumTouchLengthToSlide = 5.0;
         scrollLayer.minimumTouchLengthToChangePage = 10.0;
@@ -87,12 +84,24 @@
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
         
-        CCMenu *topMenu = [CCMenu menuWithItems:backButton, nil];
-        topMenu.position = ccp((55 * fontMultiplier) + iPadOffset.x, windowSize.height - (20 * fontMultiplier) - iPadOffset.y);
+        // Set up "new" button
+        CCMenuItemImage *newButton = [CCMenuItemImage itemFromNormalImage:@"new-button.png" selectedImage:@"new-button.png" block:^(id sender) {
+            [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+            
+            // Blanking out this var means the editor creates a new puzzle
+            [GameSingleton sharedGameSingleton].levelToLoad = @"";
+            
+            CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[EditorScene scene]];
+            [[CCDirector sharedDirector] replaceScene:transition];
+        }];
+        
+        CCMenu *topMenu = [CCMenu menuWithItems:backButton, newButton, nil];
+        [topMenu alignItemsHorizontallyWithPadding:120 * fontMultiplier];
+        topMenu.position = ccp(windowSize.width / 2, windowSize.height - (20 * fontMultiplier) - iPadOffset.y);
         [self addChild:topMenu];
         
         // Determine the (0, 0) offset for the grid
-        gridOffset = ccp(previewBackground.position.x - previewBackground.contentSize.width / 2, previewBackground.position.y - previewBackground.contentSize.height / 2);
+//        gridOffset = ccp(previewBackground.position.x - previewBackground.contentSize.width / 2, previewBackground.position.y - previewBackground.contentSize.height / 2);
         
         // Set up previous/next buttons here to cycle thru files
         selectedLevelIndex = 0;
@@ -101,33 +110,33 @@
         // Immediately update the label's contents
 //        [self updateLevelPreview];
         
-        CCMenuItemImage *prevButton = [CCMenuItemImage itemFromNormalImage:@"prev-button.png" selectedImage:@"prev-button.png" block:^(id sender) {
-            if (selectedLevelIndex > 0)
-            {
-                // Decrement the "selected" index, update the singleton to know which level to load, then show the user
-                selectedLevelIndex--;
-                [GameSingleton sharedGameSingleton].levelToLoad = [levels objectAtIndex:selectedLevelIndex];
-//                [self updateLevelPreview];
-                
-                [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
-            }
-        }];
+//        CCMenuItemImage *prevButton = [CCMenuItemImage itemFromNormalImage:@"prev-button.png" selectedImage:@"prev-button.png" block:^(id sender) {
+//            if (selectedLevelIndex > 0)
+//            {
+//                // Decrement the "selected" index, update the singleton to know which level to load, then show the user
+//                selectedLevelIndex--;
+//                [GameSingleton sharedGameSingleton].levelToLoad = [levels objectAtIndex:selectedLevelIndex];
+////                [self updateLevelPreview];
+//                
+//                [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+//            }
+//        }];
+//        
+//        CCMenuItemImage *nextButton = [CCMenuItemImage itemFromNormalImage:@"next-button.png" selectedImage:@"next-button.png" block:^(id sender) {
+//            if (selectedLevelIndex < [levels count] - 1)
+//            {
+//                // Increment the "selected" index, update the singleton to know which level to load, then show the user
+//                selectedLevelIndex++;
+//                [GameSingleton sharedGameSingleton].levelToLoad = [levels objectAtIndex:selectedLevelIndex];
+////                [self updateLevelPreview];
+//                
+//                [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+//            }
+//        }];
         
-        CCMenuItemImage *nextButton = [CCMenuItemImage itemFromNormalImage:@"next-button.png" selectedImage:@"next-button.png" block:^(id sender) {
-            if (selectedLevelIndex < [levels count] - 1)
-            {
-                // Increment the "selected" index, update the singleton to know which level to load, then show the user
-                selectedLevelIndex++;
-                [GameSingleton sharedGameSingleton].levelToLoad = [levels objectAtIndex:selectedLevelIndex];
-//                [self updateLevelPreview];
-                
-                [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
-            }
-        }];
-        
-        CCMenu *navMenu = [CCMenu menuWithItems:prevButton, nextButton, nil];
-        navMenu.position = ccp(windowSize.width / 2, nextButton.contentSize.height / 1.5);
-        [navMenu alignItemsHorizontallyWithPadding:20.0];
+//        CCMenu *navMenu = [CCMenu menuWithItems:prevButton, nextButton, nil];
+//        navMenu.position = ccp(windowSize.width / 2, nextButton.contentSize.height / 1.5);
+//        [navMenu alignItemsHorizontallyWithPadding:20.0];
 //        [self addChild:navMenu];
         
         // Set up the solve/edit buttons
@@ -158,10 +167,39 @@
             [self shareLevel:pathToFile];
         }];
         
-        CCMenu *actionsMenu = [CCMenu menuWithItems:solveButton, editButton, shareButton, nil];
-        actionsMenu.position = ccp(windowSize.width / 2, navMenu.position.y + solveButton.contentSize.height * 2);
-        [actionsMenu alignItemsVertically];
-        [self addChild:actionsMenu];
+        CCMenuItemImage *deleteButton = [CCMenuItemImage itemFromNormalImage:@"delete-button.png" selectedImage:@"delete-button.png" block:^(id sender) {
+            [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+            
+            // TODO: put in confirmation window here
+            
+            // Load level dictionary
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [paths objectAtIndex:0];
+            
+            NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@/%@", [GameSingleton sharedGameSingleton].difficulty, [GameSingleton sharedGameSingleton].levelToLoad]];
+            [[NSFileManager defaultManager] removeItemAtPath:pathToFile error:nil];
+            
+            // Remove the layer
+            [scrollLayer removePageWithNumber:selectedLevelIndex];
+            
+            // Reset the "index" & scroll to previous layer if possible
+            if (selectedLevelIndex > 0)
+            {
+                selectedLevelIndex--;
+            }
+            
+            [scrollLayer selectPage:selectedLevelIndex];
+        }];
+        
+        CCMenu *leftMenu = [CCMenu menuWithItems:editButton, deleteButton, nil];
+        [leftMenu alignItemsVerticallyWithPadding:10.0 * fontMultiplier];
+        leftMenu.position = ccp(85 * fontMultiplier + iPadOffset.x, 100 * fontMultiplier + iPadOffset.y);
+        [self addChild:leftMenu];
+        
+        CCMenu *rightMenu = [CCMenu menuWithItems:solveButton, shareButton, nil];
+        [rightMenu alignItemsVerticallyWithPadding:10.0 * fontMultiplier];
+        rightMenu.position = ccp(235 * fontMultiplier + iPadOffset.x, 100 * fontMultiplier + iPadOffset.y);
+        [self addChild:rightMenu];
 	}
 	return self;
 }
@@ -239,7 +277,7 @@
         CCLayer *layer = [CCLayer node];
         
         CCSprite *previewBackground = [CCSprite spriteWithFile:@"preview-background.png"];
-        previewBackground.position = ccp(windowSize.width / 2, windowSize.height / 1.5);
+        previewBackground.position = ccp(windowSize.width / 2, windowSize.height - 180 * fontMultiplier - iPadOffset.y);
         [layer addChild:previewBackground];
         
         NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[directoryContent objectAtIndex:i]];
@@ -261,7 +299,7 @@
                 y = [(NSNumber *)[val objectAtIndex:1] intValue];
             
             Clue *c = [Clue clueWithNumber:value];
-            c.position = ccp(x * previewBlockSize + gridOffset.x + previewBlockSize / 2, y * previewBlockSize + gridOffset.y + previewBlockSize / 2);
+            c.position = ccp(x * previewBlockSize + previewBlockSize / 2, y * previewBlockSize + previewBlockSize / 2);
             c.scale = 0.625;
             [previewBackground addChild:c];
         }
@@ -464,7 +502,7 @@
 - (void)dealloc
 {
     [levels release];
-    [clues release];
+//    [clues release];
     [responseData release];
     
     [super dealloc];

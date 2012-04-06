@@ -1,8 +1,8 @@
 TODO
 ====
 
+* Handle when a user doesn't have any created levels
 * Make a CCShadowLabelTTF class
-* Add delete/new buttons to level select screen
 * Make some levels
 * Implement data verification on Rails app
 * Finalize design of "solve" scene

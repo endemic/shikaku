@@ -29,8 +29,10 @@
     
     // Grid size for showing the level preview
     int previewBlockSize;
-    CGPoint gridOffset;
-    NSMutableArray *clues;  // Store preview clues
+    CCScrollLayer *scrollLayer;
+    
+//    CGPoint gridOffset;
+//    NSMutableArray *clues;  // Store preview clues
     
     // View controller to attach Twitter/email modals
     UIViewController *myViewController;
