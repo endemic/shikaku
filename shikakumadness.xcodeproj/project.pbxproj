@@ -180,9 +180,17 @@
 		7D0648CC151CB4D10081B074 /* miss.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D06489E151CB4D10081B074 /* miss.wav */; };
 		7D17279C1524680F00F109FA /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D17279A152467F900F109FA /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7D2E324D1529B8B30060869E /* AboutScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2E324C1529B8B30060869E /* AboutScene.m */; };
+		7D31FE9B152DA4CE00244210 /* share-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D31FE99152DA4CE00244210 /* share-button-hd.png */; };
+		7D31FE9C152DA4CE00244210 /* share-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D31FE9A152DA4CE00244210 /* share-button.png */; };
 		7D570A731523197400691612 /* reset-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D570A711523197400691612 /* reset-button-hd.png */; };
 		7D570A741523197400691612 /* reset-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D570A721523197400691612 /* reset-button.png */; };
 		7D5C137E151DD6650094AAB4 /* LevelSelectScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D5C137D151DD6650094AAB4 /* LevelSelectScene.m */; };
+		7D840729152BE6C700321943 /* CCScrollLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D840727152BE6C700321943 /* CCScrollLayer.m */; };
+		7D84072A152BE6C700321943 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 7D840728152BE6C700321943 /* README.md */; };
+		7DD47D4A152E6FB200580F8F /* delete-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DD47D46152E6FB200580F8F /* delete-button-hd.png */; };
+		7DD47D4B152E6FB200580F8F /* delete-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DD47D47152E6FB200580F8F /* delete-button.png */; };
+		7DD47D4C152E6FB200580F8F /* new-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DD47D48152E6FB200580F8F /* new-button-hd.png */; };
+		7DD47D4D152E6FB200580F8F /* new-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DD47D49152E6FB200580F8F /* new-button.png */; };
 		7DF0D8A815238B3600279D84 /* DifficultySelectScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF0D8A715238B3600279D84 /* DifficultySelectScene.m */; };
 		7DF29880151F23AB008A08D8 /* edit-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF29878151F23AB008A08D8 /* edit-button-hd.png */; };
 		7DF29881151F23AB008A08D8 /* edit-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF29879151F23AB008A08D8 /* edit-button.png */; };
@@ -518,10 +526,19 @@
 		7D17279A152467F900F109FA /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		7D2E324B1529B8B30060869E /* AboutScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutScene.h; sourceTree = "<group>"; };
 		7D2E324C1529B8B30060869E /* AboutScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutScene.m; sourceTree = "<group>"; };
+		7D31FE99152DA4CE00244210 /* share-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share-button-hd.png"; sourceTree = "<group>"; };
+		7D31FE9A152DA4CE00244210 /* share-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share-button.png"; sourceTree = "<group>"; };
 		7D570A711523197400691612 /* reset-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reset-button-hd.png"; sourceTree = "<group>"; };
 		7D570A721523197400691612 /* reset-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reset-button.png"; sourceTree = "<group>"; };
 		7D5C137C151DD6650094AAB4 /* LevelSelectScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelSelectScene.h; sourceTree = "<group>"; };
 		7D5C137D151DD6650094AAB4 /* LevelSelectScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LevelSelectScene.m; sourceTree = "<group>"; };
+		7D840726152BE6C700321943 /* CCScrollLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCScrollLayer.h; sourceTree = "<group>"; };
+		7D840727152BE6C700321943 /* CCScrollLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCScrollLayer.m; sourceTree = "<group>"; };
+		7D840728152BE6C700321943 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		7DD47D46152E6FB200580F8F /* delete-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete-button-hd.png"; sourceTree = "<group>"; };
+		7DD47D47152E6FB200580F8F /* delete-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete-button.png"; sourceTree = "<group>"; };
+		7DD47D48152E6FB200580F8F /* new-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new-button-hd.png"; sourceTree = "<group>"; };
+		7DD47D49152E6FB200580F8F /* new-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new-button.png"; sourceTree = "<group>"; };
 		7DF0D8A615238B3600279D84 /* DifficultySelectScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DifficultySelectScene.h; sourceTree = "<group>"; };
 		7DF0D8A715238B3600279D84 /* DifficultySelectScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DifficultySelectScene.m; sourceTree = "<group>"; };
 		7DF29878151F23AB008A08D8 /* edit-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit-button-hd.png"; sourceTree = "<group>"; };
@@ -616,6 +633,7 @@
 		7D064687151CB29D0081B074 /* shikakumadness */ = {
 			isa = PBXGroup;
 			children = (
+				7D840725152BE6C700321943 /* CCScrollLayer */,
 				7D5C137A151DD5840094AAB4 /* Misc. Classes */,
 				7D0648CD151CB67F0081B074 /* GameKit/StoreKit */,
 				7D0647F1151CB3610081B074 /* EditorScene.h */,
@@ -1013,6 +1031,12 @@
 		7D064872151CB4D10081B074 /* buttons */ = {
 			isa = PBXGroup;
 			children = (
+				7DD47D46152E6FB200580F8F /* delete-button-hd.png */,
+				7DD47D47152E6FB200580F8F /* delete-button.png */,
+				7DD47D48152E6FB200580F8F /* new-button-hd.png */,
+				7DD47D49152E6FB200580F8F /* new-button.png */,
+				7D31FE99152DA4CE00244210 /* share-button-hd.png */,
+				7D31FE9A152DA4CE00244210 /* share-button.png */,
 				7DF8480A1527170300037E75 /* about-button-hd.png */,
 				7DF8480B1527170300037E75 /* about-button.png */,
 				7DF8480C1527170300037E75 /* back-button-hd.png */,
@@ -1130,6 +1154,16 @@
 				7D0647E5151CB2A00081B074 /* GameConfig.h */,
 			);
 			name = "Misc. Classes";
+			sourceTree = "<group>";
+		};
+		7D840725152BE6C700321943 /* CCScrollLayer */ = {
+			isa = PBXGroup;
+			children = (
+				7D840726152BE6C700321943 /* CCScrollLayer.h */,
+				7D840727152BE6C700321943 /* CCScrollLayer.m */,
+				7D840728152BE6C700321943 /* README.md */,
+			);
+			path = CCScrollLayer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1266,6 +1300,13 @@
 				7DF848291527170300037E75 /* restore-button.png in Resources */,
 				7DF8482C1527171100037E75 /* difficulty-title-hd.png in Resources */,
 				7DF8482D1527171100037E75 /* difficulty-title.png in Resources */,
+				7D84072A152BE6C700321943 /* README.md in Resources */,
+				7D31FE9B152DA4CE00244210 /* share-button-hd.png in Resources */,
+				7D31FE9C152DA4CE00244210 /* share-button.png in Resources */,
+				7DD47D4A152E6FB200580F8F /* delete-button-hd.png in Resources */,
+				7DD47D4B152E6FB200580F8F /* delete-button.png in Resources */,
+				7DD47D4C152E6FB200580F8F /* new-button-hd.png in Resources */,
+				7DD47D4D152E6FB200580F8F /* new-button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1385,6 +1426,7 @@
 				7D5C137E151DD6650094AAB4 /* LevelSelectScene.m in Sources */,
 				7DF0D8A815238B3600279D84 /* DifficultySelectScene.m in Sources */,
 				7D2E324D1529B8B30060869E /* AboutScene.m in Sources */,
+				7D840729152BE6C700321943 /* CCScrollLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

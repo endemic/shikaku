@@ -11,8 +11,9 @@
 #import <MessageUI/MessageUI.h>
 #import "cocos2d.h"
 #import "GameScene.h"
+#import "CCScrollLayer.h"
 
-@interface LevelSelectScene : CCLayer <NSURLConnectionDelegate, MFMailComposeViewControllerDelegate>
+@interface LevelSelectScene : CCLayer <NSURLConnectionDelegate, MFMailComposeViewControllerDelegate, CCScrollLayerDelegate>
 {
     // Array to store level filenames
     NSMutableArray *levels;
@@ -31,7 +32,7 @@
     CGPoint gridOffset;
     NSMutableArray *clues;  // Store preview clues
     
-    // View controller to attach Twitter view
+    // View controller to attach Twitter/email modals
     UIViewController *myViewController;
     
     // Stores the response from the POST to server
@@ -40,7 +41,8 @@
 
 + (CCScene *)scene;
 - (NSArray *)getDocumentsDirectoryContents;
-- (void)updateLevelPreview;
+//- (void)updateLevelPreview;
+- (NSArray *)createPreviewLayers;
 - (void)shareLevel:(NSString *)filename;
 
 @end

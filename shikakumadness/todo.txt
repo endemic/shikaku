@@ -1,10 +1,12 @@
 TODO
 ====
 
+* Make a CCShadowLabelTTF class
+* Add delete/new buttons to level select screen
 * Make some levels
-* Make a Rails app that can accept POST'd puzzle data
+* Implement data verification on Rails app
+* Finalize design of "solve" scene
 * Program a tutorial
-* Try implementing CCScrollLayer for level picker
 * Default-shikaku.png & Default-shikaku@2x.png is the convention for custom launch screens when using URLs to load content
 
 * Notes on icon
