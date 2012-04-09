@@ -14,6 +14,7 @@
 #import "SimpleAudioEngine.h"
 #import "TitleScene.h"
 #import "GameSingleton.h"
+#import "CCShadowLabelTTF.h"
 
 // GameScene
 @interface GameScene : CCLayer
@@ -33,7 +34,7 @@
     int touchRow, touchCol, startRow, startCol, previousRow, previousCol;
 
     // Labels for giving player information
-    CCLabelTTF *areaLabel, *timerLabel;
+    CCShadowLabelTTF *areaLabel, *timerLabel;
     
     // Stores amount of time taken
     int timer;

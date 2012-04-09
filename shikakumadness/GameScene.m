@@ -108,15 +108,13 @@
         [self addChild:menu];
         
         // Add "area" label
-        areaLabel = [CCLabelTTF labelWithString:@"Area:\n   -" dimensions:CGSizeMake(windowSize.width / 2, 300 * fontMultiplier) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:24.0 * fontMultiplier];
-        areaLabel.color = ccc3(255, 255, 255);
-        areaLabel.position = ccp(areaLabel.contentSize.width / 2, menu.position.y - areaLabel.contentSize.height / 1.5);
+        areaLabel = [CCShadowLabelTTF labelWithString:@"Area:\n   -" dimensions:CGSizeMake(windowSize.width / 2, 300 * fontMultiplier) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:24.0 * fontMultiplier];
+        areaLabel.position = ccp(areaLabel.contentSize.width / 2 + iPadOffset.x + 8 * fontMultiplier, menu.position.y - areaLabel.contentSize.height / 1.5);
         [self addChild:areaLabel];
         
         // Add "timer" label
-        timerLabel = [CCLabelTTF labelWithString:@"Time:\n   00:00" dimensions:CGSizeMake(windowSize.width / 2, 300 * fontMultiplier) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:24.0 * fontMultiplier];
-        timerLabel.color = ccc3(255, 255, 255);
-        timerLabel.position = ccp(windowSize.width - timerLabel.contentSize.width / 2, menu.position.y - timerLabel.contentSize.height / 1.5);
+        timerLabel = [CCShadowLabelTTF labelWithString:@"Time:\n   00:00" dimensions:CGSizeMake(windowSize.width / 2, 300 * fontMultiplier) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:24.0 * fontMultiplier];
+        timerLabel.position = ccp(windowSize.width - timerLabel.contentSize.width / 2 - iPadOffset.x + 8 * fontMultiplier, menu.position.y - timerLabel.contentSize.height / 1.5);
         [self addChild:timerLabel];
         
         // Schedule update method for timer

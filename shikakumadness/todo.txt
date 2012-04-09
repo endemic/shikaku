@@ -1,11 +1,8 @@
 TODO
 ====
 
-* Handle when a user doesn't have any created levels
-* Make a CCShadowLabelTTF class
 * Make some levels
 * Implement data verification on Rails app
-* Finalize design of "solve" scene
 * Program a tutorial
 * Default-shikaku.png & Default-shikaku@2x.png is the convention for custom launch screens when using URLs to load content
 

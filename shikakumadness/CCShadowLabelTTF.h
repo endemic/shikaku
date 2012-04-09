@@ -11,17 +11,23 @@
 
 @interface CCShadowLabelTTF : CCNode 
 {
+    CCLabelTTF *textLabel;
+    
     int numberOfShadowLabels;
     NSMutableArray *shadowLabels;
     
     ccColor3B textColor, shadowColor;
 }
 
+@property (nonatomic, retain) CCLabelTTF *textLabel;
+@property (nonatomic, retain) NSMutableArray *shadowLabels;
+
 @property (nonatomic) int numberOfShadowLabels;
 @property (nonatomic) ccColor3B textColor;
 @property (nonatomic) ccColor3B shadowColor;
 
 + (CCShadowLabelTTF *)labelWithString:(NSString *)string fontName:(NSString *)font fontSize:(CGFloat)size;
++ (CCShadowLabelTTF *)labelWithString:(NSString *)string dimensions:(CGSize)dimensions alignment:(CCTextAlignment)alignment fontName:(NSString *)font fontSize:(CGFloat)size;
 
 - (void)setString:(NSString *)string;
 - (void)setTextColor:(ccColor3B)color;

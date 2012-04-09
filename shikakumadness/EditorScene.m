@@ -80,6 +80,8 @@
         
         // "Quit" button
         CCMenuItemImage *quitButton = [CCMenuItemImage itemFromNormalImage:@"quit-button.png" selectedImage:@"quit-button.png" block:^(id sender) {
+            [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+            
             // TODO: Pop up a modal asking if user wants to save the level
             BOOL results = [self saveLevel];
             

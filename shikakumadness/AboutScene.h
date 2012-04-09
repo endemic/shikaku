@@ -10,6 +10,7 @@
 #import "cocos2d.h"
 #import "GameSingleton.h"
 #import "TitleScene.h"
+#import "CCShadowLabelTTF.h"
 
 @interface AboutScene : CCLayer 
 {

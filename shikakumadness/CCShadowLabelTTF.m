@@ -11,7 +11,7 @@
 
 @implementation CCShadowLabelTTF
 
-@synthesize numberOfShadowLabels, textColor, shadowColor;
+@synthesize textLabel, shadowLabels, numberOfShadowLabels, textColor, shadowColor;
 
 - (id)init
 {
@@ -21,7 +21,9 @@
         // Set some defaults here
         textColor = ccc3(255, 255, 255);
         shadowColor = ccc3(0, 0, 0);
-        numberOfShadowLabels = 4;
+        numberOfShadowLabels = 6;
+        
+        shadowLabels = [[NSMutableArray array] retain];
     }
     return self;
 }
@@ -33,20 +35,48 @@
  */
 + (CCShadowLabelTTF *)labelWithString:(NSString *)string fontName:(NSString *)font fontSize:(CGFloat)size
 {
+    int shadowDistance = 1;
     CCShadowLabelTTF *n = [CCShadowLabelTTF node];
     
-    CCLabelTTF *text = [CCLabelTTF labelWithString:string fontName:font fontSize:size];
-    text.color = n.textColor;
+    n.textLabel = [CCLabelTTF labelWithString:string fontName:font fontSize:size];
+    n.textLabel.color = n.textColor;
     
     for (int i = 1; i <= n.numberOfShadowLabels; i++)
     {
         CCLabelTTF *shadow = [CCLabelTTF labelWithString:string fontName:font fontSize:size];
         shadow.color = n.shadowColor;
-        shadow.position = ccp(text.position.x + (2 * i), text.position.y + (2 * i));    // -135 angle
+        shadow.position = ccp(n.textLabel.position.x + (shadowDistance * i), n.textLabel.position.y + (shadowDistance * i));    // -135 angle
         [n addChild:shadow z:n.numberOfShadowLabels - i];
+        [n.shadowLabels addObject:shadow];
     }
     
-    [n addChild:text z:n.numberOfShadowLabels];
+    [n addChild:n.textLabel z:n.numberOfShadowLabels];
+    
+    [n setContentSize:CGSizeMake(n.textLabel.contentSize.width, n.textLabel.contentSize.height)];
+    
+    return n;
+}
+
++ (CCShadowLabelTTF *)labelWithString:(NSString *)string dimensions:(CGSize)dimensions alignment:(CCTextAlignment)alignment fontName:(NSString *)font fontSize:(CGFloat)size
+{
+    int shadowDistance = 1;
+    CCShadowLabelTTF *n = [CCShadowLabelTTF node];
+    
+    n.textLabel = [CCLabelTTF labelWithString:string dimensions:dimensions alignment:alignment fontName:font fontSize:size];
+    n.textLabel.color = n.textColor;
+    
+    for (int i = 1; i <= n.numberOfShadowLabels; i++)
+    {
+        CCLabelTTF *shadow = [CCLabelTTF labelWithString:string dimensions:dimensions alignment:alignment fontName:font fontSize:size];
+        shadow.color = n.shadowColor;
+        shadow.position = ccp(n.textLabel.position.x + (shadowDistance * i), n.textLabel.position.y + (shadowDistance * i));    // -135 angle
+        [n addChild:shadow z:n.numberOfShadowLabels - i];
+        [n.shadowLabels addObject:shadow];
+    }
+    
+    [n addChild:n.textLabel z:n.numberOfShadowLabels];
+    
+    [n setContentSize:CGSizeMake(n.textLabel.contentSize.width, n.textLabel.contentSize.height)];
     
     return n;
 }
@@ -58,7 +88,11 @@
  */
 - (void)setString:(NSString *)string
 {
-
+    textLabel.string = string;
+    for (CCLabelTTF *label in shadowLabels) 
+    {
+        label.string = string;
+    }
 }
 
 /*! 
@@ -68,7 +102,7 @@
  */
 - (void)setTextColor:(ccColor3B)color
 {
-    
+    textLabel.color = color;
 }
 
 /*! 
@@ -78,7 +112,17 @@
  */
 - (void)setShadowColor:(ccColor3B)color
 {
+    for (CCLabelTTF *label in shadowLabels) 
+    {
+        label.color = color;
+    }
+}
 
+- (void)dealloc
+{
+    [shadowLabels release];
+    
+    [super dealloc];
 }
 
 @end

@@ -232,7 +232,7 @@
     CCLOG(@"NSURLConnection finished loading!");
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filename = @"tmp.plist";  // This will always be overwritten (for now)
+    NSString *filename = @"tmp.json";  // This will always be overwritten (for now)
     
     NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:filename];
     

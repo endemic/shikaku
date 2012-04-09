@@ -65,7 +65,7 @@
         topMenu.position = ccp((55 * fontMultiplier) + iPadOffset.x, windowSize.height - (20 * fontMultiplier) - iPadOffset.y);
         [self addChild:topMenu];
         
-        CCLabelTTF *credits = [CCLabelTTF labelWithString:@"Designed and Programmed by Nathan Demick\n\nShikaku concept by Nikoli" dimensions:CGSizeMake(windowSize.width / 1.5, windowSize.height / 2) alignment:CCTextAlignmentCenter fontName:@"insolent.otf" fontSize:20.0];
+        CCShadowLabelTTF *credits = [CCShadowLabelTTF labelWithString:@"Designed and Programmed by Nathan Demick\n\nShikaku concept by Nikoli" dimensions:CGSizeMake(windowSize.width / 1.5, windowSize.height / 2) alignment:CCTextAlignmentCenter fontName:@"insolent.otf" fontSize:20.0];
         credits.position = ccp(windowSize.width / 2, windowSize.height / 2);
         [self addChild:credits];
 	}
