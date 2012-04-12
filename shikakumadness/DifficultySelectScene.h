@@ -36,4 +36,6 @@
 
 + (CCScene *)scene;
 
+- (int)getPuzzleCountForDifficulty:(NSString *)difficulty;
+
 @end

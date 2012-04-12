@@ -21,7 +21,7 @@
         // Set some defaults here
         textColor = ccc3(255, 255, 255);
         shadowColor = ccc3(0, 0, 0);
-        numberOfShadowLabels = 6;
+        numberOfShadowLabels = 1;
         
         shadowLabels = [[NSMutableArray array] retain];
     }
@@ -35,7 +35,7 @@
  */
 + (CCShadowLabelTTF *)labelWithString:(NSString *)string fontName:(NSString *)font fontSize:(CGFloat)size
 {
-    int shadowDistance = 1;
+    int shadowDistance = 5;
     CCShadowLabelTTF *n = [CCShadowLabelTTF node];
     
     n.textLabel = [CCLabelTTF labelWithString:string fontName:font fontSize:size];
@@ -59,7 +59,7 @@
 
 + (CCShadowLabelTTF *)labelWithString:(NSString *)string dimensions:(CGSize)dimensions alignment:(CCTextAlignment)alignment fontName:(NSString *)font fontSize:(CGFloat)size
 {
-    int shadowDistance = 1;
+    int shadowDistance = 5;
     CCShadowLabelTTF *n = [CCShadowLabelTTF node];
     
     n.textLabel = [CCLabelTTF labelWithString:string dimensions:dimensions alignment:alignment fontName:font fontSize:size];

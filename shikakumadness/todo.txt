@@ -1,6 +1,10 @@
 TODO
 ====
 
+* Don't allow squares to "eat" each other
+* Fix the "tap to delete" feature
+* Have squares change color or opacity when correct size
+
 * Make some levels
 * Implement data verification on Rails app
 * Program a tutorial

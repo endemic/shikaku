@@ -164,6 +164,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(StoreKitSingleton);
  */
 - (void)restoreTransaction:(SKPaymentTransaction *)transaction
 {
+    NSLog(@"Storing receipt in NSUserDefaults: %@", [NSString stringWithFormat:@"%@.receipt", transaction.originalTransaction.payment.productIdentifier]);
     // Store receipt in NSUserDefaults
     [self recordTransaction:transaction.originalTransaction];
     [self finishTransaction:transaction wasSuccessful:YES];

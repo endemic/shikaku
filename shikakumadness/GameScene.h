@@ -34,7 +34,7 @@
     int touchRow, touchCol, startRow, startCol, previousRow, previousCol;
 
     // Labels for giving player information
-    CCShadowLabelTTF *areaLabel, *timerLabel;
+    CCLabelTTF *areaLabel, *timerLabel;
     
     // Stores amount of time taken
     int timer;

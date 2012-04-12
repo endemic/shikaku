@@ -171,7 +171,7 @@
         // Set default difficulty
         levelDifficulty = @"beginner";
         
-        // Set up an array to be serialized to a .plist as a level
+        // Set up an array to be serialized to .json as a level
         level = [NSDictionary dictionary];
         
         // Load level if editing
@@ -274,10 +274,11 @@
                     [self removeChild:r cleanup:NO];
                     [squares removeObjectAtIndex:i];
                     i--;
+                    [[SimpleAudioEngine sharedEngine] playEffect:@"hit.caf"];
                 }
             }
             
-            selection.visible = YES;
+//            selection.visible = YES;
             selection.size = CGSizeMake(blockSize, blockSize);  // Default size
             selection.position = ccp((touchCol * blockSize) + offset.x, (touchRow * blockSize) + (offset.y + blockSize));
         }
@@ -366,34 +367,83 @@
         // y-axis
         if (touchRow != previousRow)
         {
-            // Change height
-            selection.size = CGSizeMake(selection.size.width, height * blockSize);
+            selection.visible = YES;
+            BOOL overlap = NO;
             
-            // Determine if necessary to just draw (normal) or draw & move up (upwards movement)
+            // Determine if new size would overlap an existing square
+            CGRect selectionBounds = CGRectMake(selection.position.x, selection.position.y - (height * blockSize), selection.size.width, height * blockSize);
             if (touchRow >= startRow)
             {
-                selection.position = ccp(selection.position.x, 
-                                         (touchRow * blockSize) + offset.y + blockSize);
+                selectionBounds = CGRectMake(selection.position.x, (touchRow * blockSize) + offset.y + blockSize - (height * blockSize), selection.size.width, height * blockSize);
             }
             
-            // Play SFX
-            [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
+            for (int i = 0; i < [squares count]; i++)
+            {
+                RoundRectNode *r = [squares objectAtIndex:i];
+                
+                CGRect rectBounds = CGRectMake(r.position.x, r.position.y - r.size.height, r.size.width, r.size.height);
+                if (CGRectIntersectsRect(selectionBounds, rectBounds))
+                {
+                    overlap = YES;
+                }
+            }
+            
+            if (overlap == NO)
+            {
+                
+                // Change height
+                selection.size = CGSizeMake(selection.size.width, height * blockSize);
+                
+                // Determine if necessary to just draw (normal) or draw & move up (upwards movement)
+                if (touchRow >= startRow)
+                {
+                    selection.position = ccp(selection.position.x, 
+                                             (touchRow * blockSize) + offset.y + blockSize);
+                }
+                
+                // Play SFX
+                [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
+            }
         }
         
         // x-axis
         if (touchCol != previousCol)
         {
-            selection.size = CGSizeMake(width * blockSize, selection.size.height);
+            selection.visible = YES;
+            BOOL overlap = NO;
             
-            // Determine if necessary to just draw (normal) or draw & move left (left movement)
+            // Determine if new size would overlap an existing square
+            CGRect selectionBounds = CGRectMake(selection.position.x, selection.position.y - (height * blockSize), width * blockSize, selection.size.height);
             if (touchCol <= startCol)
             {
-                selection.position = ccp((touchCol * blockSize) + offset.x, 
-                                         selection.position.y);
+                selectionBounds = CGRectMake((touchCol * blockSize) + offset.x, selection.position.y - (height * blockSize), width * blockSize, selection.size.height);
             }
             
-            // Play SFX
-            [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
+            for (int i = 0; i < [squares count]; i++)
+            {
+                RoundRectNode *r = [squares objectAtIndex:i];
+                
+                CGRect rectBounds = CGRectMake(r.position.x, r.position.y - r.size.height, r.size.width, r.size.height);
+                if (CGRectIntersectsRect(selectionBounds, rectBounds))
+                {
+                    overlap = YES;
+                }
+            }
+            
+            if (overlap == NO)
+            {
+                selection.size = CGSizeMake(width * blockSize, selection.size.height);
+                
+                // Determine if necessary to just draw (normal) or draw & move left (left movement)
+                if (touchCol <= startCol)
+                {
+                    selection.position = ccp((touchCol * blockSize) + offset.x, 
+                                             selection.position.y);
+                }
+                
+                // Play SFX
+                [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
+            }
         }
     }
     else if (selectedTool == kToolClue)
@@ -446,8 +496,8 @@
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    UITouch *touch = [touches anyObject];
-	CGPoint touchPoint = [[CCDirector sharedDirector] convertToGL:[touch locationInView:[touch view]]];
+//    UITouch *touch = [touches anyObject];
+//	CGPoint touchPoint = [[CCDirector sharedDirector] convertToGL:[touch locationInView:[touch view]]];
     
     if (selectedTool == kToolSquare)
     {
@@ -456,23 +506,24 @@
         r.position = selection.position;
         
         // "Eat" any squares that overlap the newly created one
-        CGRect newRect = CGRectMake(r.position.x, r.position.y - r.size.height, r.size.width, r.size.height);
-        for (int i = 0; i < [squares count]; i++) 
-        {
-            RoundRectNode *o = [squares objectAtIndex:i]; 
-            CGRect oldRect = CGRectMake(o.position.x, o.position.y - o.size.height, o.size.width, o.size.height);
-            
-            // Remove old squares that overlap
-            if (CGRectIntersectsRect(newRect, oldRect))
-            {
-                [self removeChild:o cleanup:NO];
-                [squares removeObjectAtIndex:i];
-                i--;
-            }
-        }
+//        CGRect newRect = CGRectMake(r.position.x, r.position.y - r.size.height, r.size.width, r.size.height);
+//        for (int i = 0; i < [squares count]; i++) 
+//        {
+//            RoundRectNode *o = [squares objectAtIndex:i]; 
+//            CGRect oldRect = CGRectMake(o.position.x, o.position.y - o.size.height, o.size.width, o.size.height);
+//            
+//            // Remove old squares that overlap
+//            if (CGRectIntersectsRect(newRect, oldRect))
+//            {
+//                [self removeChild:o cleanup:NO];
+//                [squares removeObjectAtIndex:i];
+//                i--;
+//            }
+//        }
         
-        // If player just tapped, simply remove the tapped square
-        if (CGPointEqualToPoint(touchStart, touchPoint) == NO)
+        // If player actually moved their finger, create a new square
+//        if (ccpFuzzyEqual(touchStart, touchPoint, blockSize / 2) == NO)
+        if (selection.visible == YES)
         {
             // Add new square to layer
             [self addChild:r z:1];
@@ -480,8 +531,10 @@
             // Store it in the "squares" array
             [squares addObject:r];
             
+            // Determine if the square overlaps a clue, and the square's area is equal to the clue, change the color of the sprite
+            
             areaLabel.string = @"Area: ~";
-        }
+        } 
         
         // Hide the original "selection" roundrect
         selection.visible = NO;
