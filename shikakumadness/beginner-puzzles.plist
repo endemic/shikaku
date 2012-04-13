@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>puzzles</key>
+	<array>
+		<string>beginner_1.json</string>
+		<string>beginner_2.json</string>
+		<string>beginner_3.json</string>
+		<string>beginner_4.json</string>
+		<string>beginner_5.json</string>
+		<string>beginner_6.json</string>
+		<string>beginner_7.json</string>
+		<string>beginner_8.json</string>
+		<string>beginner_9.json</string>
+		<string>beginner_10.json</string>
+		<string>beginner_11.json</string>
+		<string>beginner_12.json</string>
+		<string>beginner_13.json</string>
+		<string>beginner_14.json</string>
+		<string>beginner_15.json</string>
+		<string>beginner_16.json</string>
+		<string>beginner_17.json</string>
+		<string>beginner_18.json</string>
+		<string>beginner_19.json</string>
+		<string>beginner_20.json</string>
+		<string>beginner_21.json</string>
+		<string>beginner_22.json</string>
+		<string>beginner_23.json</string>
+		<string>beginner_24.json</string>
+		<string>beginner_25.json</string>
+		<string>beginner_26.json</string>
+		<string>beginner_27.json</string>
+		<string>beginner_28.json</string>
+		<string>beginner_29.json</string>
+		<string>beginner_30.json</string>
+	</array>
+</dict>
+</plist>

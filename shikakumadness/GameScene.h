@@ -14,7 +14,6 @@
 #import "SimpleAudioEngine.h"
 #import "TitleScene.h"
 #import "GameSingleton.h"
-#import "CCShadowLabelTTF.h"
 
 // GameScene
 @interface GameScene : CCLayer

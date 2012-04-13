@@ -102,8 +102,7 @@
         [self addChild:rightMenu];
         
         // Add copyright text
-//        CCLabelTTF *copyright = [CCLabelTTF labelWithString:@"©2012 GANBARU GAMES" fontName:@"insolent.otf" fontSize:18.0];
-        CCShadowLabelTTF *copyright = [CCShadowLabelTTF labelWithString:@"©2012 GANBARU GAMES" fontName:@"insolent.otf" fontSize:18.0];
+        CCLabelTTF *copyright = [CCLabelTTF labelWithString:@"©2012 GANBARU GAMES" fontName:@"insolent.otf" fontSize:18.0];
         copyright.position = ccp(windowSize.width / 2, 50);
         [self addChild:copyright];
 	}

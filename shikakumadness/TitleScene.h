@@ -14,7 +14,6 @@
 #import "LevelSelectScene.h"
 #import "DifficultySelectScene.h"
 #import "AboutScene.h"
-#import "CCShadowLabelTTF.h"
 
 @interface TitleScene : CCLayer 
 {

@@ -162,7 +162,7 @@
         }
         else 
         {
-            CCShadowLabelTTF *noLevelsLabel = [CCShadowLabelTTF labelWithString:@"YOU HAVEN'T CREATED ANY PUZZLES YET!" dimensions:CGSizeMake(windowSize.width - 20 * fontMultiplier, windowSize.height / 2) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:32.0 * fontMultiplier];
+            CCLabelTTF *noLevelsLabel = [CCLabelTTF labelWithString:@"YOU HAVEN'T CREATED ANY PUZZLES YET!" dimensions:CGSizeMake(windowSize.width - 20 * fontMultiplier, windowSize.height / 2) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:32.0 * fontMultiplier];
             noLevelsLabel.position = ccp(windowSize.width / 2, windowSize.height / 2);
             [self addChild:noLevelsLabel];
         }
