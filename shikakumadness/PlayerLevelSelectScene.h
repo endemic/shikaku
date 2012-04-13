@@ -1,5 +1,5 @@
 //
-//  LevelSelectScene.h
+//  PlayerLevelSelectScene.h
 //  shikakumadness
 //
 //  Created by Nathan Demick on 3/24/12.
@@ -7,11 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Twitter/Twitter.h>
+#import <MessageUI/MessageUI.h>
 #import "cocos2d.h"
 #import "GameScene.h"
 #import "CCScrollLayer.h"
 
-@interface LevelSelectScene : CCLayer <CCScrollLayerDelegate>
+@interface PlayerLevelSelectScene : CCLayer <NSURLConnectionDelegate, MFMailComposeViewControllerDelegate, CCScrollLayerDelegate>
 {
     // Array to store level filenames
     NSMutableArray *levels;
@@ -29,14 +31,20 @@
     int previewBlockSize;
     CCScrollLayer *scrollLayer;
     
-//    CGPoint gridOffset;
-//    NSMutableArray *clues;  // Store preview clues
+    //    CGPoint gridOffset;
+    //    NSMutableArray *clues;  // Store preview clues
     
+    // View controller to attach Twitter/email modals
+    UIViewController *myViewController;
+    
+    // Stores the response from the POST to server
+    NSMutableData *responseData;
 }
 
 + (CCScene *)scene;
-//- (NSArray *)getDocumentsDirectoryContents;
+- (NSArray *)getDocumentsDirectoryContents;
 //- (void)updateLevelPreview;
 - (NSArray *)createPreviewLayers;
+- (void)shareLevel:(NSString *)filename;
 
 @end

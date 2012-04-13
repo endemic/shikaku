@@ -56,8 +56,10 @@
         [self addChild:background];
         
         // Get list of levels!
-        levels = [[NSMutableArray arrayWithArray:[self getDocumentsDirectoryContents]] retain];
-                
+        NSString *filename = [NSString stringWithFormat:@"%@-puzzles", [GameSingleton sharedGameSingleton].difficulty];
+        levels = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"plist"]];
+        [levels retain];
+        
         // Set up "back" button
         CCMenuItemImage *backButton = [CCMenuItemImage itemFromNormalImage:@"back-button.png" selectedImage:@"back-button.png" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
@@ -65,21 +67,9 @@
             CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[TitleScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
-        
-        // Set up "new" button
-        CCMenuItemImage *newButton = [CCMenuItemImage itemFromNormalImage:@"new-button.png" selectedImage:@"new-button.png" block:^(id sender) {
-            [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
-            
-            // Blanking out this var means the editor creates a new puzzle
-            [GameSingleton sharedGameSingleton].levelToLoad = @"";
-            
-            CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[EditorScene scene]];
-            [[CCDirector sharedDirector] replaceScene:transition];
-        }];
-        
-        CCMenu *topMenu = [CCMenu menuWithItems:backButton, newButton, nil];
-        [topMenu alignItemsHorizontallyWithPadding:120 * fontMultiplier];
-        topMenu.position = ccp(windowSize.width / 2, windowSize.height - (20 * fontMultiplier) - iPadOffset.y);
+
+        CCMenu *topMenu = [CCMenu menuWithItems:backButton, nil];
+        topMenu.position = ccp(10 * fontMultiplier + iPadOffset.x, windowSize.height - (20 * fontMultiplier) - iPadOffset.y);
         [self addChild:topMenu];
         
         if ([levels count] > 0)
@@ -106,58 +96,8 @@
                 [[CCDirector sharedDirector] replaceScene:transition];
             }];
             
-            CCMenuItemImage *editButton = [CCMenuItemImage itemFromNormalImage:@"edit-button.png" selectedImage:@"edit-button.png" block:^(id sender) {
-                [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
-                
-                CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[EditorScene scene]];
-                [[CCDirector sharedDirector] replaceScene:transition];
-            }];
-            
-            CCMenuItemImage *shareButton = [CCMenuItemImage itemFromNormalImage:@"share-button.png" selectedImage:@"share-button.png" block:^(id sender) {
-                [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
-                
-                // Load level dictionary
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *documentsDirectory = [paths objectAtIndex:0];
-                
-                // TODO: Store the documents directory string so you don't have to keep getting it here
-                NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@/%@", [GameSingleton sharedGameSingleton].difficulty, [GameSingleton sharedGameSingleton].levelToLoad]];
-                
-                [self shareLevel:pathToFile];
-            }];
-            
-            CCMenuItemImage *deleteButton = [CCMenuItemImage itemFromNormalImage:@"delete-button.png" selectedImage:@"delete-button.png" block:^(id sender) {
-                [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
-                
-                // TODO: put in confirmation window here
-                
-                // Load level dictionary
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *documentsDirectory = [paths objectAtIndex:0];
-                
-                NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@/%@", [GameSingleton sharedGameSingleton].difficulty, [GameSingleton sharedGameSingleton].levelToLoad]];
-                [[NSFileManager defaultManager] removeItemAtPath:pathToFile error:nil];
-                
-                // Remove the layer
-                [scrollLayer removePageWithNumber:selectedLevelIndex];
-                
-                // Reset the "index" & scroll to previous layer if possible
-                if (selectedLevelIndex > 0)
-                {
-                    selectedLevelIndex--;
-                }
-                
-                [scrollLayer selectPage:selectedLevelIndex];
-            }];
-            
-            CCMenu *leftMenu = [CCMenu menuWithItems:editButton, deleteButton, nil];
-            [leftMenu alignItemsVerticallyWithPadding:10.0 * fontMultiplier];
-            leftMenu.position = ccp(85 * fontMultiplier + iPadOffset.x, 100 * fontMultiplier + iPadOffset.y);
-            [self addChild:leftMenu];
-            
-            CCMenu *rightMenu = [CCMenu menuWithItems:solveButton, shareButton, nil];
-            [rightMenu alignItemsVerticallyWithPadding:10.0 * fontMultiplier];
-            rightMenu.position = ccp(235 * fontMultiplier + iPadOffset.x, 100 * fontMultiplier + iPadOffset.y);
+            CCMenu *rightMenu = [CCMenu menuWithItems:solveButton, nil];
+            rightMenu.position = ccp(windowSize.width / 2, 100 * fontMultiplier + iPadOffset.y);
             [self addChild:rightMenu];
         }
         else 
@@ -188,7 +128,6 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     
-    // TODO: Store the documents directory string so you don't have to keep getting it here
     NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@/%@", [GameSingleton sharedGameSingleton].difficulty, [GameSingleton sharedGameSingleton].levelToLoad]];
     
     // Get JSON data out of file, and parse into dictionary
@@ -231,13 +170,13 @@
 - (NSArray *)createPreviewLayers
 {
     // Load level dictionary
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [[paths objectAtIndex:0] stringByAppendingPathComponent:[GameSingleton sharedGameSingleton].difficulty];
-    NSArray *directoryContent = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
-    
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *documentsDirectory = [[paths objectAtIndex:0] stringByAppendingPathComponent:[GameSingleton sharedGameSingleton].difficulty];
+//    NSArray *directoryContent = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
+//    
     NSMutableArray *returnArray = [NSMutableArray array];
     
-    for (int i = 0; i < [directoryContent count]; i++)
+    for (int i = 0; i < [levels count]; i++)
     {
         // Create a layer
         CCLayer *layer = [CCLayer node];
@@ -246,10 +185,11 @@
         previewBackground.position = ccp(windowSize.width / 2, windowSize.height - 180 * fontMultiplier - iPadOffset.y);
         [layer addChild:previewBackground];
         
-        NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[directoryContent objectAtIndex:i]];
+//        NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[directoryContent objectAtIndex:i]];
         
         // Get JSON data out of file, and parse into dictionary
-        NSData *json = [NSData dataWithContentsOfFile:pathToFile];
+        NSString *filename = [levels objectAtIndex:i];
+        NSData *json = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"json"]];
         NSDictionary *level = [NSDictionary dictionaryWithJSONData:json error:nil];
         
         // Get out the "clue" objects
@@ -276,51 +216,6 @@
     return returnArray;
 }
 
-/**
- * Returns an array of all files in the "Documents" directory
- */
-- (NSArray *)getDocumentsDirectoryContents
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [[paths objectAtIndex:0] stringByAppendingPathComponent:[GameSingleton sharedGameSingleton].difficulty];
-    
-    NSError *error;
-    NSArray *directoryContent = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:&error];
-    
-//    NSLog(@"%@", documentsDirectory);
-    return directoryContent;
-}
-
-/*! 
- @method shareLevel:(NSString *)filename
- @abstract Sends a level to a web service
- @result Whether the request was successful or not
- */
-- (void)shareLevel:(NSString *)filename
-{
-    NSURL *url = [NSURL URLWithString:@"http://localhost:3000/puzzles.json"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-//    [request setHTTPBody:[NSData dataWithContentsOfFile:filename]];
-    NSError *error = nil;
-    NSString *body = [NSString stringWithFormat:@"puzzle[data]=%@", [NSString stringWithContentsOfFile:filename encoding:NSUTF8StringEncoding error:&error]];
-    
-    CCLOG(@"Request body: %@", body);
-    if (error != nil)
-    {
-        CCLOG(@"Error! %@", error);
-    }
-    
-    [request setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    // Init var that will store response
-    responseData = [[NSMutableData data] retain];
-    
-    NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
-    [connection start];
-}
-
 #pragma mark -
 #pragma mark CCScrollLayer delegate methods
 
@@ -338,138 +233,10 @@
     [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
 }
 
-#pragma mark -
-#pragma mark NSURLConnection delegate methods
-
--(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response 
-{
-    CCLOG(@"NSURLConnection didReceiveResponse!");
-    [responseData setLength:0]; 
-}
-
--(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data 
-{
-    CCLOG(@"NSURLConnection didReceiveData!");
-    [responseData appendData:data];
-}
-
-/*! 
- @method connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
- @abstract NSURLConnection delegate methdo
- @result Executes when "sharing" connection fails
- */
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-    CCLOG(@"Connection failed! %@", error);
-}
-
-/*! 
- @method connectionDidFinishLoading:(NSURLConnection *)connection
- @abstract NSURLConnection delegate method
- @result Executes when "sharing" connection completes
- */
--(void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    // TODO: allow user to decide to share via email or twitter
-//    CCLOG(@"Connection finished! %@", connection);
-//    CCLOG(@"Reponse from server: %@", responseData);
-    NSString *responseString = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] autorelease];
-    CCLOG(@"Response from server: %@", responseString);
-    
-    // Parse the response string
-    NSDictionary *json = [NSDictionary dictionaryWithJSONData:responseData error:nil];
-    
-    NSString *urlToLevel = [NSString stringWithFormat:@"http://shikaku.ganbarugames.com/%@", [json objectForKey:@"id"]];
-    
-    if ([TWTweetComposeViewController class] && false)
-    {
-        if ([TWTweetComposeViewController canSendTweet])
-        {
-            TWTweetComposeViewController *tweetSheet = [[[TWTweetComposeViewController alloc] init] autorelease];
-            [tweetSheet setInitialText: @"Try solving the puzzle I just created in #shikakumadness!"];
-            [tweetSheet addURL:[NSURL URLWithString:urlToLevel]];
-            
-            // Create an additional UIViewController to attach the TWTweetComposeViewController to
-			myViewController = [[[UIViewController alloc] init] autorelease];
-			
-			// Add the temporary UIViewController to the main OpenGL view
-			[[[CCDirector sharedDirector] openGLView] addSubview:myViewController.view];
-			
-            [myViewController presentModalViewController:tweetSheet animated:YES];
-        }
-        else
-        {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can't Send Tweet!" message:@"You can't send a tweet right now, make sure your device has an internet connection and you have  at least one Twitter account setup" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertView show];
-        }
-    }
-    
-    if ([MFMailComposeViewController canSendMail])
-    {
-        MFMailComposeViewController *mailer = [[[MFMailComposeViewController alloc] init] autorelease];
-        
-        mailer.mailComposeDelegate = self;
-        
-        [mailer setSubject:@"Try solving this shikaku puzzle!"];
-        
-//        NSArray *toRecipients = [NSArray arrayWithObjects:@"fisrtMail@example.com", @"secondMail@example.com", nil];
-//        [mailer setToRecipients:toRecipients];
-        
-        NSString *emailBody = [NSString stringWithFormat:@"I created a puzzle in Shikaku Madness for you to solve. Tap this link to play it! %@", urlToLevel];
-        [mailer setMessageBody:emailBody isHTML:NO];
-        
-        myViewController = [[[UIViewController alloc] init] autorelease];
-        
-        // Add the temporary UIViewController to the main OpenGL view
-        [[[CCDirector sharedDirector] openGLView] addSubview:myViewController.view];
-        
-        if ([GameSingleton sharedGameSingleton].isPad)
-        {
-            mailer.modalPresentationStyle = UIModalPresentationPageSheet;
-        }
-        
-        [myViewController presentModalViewController:mailer animated:YES];
-    }
-    else 
-    {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can't Send Email!" message:@"You can't send an email right now, make sure your device has an internet connection!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-    }
-}
-
-#pragma mark -
-#pragma mark MFMailComposeViewController delegate methods
-
-- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
-    switch (result)
-    {
-        case MFMailComposeResultCancelled:
-            NSLog(@"Mail cancelled: you cancelled the operation and no email message was queued.");
-            break;
-        case MFMailComposeResultSaved:
-            NSLog(@"Mail saved: you saved the email message in the drafts folder.");
-            break;
-        case MFMailComposeResultSent:
-            NSLog(@"Mail send: the email message is queued in the outbox. It is ready to send.");
-            break;
-        case MFMailComposeResultFailed:
-            NSLog(@"Mail failed: the email message was not saved or queued, possibly due to an error.");
-            break;
-        default:
-            NSLog(@"Mail not sent.");
-            break;
-    }
-    
-    // Remove the mail view
-    [myViewController dismissModalViewControllerAnimated:YES];
-}
-
 - (void)dealloc
 {
     [levels release];
 //    [clues release];
-    [responseData release];
     
     [super dealloc];
 }

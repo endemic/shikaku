@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>puzzles</key>
-	<array>
-		<string>hard_1.json</string>
-		<string>hard_2.json</string>
-		<string>hard_3.json</string>
-		<string>hard_4.json</string>
-		<string>hard_5.json</string>
-		<string>hard_6.json</string>
-		<string>hard_7.json</string>
-		<string>hard_8.json</string>
-		<string>hard_9.json</string>
-		<string>hard_10.json</string>
-		<string>hard_11.json</string>
-		<string>hard_12.json</string>
-		<string>hard_13.json</string>
-		<string>hard_14.json</string>
-		<string>hard_15.json</string>
-		<string>hard_16.json</string>
-		<string>hard_17.json</string>
-		<string>hard_18.json</string>
-		<string>hard_19.json</string>
-		<string>hard_20.json</string>
-		<string>hard_21.json</string>
-		<string>hard_22.json</string>
-		<string>hard_23.json</string>
-		<string>hard_24.json</string>
-		<string>hard_25.json</string>
-		<string>hard_26.json</string>
-		<string>hard_27.json</string>
-		<string>hard_28.json</string>
-		<string>hard_29.json</string>
-		<string>hard_30.json</string>
-	</array>
-</dict>
+<array>
+    <string>hard_1</string>
+    <string>hard_2</string>
+    <string>hard_3</string>
+    <string>hard_4</string>
+    <string>hard_5</string>
+    <string>hard_6</string>
+    <string>hard_7</string>
+    <string>hard_8</string>
+    <string>hard_9</string>
+    <string>hard_10</string>
+    <string>hard_11</string>
+    <string>hard_12</string>
+    <string>hard_13</string>
+    <string>hard_14</string>
+    <string>hard_15</string>
+    <string>hard_16</string>
+    <string>hard_17</string>
+    <string>hard_18</string>
+    <string>hard_19</string>
+    <string>hard_20</string>
+    <string>hard_21</string>
+    <string>hard_22</string>
+    <string>hard_23</string>
+    <string>hard_24</string>
+    <string>hard_25</string>
+    <string>hard_26</string>
+    <string>hard_27</string>
+    <string>hard_28</string>
+    <string>hard_29</string>
+    <string>hard_30</string>
+</array>
 </plist>

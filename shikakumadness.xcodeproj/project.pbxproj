@@ -294,6 +294,7 @@
 		7D17D79115382DB400A1C864 /* medium_7.json in Resources */ = {isa = PBXBuildFile; fileRef = 7D17D72215382DB400A1C864 /* medium_7.json */; };
 		7D17D79215382DB400A1C864 /* medium_8.json in Resources */ = {isa = PBXBuildFile; fileRef = 7D17D72315382DB400A1C864 /* medium_8.json */; };
 		7D17D79315382DB400A1C864 /* medium_9.json in Resources */ = {isa = PBXBuildFile; fileRef = 7D17D72415382DB400A1C864 /* medium_9.json */; };
+		7D17D7961538335100A1C864 /* PlayerLevelSelectScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D17D7951538335100A1C864 /* PlayerLevelSelectScene.m */; };
 		7D2E324D1529B8B30060869E /* AboutScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2E324C1529B8B30060869E /* AboutScene.m */; };
 		7D31FE9B152DA4CE00244210 /* share-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D31FE99152DA4CE00244210 /* share-button-hd.png */; };
 		7D31FE9C152DA4CE00244210 /* share-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D31FE9A152DA4CE00244210 /* share-button.png */; };
@@ -754,6 +755,8 @@
 		7D17D72215382DB400A1C864 /* medium_7.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = medium_7.json; sourceTree = "<group>"; };
 		7D17D72315382DB400A1C864 /* medium_8.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = medium_8.json; sourceTree = "<group>"; };
 		7D17D72415382DB400A1C864 /* medium_9.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = medium_9.json; sourceTree = "<group>"; };
+		7D17D7941538335100A1C864 /* PlayerLevelSelectScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerLevelSelectScene.h; sourceTree = "<group>"; };
+		7D17D7951538335100A1C864 /* PlayerLevelSelectScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerLevelSelectScene.m; sourceTree = "<group>"; };
 		7D2E324B1529B8B30060869E /* AboutScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutScene.h; sourceTree = "<group>"; };
 		7D2E324C1529B8B30060869E /* AboutScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutScene.m; sourceTree = "<group>"; };
 		7D31FE99152DA4CE00244210 /* share-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share-button-hd.png"; sourceTree = "<group>"; };
@@ -876,6 +879,8 @@
 				7D064801151CB3620081B074 /* TitleScene.m */,
 				7DF0D8A615238B3600279D84 /* DifficultySelectScene.h */,
 				7DF0D8A715238B3600279D84 /* DifficultySelectScene.m */,
+				7D17D7941538335100A1C864 /* PlayerLevelSelectScene.h */,
+				7D17D7951538335100A1C864 /* PlayerLevelSelectScene.m */,
 				7D5C137C151DD6650094AAB4 /* LevelSelectScene.h */,
 				7D5C137D151DD6650094AAB4 /* LevelSelectScene.m */,
 				7D17D6A915382C0700A1C864 /* easy-puzzles.plist */,
@@ -1928,6 +1933,7 @@
 				7DF0D8A815238B3600279D84 /* DifficultySelectScene.m in Sources */,
 				7D2E324D1529B8B30060869E /* AboutScene.m in Sources */,
 				7D840729152BE6C700321943 /* CCScrollLayer.m in Sources */,
+				7D17D7961538335100A1C864 /* PlayerLevelSelectScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

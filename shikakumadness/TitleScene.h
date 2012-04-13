@@ -12,6 +12,7 @@
 #import "GameScene.h"
 #import "EditorScene.h"
 #import "LevelSelectScene.h"
+#import "PlayerLevelSelectScene.h"
 #import "DifficultySelectScene.h"
 #import "AboutScene.h"
 

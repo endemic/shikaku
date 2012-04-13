@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>puzzles</key>
-	<array>
-		<string>medium_1.json</string>
-		<string>medium_2.json</string>
-		<string>medium_3.json</string>
-		<string>medium_4.json</string>
-		<string>medium_5.json</string>
-		<string>medium_6.json</string>
-		<string>medium_7.json</string>
-		<string>medium_8.json</string>
-		<string>medium_9.json</string>
-		<string>medium_10.json</string>
-		<string>medium_11.json</string>
-		<string>medium_12.json</string>
-		<string>medium_13.json</string>
-		<string>medium_14.json</string>
-		<string>medium_15.json</string>
-		<string>medium_16.json</string>
-		<string>medium_17.json</string>
-		<string>medium_18.json</string>
-		<string>medium_19.json</string>
-		<string>medium_20.json</string>
-		<string>medium_21.json</string>
-		<string>medium_22.json</string>
-		<string>medium_23.json</string>
-		<string>medium_24.json</string>
-		<string>medium_25.json</string>
-		<string>medium_26.json</string>
-		<string>medium_27.json</string>
-		<string>medium_28.json</string>
-		<string>medium_29.json</string>
-		<string>medium_30.json</string>
-	</array>
-</dict>
+<array>
+    <string>medium_1</string>
+    <string>medium_2</string>
+    <string>medium_3</string>
+    <string>medium_4</string>
+    <string>medium_5</string>
+    <string>medium_6</string>
+    <string>medium_7</string>
+    <string>medium_8</string>
+    <string>medium_9</string>
+    <string>medium_10</string>
+    <string>medium_11</string>
+    <string>medium_12</string>
+    <string>medium_13</string>
+    <string>medium_14</string>
+    <string>medium_15</string>
+    <string>medium_16</string>
+    <string>medium_17</string>
+    <string>medium_18</string>
+    <string>medium_19</string>
+    <string>medium_20</string>
+    <string>medium_21</string>
+    <string>medium_22</string>
+    <string>medium_23</string>
+    <string>medium_24</string>
+    <string>medium_25</string>
+    <string>medium_26</string>
+    <string>medium_27</string>
+    <string>medium_28</string>
+    <string>medium_29</string>
+    <string>medium_30</string>
+</array>
 </plist>

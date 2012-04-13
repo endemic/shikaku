@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>puzzles</key>
-	<array>
-		<string>easy_1.json</string>
-		<string>easy_2.json</string>
-		<string>easy_3.json</string>
-		<string>easy_4.json</string>
-		<string>easy_5.json</string>
-		<string>easy_6.json</string>
-		<string>easy_7.json</string>
-		<string>easy_8.json</string>
-		<string>easy_9.json</string>
-		<string>easy_10.json</string>
-		<string>easy_11.json</string>
-		<string>easy_12.json</string>
-		<string>easy_13.json</string>
-		<string>easy_14.json</string>
-		<string>easy_15.json</string>
-		<string>easy_16.json</string>
-		<string>easy_17.json</string>
-		<string>easy_18.json</string>
-		<string>easy_19.json</string>
-		<string>easy_20.json</string>
-		<string>easy_21.json</string>
-		<string>easy_22.json</string>
-		<string>easy_23.json</string>
-		<string>easy_24.json</string>
-		<string>easy_25.json</string>
-		<string>easy_26.json</string>
-		<string>easy_27.json</string>
-		<string>easy_28.json</string>
-		<string>easy_29.json</string>
-		<string>easy_30.json</string>
-	</array>
-</dict>
+<array>
+    <string>easy_1</string>
+    <string>easy_2</string>
+    <string>easy_3</string>
+    <string>easy_4</string>
+    <string>easy_5</string>
+    <string>easy_6</string>
+    <string>easy_7</string>
+    <string>easy_8</string>
+    <string>easy_9</string>
+    <string>easy_10</string>
+    <string>easy_11</string>
+    <string>easy_12</string>
+    <string>easy_13</string>
+    <string>easy_14</string>
+    <string>easy_15</string>
+    <string>easy_16</string>
+    <string>easy_17</string>
+    <string>easy_18</string>
+    <string>easy_19</string>
+    <string>easy_20</string>
+    <string>easy_21</string>
+    <string>easy_22</string>
+    <string>easy_23</string>
+    <string>easy_24</string>
+    <string>easy_25</string>
+    <string>easy_26</string>
+    <string>easy_27</string>
+    <string>easy_28</string>
+    <string>easy_29</string>
+    <string>easy_30</string>
+</array>
 </plist>
