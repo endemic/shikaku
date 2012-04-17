@@ -68,17 +68,17 @@
         selection.visible = NO;
         
         // Add background
-		CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
+		CCSprite *background = [CCSprite spriteWithFile:[NSString stringWithFormat:@"background%@.png", iPadSuffix]];
         background.position = ccp(windowSize.width / 2, windowSize.height / 2);
         [self addChild:background z:0];
         
         // Add grid
-        CCSprite *grid = [CCSprite spriteWithFile:@"grid.png"];
+        CCSprite *grid = [CCSprite spriteWithFile:[NSString stringWithFormat:@"grid%@.png", iPadSuffix]];
         grid.position = ccp(windowSize.width / 2, grid.contentSize.height / 2 + iPadOffset.y + (25 * fontMultiplier));
         [self addChild:grid z:0];
         
         // Add "reset" and "quit" buttons
-        CCMenuItemImage *resetButton = [CCMenuItemImage itemFromNormalImage:@"reset-button.png" selectedImage:@"reset-button.png" block:^(id sender) {
+        CCMenuItemImage *resetButton = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"reset-button%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"reset-button%@.png", iPadSuffix] block:^(id sender) {
             // TODO: Show confirmation popup here
             // Remove squares from layer
             for (int i = 0; i < [squares count]; i++) 
@@ -93,7 +93,7 @@
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
         }];
         
-        CCMenuItemImage *quitButton = [CCMenuItemImage itemFromNormalImage:@"quit-button.png" selectedImage:@"quit-button.png" block:^(id sender) {
+        CCMenuItemImage *quitButton = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"quit-button%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"quit-button%@.png", iPadSuffix] block:^(id sender) {
             // TODO: Show confirmation popup here
             
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
@@ -108,13 +108,13 @@
         [self addChild:menu];
         
         // Add "area" label
-        areaLabel = [CCLabelTTF labelWithString:@"Area:\n   -" dimensions:CGSizeMake(windowSize.width / 2, 300 * fontMultiplier) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:24.0 * fontMultiplier];
-        areaLabel.position = ccp(areaLabel.contentSize.width / 2 + iPadOffset.x + 8 * fontMultiplier, menu.position.y - areaLabel.contentSize.height / 1.5);
+        areaLabel = [CCLabelBMFont labelWithString:@"AREA:\n   -" fntFile:[NSString stringWithFormat:@"insolent-24%@.fnt", iPadSuffix] width:windowSize.width / 2 alignment:CCTextAlignmentLeft];
+        areaLabel.position = ccp(60 * fontMultiplier + iPadOffset.x, 380 * fontMultiplier + iPadOffset.y);
         [self addChild:areaLabel];
         
         // Add "timer" label
-        timerLabel = [CCLabelTTF labelWithString:@"Time:\n   00:00" dimensions:CGSizeMake(windowSize.width / 2, 300 * fontMultiplier) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:24.0 * fontMultiplier];
-        timerLabel.position = ccp(windowSize.width - timerLabel.contentSize.width / 2 - iPadOffset.x + 8 * fontMultiplier, menu.position.y - timerLabel.contentSize.height / 1.5);
+        timerLabel = [CCLabelBMFont labelWithString:@"TIME:    \n   00:00" fntFile:[NSString stringWithFormat:@"insolent-24%@.fnt", iPadSuffix] width:windowSize.width / 2 alignment:CCTextAlignmentLeft];
+        timerLabel.position = ccp(235 * fontMultiplier + iPadOffset.x, 380 * fontMultiplier + iPadOffset.y);
         [self addChild:timerLabel];
         
         // Schedule update method for timer
@@ -122,22 +122,19 @@
         [self schedule:@selector(updateTimer:) interval:1.0];
         
         // Load level dictionary
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@/%@", [GameSingleton sharedGameSingleton].difficulty, [GameSingleton sharedGameSingleton].levelToLoad]];
+        NSString *filename = [GameSingleton sharedGameSingleton].levelToLoad;
+        NSData *json = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"json"]];
+        NSError *e = nil;
         
-        // Get JSON data out of file, and parse into dictionary
-        NSData *json = [NSData dataWithContentsOfFile:pathToFile];
-        NSError *error = nil;
-        level = [NSDictionary dictionaryWithJSONData:json error:&error];
+        level = [NSDictionary dictionaryWithJSONData:json error:&e];
         
-        if (error != nil)
+        if (e != nil)
         {
-            CCLOG(@"Error deserializing JSON data: %@", error);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Could not load puzzle." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+            
+            [[CCDirector sharedDirector] replaceScene:[LevelSelectScene scene]];
         }
-        
-//        level = [NSDictionary dictionaryWithContentsOfFile:pathToFile];
-        CCLOG(@"Level data: %@", level);
         
         // Determine if the level is the tutorial or not
         if ([[GameSingleton sharedGameSingleton].levelToLoad isEqualToString:@"tutorial.json"])
@@ -208,6 +205,27 @@
             // Add clue to the organization array
             [clues addObject:c];
         }
+        
+        // Increment the "attempts" counter and save to NSUserDefaults
+        NSMutableDictionary *levelStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"levelStatus"];
+        NSMutableDictionary *d = [levelStatus objectForKey:[GameSingleton sharedGameSingleton].levelToLoad];
+        if (d)
+        {
+            int attempts = [(NSNumber *)[d objectForKey:@"attempts"] intValue];
+            [d setObject:[NSNumber numberWithInt:attempts + 1] forKey:@"attempts"];
+        }
+        else 
+        {
+            int attempts = 0;
+            d = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:attempts + 1] forKey:@"attempts"];
+        }
+        
+        // Re-save the current level's data into the main dictionary
+        [levelStatus setValue:d forKey:[GameSingleton sharedGameSingleton].levelToLoad];
+        
+        // Sync the main dictionary back into NSUserDefaults
+        [[NSUserDefaults standardUserDefaults] setObject:levelStatus forKey:@"levelStatus"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	return self;
 }
@@ -218,7 +236,7 @@
 - (void)updateTimer:(ccTime)dt
 {
     timer++;
-    timerLabel.string = [NSString stringWithFormat:@"Time:\n   %02i:%02i", timer / 60, timer % 60];
+    timerLabel.string = [NSString stringWithFormat:@"TIME:    \n   %02i:%02i", timer / 60, timer % 60];
     
     // This method also checks to progress through the tutorial
     if (isTutorial)
@@ -424,7 +442,7 @@
     }
     
     // Update the "area" label
-    areaLabel.string = [NSString stringWithFormat:@"Area:\n   %i", width * height];
+    areaLabel.string = [NSString stringWithFormat:@"AREA:\n   %i", width * height];
     
     // Store the "previous" value for each row/col
     previousCol = touchCol;
@@ -468,7 +486,7 @@
         
         // Determine if the square overlaps a clue, and the square's area is equal to the clue, change the color of the sprite
         
-        areaLabel.string = @"Area: ~";
+        areaLabel.string = @"AREA:\n   -";
     } 
     
     // Hide the original "selection" roundrect
@@ -477,8 +495,7 @@
     // Check to see if the puzzle was completed successfully
     if ([self checkSolution])
     {
-        CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
-        [[CCDirector sharedDirector] replaceScene:transition];
+        [self win];
     }
 }
 
@@ -543,6 +560,42 @@
     }
     
     return YES;
+}
+
+/**
+ * Crap that happens when you solve the puzzle successfully
+ */
+- (void)win
+{
+    // Save details about the completed time to NSUserDefaults
+    NSMutableDictionary *levelStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"levelStatus"];
+    NSMutableDictionary *d = [levelStatus objectForKey:[GameSingleton sharedGameSingleton].levelToLoad];
+    
+    // If level was previously completed...
+    if ([d objectForKey:@"time"])
+    {
+        int oldTime = [(NSNumber *)[d objectForKey:@"time"] intValue];
+        
+        // If new time is less than old, save the new!
+        if (timer < oldTime)
+        {
+            [d setObject:[NSNumber numberWithInt:timer] forKey:@"time"];
+        }
+    }
+    else 
+    {
+        [d setObject:[NSNumber numberWithInt:timer] forKey:@"time"];
+    }
+    
+    // Re-save the current level's data into the main dictionary
+    [levelStatus setValue:d forKey:[GameSingleton sharedGameSingleton].levelToLoad];
+    
+    // Sync the main dictionary back into NSUserDefaults
+    [[NSUserDefaults standardUserDefaults] setObject:levelStatus forKey:@"levelStatus"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
+    [[CCDirector sharedDirector] replaceScene:transition];
 }
 
 /**

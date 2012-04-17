@@ -33,7 +33,7 @@
     int touchRow, touchCol, startRow, startCol, previousRow, previousCol;
 
     // Labels for giving player information
-    CCLabelTTF *areaLabel, *timerLabel;
+    CCLabelBMFont *areaLabel, *timerLabel;
     
     // Stores amount of time taken
     int timer;
@@ -70,6 +70,7 @@
 // returns a CCScene that contains the GameScene as the only child
 + (CCScene *)scene;
 - (BOOL)checkSolution;
+- (void)win;
 - (void)updateTimer:(ccTime)dt;
 
 - (void)removeNodeFromParent:(CCNode *)node;

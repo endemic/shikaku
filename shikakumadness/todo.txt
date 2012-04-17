@@ -1,14 +1,13 @@
 TODO
 ====
 
-* Don't allow squares to "eat" each other
-* Fix the "tap to delete" feature
+* Finish implementing the best time feature (TEST)
+* Add a # of attempts counter (TEST)
 * Have squares change color or opacity when correct size
-
-* Make some levels
-* Implement data verification on Rails app
+* Re-program "store" scene to fetch/display items correctly
+* Create some music
 * Program a tutorial
-* Default-shikaku.png & Default-shikaku@2x.png is the convention for custom launch screens when using URLs to load content
+
 
 * Notes on icon
     1. Border needs to be thicker
@@ -17,6 +16,10 @@ TODO
 
 FUTURE RELEASES
 ===============
+* Implement level editor/sharing feature
+    * Implement data verification on Rails app
+    * Default-shikaku.png & Default-shikaku@2x.png is the convention for custom launch screens when using URLs to load content
+
 * More IAP packs
 
 * Create auto-generating puzzle algorithm

@@ -29,6 +29,10 @@
     int previewBlockSize;
     CCScrollLayer *scrollLayer;
     
+    // Show level #, best time, etc.
+    NSDictionary *levelStatus;
+    CCLabelBMFont *statusLabel;
+    
 //    CGPoint gridOffset;
 //    NSMutableArray *clues;  // Store preview clues
     
@@ -38,5 +42,6 @@
 //- (NSArray *)getDocumentsDirectoryContents;
 //- (void)updateLevelPreview;
 - (NSArray *)createPreviewLayers;
+- (void)updateStatusForPage:(int)page;
 
 @end

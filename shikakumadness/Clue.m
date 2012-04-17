@@ -26,14 +26,22 @@
 
 + (Clue *)clueWithNumber:(int)number
 {
-    Clue *c = [self spriteWithFile:@"clue-background.png"];
+    int fontMultiplier = 1;
+    NSString *iPadSuffix = @"";
+    if ([GameSingleton sharedGameSingleton].isPad)
+    {
+        iPadSuffix = @"-hd";
+        fontMultiplier = 2;
+    }
+    
+    Clue *c = [self spriteWithFile:[NSString stringWithFormat:@"clue-background%@.png", iPadSuffix]];
     c.value = number;
     
     CCLabelTTF *label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%i", number] 
                                          dimensions:CGSizeMake(c.contentSize.width, c.contentSize.height) 
                                           alignment:CCTextAlignmentCenter 
                                            fontName:@"insolent.otf" 
-                                           fontSize:18];
+                                           fontSize:18 * fontMultiplier];
     label.position = ccp(c.contentSize.width / 2, c.contentSize.height / 3.2);
     
     [c addChild:label];

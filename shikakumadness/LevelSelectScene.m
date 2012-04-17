@@ -51,7 +51,7 @@
         }
         
         // Add background
-        CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
+        CCSprite *background = [CCSprite spriteWithFile:[NSString stringWithFormat:@"background%@.png", iPadSuffix]];
         background.position = ccp(windowSize.width / 2, windowSize.height / 2);
         [self addChild:background];
         
@@ -60,8 +60,16 @@
         levels = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"plist"]];
         [levels retain];
         
+        // Get a dictionary of puzzle times, completion status, etc.
+        levelStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"levelStatus"];
+        if (!levelStatus)
+        {
+            levelStatus = [NSDictionary dictionary];
+        }
+        [levelStatus retain];
+        
         // Set up "back" button
-        CCMenuItemImage *backButton = [CCMenuItemImage itemFromNormalImage:@"back-button.png" selectedImage:@"back-button.png" block:^(id sender) {
+        CCMenuItemImage *backButton = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"back-button%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"back-button%@.png", iPadSuffix] block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
             CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[TitleScene scene]];
@@ -69,43 +77,58 @@
         }];
 
         CCMenu *topMenu = [CCMenu menuWithItems:backButton, nil];
-        topMenu.position = ccp(10 * fontMultiplier + iPadOffset.x, windowSize.height - (20 * fontMultiplier) - iPadOffset.y);
+        topMenu.position = ccp((backButton.contentSize.width / 2) + 10 * fontMultiplier + iPadOffset.x, windowSize.height - (20 * fontMultiplier) - iPadOffset.y);
         [self addChild:topMenu];
         
-        if ([levels count] > 0)
+        // Create "status" label
+        statusLabel = [CCLabelBMFont labelWithString:@"" fntFile:[NSString stringWithFormat:@"insolent-24%@.fnt", iPadSuffix] width:windowSize.width / 1.2 alignment:CCTextAlignmentLeft];
+        statusLabel.position = ccp(windowSize.width / 2, windowSize.height / 4);
+        [self addChild:statusLabel];
+        
+        // Create an array of layers with level preview contents
+        scrollLayer = [CCScrollLayer nodeWithLayers:[self createPreviewLayers] widthOffset:windowSize.width / 4];
+        scrollLayer.delegate = self;
+        scrollLayer.minimumTouchLengthToSlide = 5.0;
+        scrollLayer.minimumTouchLengthToChangePage = 10.0;
+        scrollLayer.marginOffset = windowSize.width / 2;   // Offset that can be used to let user see empty space over first or last page
+        scrollLayer.stealTouches = NO;
+        scrollLayer.showPagesIndicator = NO;
+        [self addChild:scrollLayer z:4];
+        
+        // Try to find the previously selected level if coming back to this scene from the "solve" scene
+        if ([[GameSingleton sharedGameSingleton].levelToLoad isEqualToString:@""] == NO)
         {
-            // Create an array of layers with level preview contents
-            scrollLayer = [CCScrollLayer nodeWithLayers:[self createPreviewLayers] widthOffset:windowSize.width / 4];
-            scrollLayer.delegate = self;
-            scrollLayer.minimumTouchLengthToSlide = 5.0;
-            scrollLayer.minimumTouchLengthToChangePage = 10.0;
-            scrollLayer.marginOffset = windowSize.width / 2;   // Offset that can be used to let user see empty space over first or last page
-            scrollLayer.stealTouches = NO;
-            scrollLayer.showPagesIndicator = NO;
-            [self addChild:scrollLayer z:4];
-            
-            // Set up previous/next buttons here to cycle thru files
-            selectedLevelIndex = 0;
-            [GameSingleton sharedGameSingleton].levelToLoad = [levels objectAtIndex:selectedLevelIndex];
-            
-            // Set up the solve/edit buttons
-            CCMenuItemImage *solveButton = [CCMenuItemImage itemFromNormalImage:@"solve-button.png" selectedImage:@"solve-button.png" block:^(id sender) {
-                [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
-                
-                CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[GameScene scene]];
-                [[CCDirector sharedDirector] replaceScene:transition];
-            }];
-            
-            CCMenu *rightMenu = [CCMenu menuWithItems:solveButton, nil];
-            rightMenu.position = ccp(windowSize.width / 2, 100 * fontMultiplier + iPadOffset.y);
-            [self addChild:rightMenu];
+            for (int i = 0; i < [levels count]; i++)
+            {
+                if ([[levels objectAtIndex:i] isEqualToString:[GameSingleton sharedGameSingleton].levelToLoad])
+                {
+                    selectedLevelIndex = i;
+                    [scrollLayer selectPage:i];
+                    break;
+                }
+            }
         }
         else 
         {
-            CCLabelTTF *noLevelsLabel = [CCLabelTTF labelWithString:@"YOU HAVEN'T CREATED ANY PUZZLES YET!" dimensions:CGSizeMake(windowSize.width - 20 * fontMultiplier, windowSize.height / 2) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:32.0 * fontMultiplier];
-            noLevelsLabel.position = ccp(windowSize.width / 2, windowSize.height / 2);
-            [self addChild:noLevelsLabel];
+            // Set up previous/next buttons here to cycle thru files
+            selectedLevelIndex = 0;
+            [GameSingleton sharedGameSingleton].levelToLoad = [levels objectAtIndex:selectedLevelIndex];
         }
+        
+        [self updateStatusForPage:selectedLevelIndex];
+        
+        // Set up the solve button
+        CCMenuItemImage *solveButton = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"solve-button%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"solve-button%@.png", iPadSuffix] block:^(id sender) {
+            [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+            
+            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[GameScene scene]];
+            [[CCDirector sharedDirector] replaceScene:transition];
+        }];
+        
+        CCMenu *rightMenu = [CCMenu menuWithItems:solveButton, nil];
+        rightMenu.position = ccp(windowSize.width / 2, 50 * fontMultiplier + iPadOffset.y);
+        [self addChild:rightMenu];
+
 	}
 	return self;
 }
@@ -181,7 +204,7 @@
         // Create a layer
         CCLayer *layer = [CCLayer node];
         
-        CCSprite *previewBackground = [CCSprite spriteWithFile:@"preview-background.png"];
+        CCSprite *previewBackground = [CCSprite spriteWithFile:[NSString stringWithFormat:@"preview-background%@.png", iPadSuffix]];
         previewBackground.position = ccp(windowSize.width / 2, windowSize.height - 180 * fontMultiplier - iPadOffset.y);
         [layer addChild:previewBackground];
         
@@ -216,6 +239,20 @@
     return returnArray;
 }
 
+- (void)updateStatusForPage:(int)page
+{
+    NSDictionary *status = [levelStatus objectForKey:[GameSingleton sharedGameSingleton].levelToLoad];
+    if (status)
+    {
+        int time = [(NSNumber *)[status objectForKey:@"time"] intValue];
+        statusLabel.string = [NSString stringWithFormat:@"PUZZLE #%i\nBEST TIME: %02i:%02i\nATTEMPTS: %i", page + 1, time / 60, time % 60, [status objectForKey:@"attempts"]];
+    }
+    else 
+    {
+        statusLabel.string = [NSString stringWithFormat:@"PUZZLE #%i\nBEST TIME: --:--\nATTEMPTS: 0", page + 1];
+    }
+}
+
 #pragma mark -
 #pragma mark CCScrollLayer delegate methods
 
@@ -230,6 +267,8 @@
     selectedLevelIndex = page;
     [GameSingleton sharedGameSingleton].levelToLoad = [levels objectAtIndex:selectedLevelIndex];
     
+    [self updateStatusForPage:page];
+    
     [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
 }
 
@@ -237,6 +276,7 @@
 {
     [levels release];
 //    [clues release];
+    [levelStatus release];
     
     [super dealloc];
 }

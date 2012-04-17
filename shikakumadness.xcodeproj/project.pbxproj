@@ -178,6 +178,9 @@
 		7D0648CA151CB4D10081B074 /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D06489C151CB4D10081B074 /* hit.wav */; };
 		7D0648CB151CB4D10081B074 /* mark.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D06489D151CB4D10081B074 /* mark.wav */; };
 		7D0648CC151CB4D10081B074 /* miss.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D06489E151CB4D10081B074 /* miss.wav */; };
+		7D07CCA3153D72A40041637E /* insolent-24.fnt in Resources */ = {isa = PBXBuildFile; fileRef = 7D07CCA1153D72A40041637E /* insolent-24.fnt */; };
+		7D07CCA4153D72A40041637E /* insolent-24.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D07CCA2153D72A40041637E /* insolent-24.png */; };
+		7D07CCA7153D7B650041637E /* copyright.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D07CCA6153D7B650041637E /* copyright.png */; };
 		7D17279C1524680F00F109FA /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D17279A152467F900F109FA /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7D17D6AA15382C0700A1C864 /* easy-puzzles.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D17D6A915382C0700A1C864 /* easy-puzzles.plist */; };
 		7D17D6AE15382D1700A1C864 /* beginner-puzzles.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D17D6AB15382D1700A1C864 /* beginner-puzzles.plist */; };
@@ -639,6 +642,9 @@
 		7D06489C151CB4D10081B074 /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
 		7D06489D151CB4D10081B074 /* mark.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = mark.wav; sourceTree = "<group>"; };
 		7D06489E151CB4D10081B074 /* miss.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = miss.wav; sourceTree = "<group>"; };
+		7D07CCA1153D72A40041637E /* insolent-24.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "insolent-24.fnt"; sourceTree = "<group>"; };
+		7D07CCA2153D72A40041637E /* insolent-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "insolent-24.png"; sourceTree = "<group>"; };
+		7D07CCA6153D7B650041637E /* copyright.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = copyright.png; sourceTree = "<group>"; };
 		7D17279A152467F900F109FA /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		7D17D6A915382C0700A1C864 /* easy-puzzles.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "easy-puzzles.plist"; sourceTree = "<group>"; };
 		7D17D6AB15382D1700A1C864 /* beginner-puzzles.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "beginner-puzzles.plist"; sourceTree = "<group>"; };
@@ -1236,6 +1242,8 @@
 		7D06486D151CB4D10081B074 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
+				7D07CCA1153D72A40041637E /* insolent-24.fnt */,
+				7D07CCA2153D72A40041637E /* insolent-24.png */,
 				7D06486E151CB4D10081B074 /* insolent.otf */,
 			);
 			name = fonts;
@@ -1246,6 +1254,7 @@
 			isa = PBXGroup;
 			children = (
 				7D064872151CB4D10081B074 /* buttons */,
+				7D07CCA6153D7B650041637E /* copyright.png */,
 				7DF2988815207B30008A08D8 /* preview-background-hd.png */,
 				7DF2988915207B30008A08D8 /* preview-background.png */,
 				7DF8482A1527171100037E75 /* difficulty-title-hd.png */,
@@ -1813,6 +1822,9 @@
 				7D17D79115382DB400A1C864 /* medium_7.json in Resources */,
 				7D17D79215382DB400A1C864 /* medium_8.json in Resources */,
 				7D17D79315382DB400A1C864 /* medium_9.json in Resources */,
+				7D07CCA3153D72A40041637E /* insolent-24.fnt in Resources */,
+				7D07CCA4153D72A40041637E /* insolent-24.png in Resources */,
+				7D07CCA7153D7B650041637E /* copyright.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
