@@ -129,13 +129,16 @@
     }
     
     // Set up the dictionary that stores best times, etc. for the first time
-    NSMutableDictionary *levelStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"levelStatus"];
-    if (!levelStatus)
-    {
-        levelStatus = [NSMutableDictionary dictionary];
-        [[NSUserDefaults standardUserDefaults] setObject:levelStatus forKey:@"levelStatus"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
+//    NSMutableDictionary *levelStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"levelStatus"];
+//    if (!levelStatus)
+//    {
+//        levelStatus = [NSMutableDictionary dictionary];
+//        [[NSUserDefaults standardUserDefaults] setObject:levelStatus forKey:@"levelStatus"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+//    }
+    
+    [[NSUserDefaults standardUserDefaults] registerDefaults:[NSMutableDictionary dictionaryWithObject:[NSMutableDictionary dictionary] forKey:@"levelStatus"]];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
 	// Rotation controlled by UIViewController
 	[director setDeviceOrientation:kCCDeviceOrientationPortrait];

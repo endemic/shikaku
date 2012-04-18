@@ -1,8 +1,5 @@
 TODO
 ====
-
-* Finish implementing the best time feature (TEST)
-* Add a # of attempts counter (TEST)
 * Have squares change color or opacity when correct size
 * Re-program "store" scene to fetch/display items correctly
 * Create some music

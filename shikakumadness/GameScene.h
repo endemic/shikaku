@@ -14,6 +14,7 @@
 #import "SimpleAudioEngine.h"
 #import "TitleScene.h"
 #import "GameSingleton.h"
+#import "CCMenuItemImageWithLabel.h"
 
 // GameScene
 @interface GameScene : CCLayer

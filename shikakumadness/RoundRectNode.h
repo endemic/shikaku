@@ -35,6 +35,7 @@
     int area;
     int blockSize;
     float radius;
+    BOOL highlight;
     
     ccColor4B borderColor;
     ccColor4B fillColor;
@@ -49,6 +50,7 @@
 @property (nonatomic,assign) int area;
 @property (nonatomic,assign) int blockSize;
 @property (nonatomic,assign) float radius;
+@property (nonatomic,assign) BOOL highlight;
 @property (nonatomic,assign) ccColor4B borderColor;
 @property (nonatomic,assign) ccColor4B fillColor;
 @property (nonatomic,assign) float borderWidth;

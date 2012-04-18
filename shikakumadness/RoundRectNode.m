@@ -30,7 +30,7 @@
 
 @implementation RoundRectNode
 
-@synthesize size, area, blockSize, radius, borderWidth, cornerSegments, borderColor, fillColor;
+@synthesize size, area, blockSize, radius, highlight, borderWidth, cornerSegments, borderColor, fillColor;
 
 #define kappa 0.552228474
 
@@ -52,9 +52,8 @@
         radius = 10;
         borderWidth = 2;
         cornerSegments = 8;
-        // Orange
-//        borderColor = ccc4(227,102,18,200);    //opacity_/255
-//        fillColor = ccc4(227,102,18,50);
+        highlight = NO;
+
         // Red
         borderColor = ccc4(255,51,51,200);    //opacity_/255
         fillColor = ccc4(255,51,51,50);
@@ -114,6 +113,20 @@ void ccFillPoly( CGPoint *poli, int points, BOOL closePolygon )
 }
 
 -(void) draw {
+    
+    if (highlight)
+    {
+        // Red
+        borderColor = ccc4(255,51,51,200);    //opacity_/255
+        fillColor = ccc4(255,51,51,50);
+    }
+    else 
+    {
+        // Orange
+        borderColor = ccc4(227,102,18,200);    //opacity_/255
+        fillColor = ccc4(227,102,18,50);
+    }
+    
     int offset = 1;
 	CGPoint vertices[16];
     

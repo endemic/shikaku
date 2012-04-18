@@ -39,8 +39,7 @@
         if ([GameSingleton sharedGameSingleton].isPad)
         {
             iPadOffset = ccp(32, 16);
-            // Determine offset of grid
-            offset = ccp(32, 66);
+            offset = ccp(32, 66);   // Determine offset of grid
             blockSize = 64;
             iPadSuffix = @"-ipad";
             fontMultiplier = 2;
@@ -78,7 +77,7 @@
         [self addChild:grid z:0];
         
         // Add "reset" and "quit" buttons
-        CCMenuItemImage *resetButton = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"reset-button%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"reset-button%@.png", iPadSuffix] block:^(id sender) {
+        CCMenuItemImageWithLabel *resetButton = [CCMenuItemImageWithLabel buttonWithText:@"RESET" block:^(id sender) {
             // TODO: Show confirmation popup here
             // Remove squares from layer
             for (int i = 0; i < [squares count]; i++) 
@@ -93,7 +92,7 @@
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
         }];
         
-        CCMenuItemImage *quitButton = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"quit-button%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"quit-button%@.png", iPadSuffix] block:^(id sender) {
+        CCMenuItemImageWithLabel *quitButton = [CCMenuItemImageWithLabel buttonWithText:@"QUIT" block:^(id sender) {
             // TODO: Show confirmation popup here
             
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
@@ -207,22 +206,22 @@
         }
         
         // Increment the "attempts" counter and save to NSUserDefaults
-        NSMutableDictionary *levelStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"levelStatus"];
-        NSMutableDictionary *d = [levelStatus objectForKey:[GameSingleton sharedGameSingleton].levelToLoad];
-        if (d)
+        NSMutableDictionary *levelStatus = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"levelStatus"]];
+        NSMutableDictionary *d = [NSMutableDictionary dictionaryWithDictionary:[levelStatus objectForKey:[GameSingleton sharedGameSingleton].levelToLoad]];
+        
+        if ([d objectForKey:@"attempts"] != nil)
         {
             int attempts = [(NSNumber *)[d objectForKey:@"attempts"] intValue];
             [d setObject:[NSNumber numberWithInt:attempts + 1] forKey:@"attempts"];
         }
         else 
         {
-            int attempts = 0;
-            d = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:attempts + 1] forKey:@"attempts"];
+            d = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:1] forKey:@"attempts"];
         }
         
         // Re-save the current level's data into the main dictionary
-        [levelStatus setValue:d forKey:[GameSingleton sharedGameSingleton].levelToLoad];
-        
+        [levelStatus setObject:d forKey:[GameSingleton sharedGameSingleton].levelToLoad];
+
         // Sync the main dictionary back into NSUserDefaults
         [[NSUserDefaults standardUserDefaults] setObject:levelStatus forKey:@"levelStatus"];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -568,8 +567,8 @@
 - (void)win
 {
     // Save details about the completed time to NSUserDefaults
-    NSMutableDictionary *levelStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"levelStatus"];
-    NSMutableDictionary *d = [levelStatus objectForKey:[GameSingleton sharedGameSingleton].levelToLoad];
+    NSMutableDictionary *levelStatus = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"levelStatus"]];
+    NSMutableDictionary *d = [NSMutableDictionary dictionaryWithDictionary:[levelStatus objectForKey:[GameSingleton sharedGameSingleton].levelToLoad]];
     
     // If level was previously completed...
     if ([d objectForKey:@"time"])

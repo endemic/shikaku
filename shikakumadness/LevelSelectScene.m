@@ -118,7 +118,7 @@
         [self updateStatusForPage:selectedLevelIndex];
         
         // Set up the solve button
-        CCMenuItemImage *solveButton = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"solve-button%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"solve-button%@.png", iPadSuffix] block:^(id sender) {
+        CCMenuItemImageWithLabel *solveButton = [CCMenuItemImageWithLabel buttonWithText:@"SOLVE" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
             CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[GameScene scene]];
@@ -245,11 +245,12 @@
     if (status)
     {
         int time = [(NSNumber *)[status objectForKey:@"time"] intValue];
-        statusLabel.string = [NSString stringWithFormat:@"PUZZLE #%i\nBEST TIME: %02i:%02i\nATTEMPTS: %i", page + 1, time / 60, time % 60, [status objectForKey:@"attempts"]];
+        int attempts = [(NSNumber *)[status objectForKey:@"attempts"] intValue];
+        statusLabel.string = [NSString stringWithFormat:@"PUZZLE #%i\nBEST TIME: %02i:%02i\nATTEMPTS: %i\n             ", page + 1, time / 60, time % 60, attempts];
     }
     else 
     {
-        statusLabel.string = [NSString stringWithFormat:@"PUZZLE #%i\nBEST TIME: --:--\nATTEMPTS: 0", page + 1];
+        statusLabel.string = [NSString stringWithFormat:@"PUZZLE #%i\nBEST TIME: --:--\nATTEMPTS: 0\n             ", page + 1];
     }
 }
 

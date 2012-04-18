@@ -15,6 +15,7 @@
 #import "PlayerLevelSelectScene.h"
 #import "DifficultySelectScene.h"
 #import "AboutScene.h"
+#import "CCMenuItemImageWithLabel.h"
 
 @interface TitleScene : CCLayer 
 {
