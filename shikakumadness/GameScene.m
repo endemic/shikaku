@@ -453,10 +453,6 @@
 //    UITouch *touch = [touches anyObject];
 //	CGPoint touchPoint = [[CCDirector sharedDirector] convertToGL:[touch locationInView:[touch view]]];
     
-    // Create new roundrect w/ same props as "selection"
-    RoundRectNode *r = [RoundRectNode initWithRectSize:CGSizeMake(selection.size.width, selection.size.height)];
-    r.position = selection.position;
-    
     // "Eat" any squares that overlap the newly created one
 //    CGRect newRect = CGRectMake(r.position.x, r.position.y - r.size.height, r.size.width, r.size.height);
 //    for (int i = 0; i < [squares count]; i++) 
@@ -473,10 +469,13 @@
 //        }
 //    }
     
-    // If player just tapped, simply remove the tapped square
-//    if (CGPointEqualToPoint(touchStart, touchPoint) == NO)
+    // If player moved their finger enough to show a square, leave it visible
     if (selection.visible == YES)
     {
+        // Create new roundrect w/ same props as "selection"
+        RoundRectNode *r = [RoundRectNode initWithRectSize:CGSizeMake(selection.size.width, selection.size.height)];
+        r.position = selection.position;
+        
         // Add new square to layer
         [self addChild:r z:1];
         
@@ -484,7 +483,24 @@
         [squares addObject:r];
         
         // Determine if the square overlaps a clue, and the square's area is equal to the clue, change the color of the sprite
+        CGRect squareRect = CGRectMake(r.position.x, r.position.y - r.size.height, r.size.width, r.size.height);
         
+        for (Clue *c in clues)
+        {
+            // Create rects to check here
+            CGRect clueRect = CGRectMake(c.position.x - c.contentSize.width / 2, c.position.y - c.contentSize.height / 2, c.contentSize.width, c.contentSize.height);
+            if (CGRectIntersectsRect(squareRect, clueRect))
+            {
+                if ((r.size.width * r.size.height) / (r.blockSize * r.blockSize) == c.value)
+                {
+                    r.highlight = YES;
+                }
+                break;  // Only need to check the 1st clue intersected with
+            }
+        }
+        
+        
+        // Reset the "area" label
         areaLabel.string = @"AREA:\n   -";
     } 
     
@@ -566,8 +582,10 @@
  */
 - (void)win
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
     // Save details about the completed time to NSUserDefaults
-    NSMutableDictionary *levelStatus = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"levelStatus"]];
+    NSMutableDictionary *levelStatus = [NSMutableDictionary dictionaryWithDictionary:[defaults objectForKey:@"levelStatus"]];
     NSMutableDictionary *d = [NSMutableDictionary dictionaryWithDictionary:[levelStatus objectForKey:[GameSingleton sharedGameSingleton].levelToLoad]];
     
     // If level was previously completed...
@@ -584,14 +602,26 @@
     else 
     {
         [d setObject:[NSNumber numberWithInt:timer] forKey:@"time"];
+        
+        // Increment the "# ov completed levels" counter
+        NSMutableDictionary *completeCount = [NSMutableDictionary dictionaryWithDictionary:[defaults objectForKey:@"completeCount"]];
+        
+        // Determine which difficulty level to increment & get its' value
+        int count = [(NSNumber *)[completeCount objectForKey:[GameSingleton sharedGameSingleton].difficulty] intValue];
+        
+        // Increment
+        [completeCount setObject:[NSNumber numberWithInt:count + 1] forKey:[GameSingleton sharedGameSingleton].difficulty];
+        
+        // Re-save
+        [defaults setObject:completeCount forKey:@"completeCount"];
     }
     
     // Re-save the current level's data into the main dictionary
     [levelStatus setValue:d forKey:[GameSingleton sharedGameSingleton].levelToLoad];
     
     // Sync the main dictionary back into NSUserDefaults
-    [[NSUserDefaults standardUserDefaults] setObject:levelStatus forKey:@"levelStatus"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults setObject:levelStatus forKey:@"levelStatus"];
+    [defaults synchronize];
     
     CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
     [[CCDirector sharedDirector] replaceScene:transition];

@@ -1,7 +1,9 @@
 TODO
 ====
-* Have squares change color or opacity when correct size
-* Re-program "store" scene to fetch/display items correctly
+
+* Figure out a way to warn user if store is not available
+* Figure out a way to show how many puzzles a user has completed
+* Add "confirm" popups
 * Create some music
 * Program a tutorial
 

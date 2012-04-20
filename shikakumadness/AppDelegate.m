@@ -128,16 +128,10 @@
         [GameSingleton sharedGameSingleton].isRetina = YES;
     }
     
-    // Set up the dictionary that stores best times, etc. for the first time
-//    NSMutableDictionary *levelStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"levelStatus"];
-//    if (!levelStatus)
-//    {
-//        levelStatus = [NSMutableDictionary dictionary];
-//        [[NSUserDefaults standardUserDefaults] setObject:levelStatus forKey:@"levelStatus"];
-//        [[NSUserDefaults standardUserDefaults] synchronize];
-//    }
+    NSDictionary *defaultDefaults = [NSDictionary dictionaryWithObjectsAndKeys:[NSMutableDictionary dictionary], @"levelStatus", 
+                                                                                [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:0], @"beginner", [NSNumber numberWithInt:0], @"easy", [NSNumber numberWithInt:0], @"medium", [NSNumber numberWithInt:0], @"hard", nil], @"completeCount", nil];
     
-    [[NSUserDefaults standardUserDefaults] registerDefaults:[NSMutableDictionary dictionaryWithObject:[NSMutableDictionary dictionary] forKey:@"levelStatus"]];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:defaultDefaults];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
 	// Rotation controlled by UIViewController

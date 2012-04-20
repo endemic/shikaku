@@ -38,7 +38,7 @@
         // Determine offset of grid
         if ([GameSingleton sharedGameSingleton].isPad)
         {
-            iPadSuffix = @"-ipad";
+            iPadSuffix = @"-hd";
             fontMultiplier = 2;
             iPadOffset = ccp(64, 32);   // 64px gutters on left/right, 32px on top/bottom
         }
@@ -83,7 +83,7 @@
         [self addChild:topMenu];
         
         // Add a title graphic
-        CCSprite *title = [CCSprite spriteWithFile:@"difficulty-title.png"];
+        CCSprite *title = [CCSprite spriteWithFile:[NSString stringWithFormat:@"difficulty-title%@.png", iPadSuffix]];
         title.position = ccp(windowSize.width / 2, windowSize.height - (100 * fontMultiplier) - iPadOffset.y);
         [self addChild:title];
         
@@ -184,7 +184,7 @@
         beginnerLabel.position = ccp(beginnerButton.contentSize.width - (95 * fontMultiplier), 27 * fontMultiplier);
         [beginnerButton addChild:beginnerLabel];
         
-        beginnerLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", [self getPuzzleCountForDifficulty:@"beginner"]];
+        beginnerLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", [self getCompleteCountForDifficulty:@"beginner"]];
         
         easyLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@\ntap to buy", easyPrice] dimensions:CGSizeMake(easyButton.contentSize.width / 2, easyButton.contentSize.height / 2) alignment:CCTextAlignmentRight fontName:@"insolent.otf" fontSize:14.0];
         easyLabel.color = ccc3(0, 0, 0);
@@ -206,7 +206,7 @@
             CCLOG(@"User has easy receipt!");
             CCSprite *s = [CCSprite spriteWithFile:@"easy-button.png"];
             [easyButton setNormalImage:s];
-            easyLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", [self getPuzzleCountForDifficulty:@"easy"]];
+            easyLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", [self getCompleteCountForDifficulty:@"easy"]];
         }
         
         if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.medium.receipt"])
@@ -214,7 +214,7 @@
             CCLOG(@"User has medium receipt!");
             CCSprite *s = [CCSprite spriteWithFile:@"medium-button.png"];
             [mediumButton setNormalImage:s];
-            mediumLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", [self getPuzzleCountForDifficulty:@"medium"]];
+            mediumLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", [self getCompleteCountForDifficulty:@"medium"]];
         }
         
         if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.hard.receipt"])
@@ -222,7 +222,7 @@
             CCLOG(@"User has hard receipt!");
             CCSprite *s = [CCSprite spriteWithFile:@"hard-button.png"];
             [hardButton setNormalImage:s];
-            hardLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", [self getPuzzleCountForDifficulty:@"hard"]];
+            hardLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", [self getCompleteCountForDifficulty:@"hard"]];
         }
         
         CCMenu *difficultyMenu = [CCMenu menuWithItems:beginnerButton, easyButton, mediumButton, hardButton, nil];
@@ -253,18 +253,21 @@
             // Change graphic on the "easy" button
             CCSprite *s = [CCSprite spriteWithFile:@"easy-button.png"];
             [easyButton setNormalImage:s];
+            easyLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", 0];
         }
         else if ([productId isEqualToString:@"com.ganbarugames.shikakumadness.medium"])
         {
             // Change graphic on the "medium" button
             CCSprite *s = [CCSprite spriteWithFile:@"medium-button.png"];
             [mediumButton setNormalImage:s];
+            mediumLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", 0];
         }
         else if ([productId isEqualToString:@"com.ganbarugames.shikakumadness.hard"])
         {
             // Change graphic on the "hard" button
             CCSprite *s = [CCSprite spriteWithFile:@"hard-button.png"];
             [hardButton setNormalImage:s];
+            hardLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", 0];
         }
         
     }
@@ -286,17 +289,16 @@
     }
 }
 
-- (int)getPuzzleCountForDifficulty:(NSString *)difficulty
+// Return 
+- (int)getCompleteCountForDifficulty:(NSString *)difficulty
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [[paths objectAtIndex:0] stringByAppendingPathComponent:difficulty];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *completeCount = [defaults objectForKey:@"completeCount"];
     
-    NSError *error;
-    NSArray *directoryContent = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:&error];
-    
-    //    NSLog(@"%@", documentsDirectory);
-    return [directoryContent count];
+    return [(NSNumber *)[completeCount objectForKey:difficulty] intValue];
 }
+
+#pragma mark -
 
 - (void)dealloc
 {

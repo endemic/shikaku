@@ -30,6 +30,12 @@
 {
     NSString *iPadSuffix = @"";
     int fontMultiplier = 1;
+
+    if ([GameSingleton sharedGameSingleton].isPad)
+    {
+        iPadSuffix = @"-hd";
+        fontMultiplier = 2;
+    }
     
     // Create button
     CCMenuItemImage *item = [self itemFromNormalImage:[NSString stringWithFormat:@"button-background%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"button-background-selected%@.png", iPadSuffix] disabledImage:nil block:block];

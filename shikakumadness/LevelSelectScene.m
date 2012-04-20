@@ -37,7 +37,7 @@
         // Determine offset of grid
         if ([GameSingleton sharedGameSingleton].isPad)
         {
-            iPadSuffix = @"-ipad";
+            iPadSuffix = @"-hd";
             fontMultiplier = 2;
             previewBlockSize = 40;
             iPadOffset = ccp(64, 32);   // 64px gutters on left/right, 32px on top/bottom
