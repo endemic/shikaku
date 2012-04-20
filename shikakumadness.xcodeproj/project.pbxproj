@@ -306,6 +306,13 @@
 		7D5C137E151DD6650094AAB4 /* LevelSelectScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D5C137D151DD6650094AAB4 /* LevelSelectScene.m */; };
 		7D840729152BE6C700321943 /* CCScrollLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D840727152BE6C700321943 /* CCScrollLayer.m */; };
 		7D84072A152BE6C700321943 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 7D840728152BE6C700321943 /* README.md */; };
+		7D951ADD1541F13A00117F52 /* ModalAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D951AD61541F13A00117F52 /* ModalAlert.m */; };
+		7D951AE21541FC3400117F52 /* modal-background-hd-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D951ADF1541FC3400117F52 /* modal-background-hd-ipad.png */; };
+		7D951AE31541FC3400117F52 /* modal-background-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D951AE01541FC3400117F52 /* modal-background-hd.png */; };
+		7D951AE41541FC3400117F52 /* modal-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D951AE11541FC3400117F52 /* modal-background.png */; };
+		7D951AE81541FC4500117F52 /* modal-button-hd-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D951AE51541FC4500117F52 /* modal-button-hd-ipad.png */; };
+		7D951AE91541FC4500117F52 /* modal-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D951AE61541FC4500117F52 /* modal-button-hd.png */; };
+		7D951AEA1541FC4500117F52 /* modal-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D951AE71541FC4500117F52 /* modal-button.png */; };
 		7DD02920153EC3060013E673 /* button-background-hd-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DD0291A153EC3060013E673 /* button-background-hd-ipad.png */; };
 		7DD02921153EC3060013E673 /* button-background-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DD0291B153EC3060013E673 /* button-background-hd.png */; };
 		7DD02922153EC3060013E673 /* button-background-selected-hd-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DD0291C153EC3060013E673 /* button-background-selected-hd-ipad.png */; };
@@ -781,6 +788,14 @@
 		7D840726152BE6C700321943 /* CCScrollLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCScrollLayer.h; sourceTree = "<group>"; };
 		7D840727152BE6C700321943 /* CCScrollLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCScrollLayer.m; sourceTree = "<group>"; };
 		7D840728152BE6C700321943 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		7D951AD51541F13A00117F52 /* ModalAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalAlert.h; sourceTree = "<group>"; };
+		7D951AD61541F13A00117F52 /* ModalAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalAlert.m; sourceTree = "<group>"; };
+		7D951ADF1541FC3400117F52 /* modal-background-hd-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "modal-background-hd-ipad.png"; sourceTree = "<group>"; };
+		7D951AE01541FC3400117F52 /* modal-background-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "modal-background-hd.png"; sourceTree = "<group>"; };
+		7D951AE11541FC3400117F52 /* modal-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "modal-background.png"; sourceTree = "<group>"; };
+		7D951AE51541FC4500117F52 /* modal-button-hd-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "modal-button-hd-ipad.png"; sourceTree = "<group>"; };
+		7D951AE61541FC4500117F52 /* modal-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "modal-button-hd.png"; sourceTree = "<group>"; };
+		7D951AE71541FC4500117F52 /* modal-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "modal-button.png"; sourceTree = "<group>"; };
 		7DD0291A153EC3060013E673 /* button-background-hd-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button-background-hd-ipad.png"; sourceTree = "<group>"; };
 		7DD0291B153EC3060013E673 /* button-background-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button-background-hd.png"; sourceTree = "<group>"; };
 		7DD0291C153EC3060013E673 /* button-background-selected-hd-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button-background-selected-hd-ipad.png"; sourceTree = "<group>"; };
@@ -887,6 +902,7 @@
 		7D064687151CB29D0081B074 /* shikakumadness */ = {
 			isa = PBXGroup;
 			children = (
+				7D951ACE1541F13A00117F52 /* cocos2dAlerts */,
 				7D840725152BE6C700321943 /* CCScrollLayer */,
 				7D5C137A151DD5840094AAB4 /* Misc. Classes */,
 				7D0648CD151CB67F0081B074 /* GameKit/StoreKit */,
@@ -904,8 +920,6 @@
 				7D17D7951538335100A1C864 /* PlayerLevelSelectScene.m */,
 				7D5C137C151DD6650094AAB4 /* LevelSelectScene.h */,
 				7D5C137D151DD6650094AAB4 /* LevelSelectScene.m */,
-				7DD27E8D153E189B001B2EFF /* CCMenuItemImageWithLabel.h */,
-				7DD27E8E153E189B001B2EFF /* CCMenuItemImageWithLabel.m */,
 				7D17D6A915382C0700A1C864 /* easy-puzzles.plist */,
 				7D17D6AB15382D1700A1C864 /* beginner-puzzles.plist */,
 				7D17D6AC15382D1700A1C864 /* hard-puzzles.plist */,
@@ -1271,6 +1285,9 @@
 			isa = PBXGroup;
 			children = (
 				7D064872151CB4D10081B074 /* buttons */,
+				7D951ADF1541FC3400117F52 /* modal-background-hd-ipad.png */,
+				7D951AE01541FC3400117F52 /* modal-background-hd.png */,
+				7D951AE11541FC3400117F52 /* modal-background.png */,
 				7D07CCA6153D7B650041637E /* copyright.png */,
 				7DF2988815207B30008A08D8 /* preview-background-hd.png */,
 				7DF2988915207B30008A08D8 /* preview-background.png */,
@@ -1297,6 +1314,9 @@
 		7D064872151CB4D10081B074 /* buttons */ = {
 			isa = PBXGroup;
 			children = (
+				7D951AE51541FC4500117F52 /* modal-button-hd-ipad.png */,
+				7D951AE61541FC4500117F52 /* modal-button-hd.png */,
+				7D951AE71541FC4500117F52 /* modal-button.png */,
 				7DD0291A153EC3060013E673 /* button-background-hd-ipad.png */,
 				7DD0291B153EC3060013E673 /* button-background-hd.png */,
 				7DD0291C153EC3060013E673 /* button-background-selected-hd-ipad.png */,
@@ -1564,6 +1584,8 @@
 		7D5C137A151DD5840094AAB4 /* Misc. Classes */ = {
 			isa = PBXGroup;
 			children = (
+				7DD27E8D153E189B001B2EFF /* CCMenuItemImageWithLabel.h */,
+				7DD27E8E153E189B001B2EFF /* CCMenuItemImageWithLabel.m */,
 				7D0647EF151CB3610081B074 /* Clue.h */,
 				7D0647F0151CB3610081B074 /* Clue.m */,
 				7D0647F7151CB3620081B074 /* LogoScene.h */,
@@ -1587,6 +1609,15 @@
 				7D840728152BE6C700321943 /* README.md */,
 			);
 			path = CCScrollLayer;
+			sourceTree = "<group>";
+		};
+		7D951ACE1541F13A00117F52 /* cocos2dAlerts */ = {
+			isa = PBXGroup;
+			children = (
+				7D951AD51541F13A00117F52 /* ModalAlert.h */,
+				7D951AD61541F13A00117F52 /* ModalAlert.m */,
+			);
+			path = cocos2dAlerts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1854,6 +1885,12 @@
 				7DD02923153EC3060013E673 /* button-background-selected-hd.png in Resources */,
 				7DD02924153EC3060013E673 /* button-background-selected.png in Resources */,
 				7DD02925153EC3060013E673 /* button-background.png in Resources */,
+				7D951AE21541FC3400117F52 /* modal-background-hd-ipad.png in Resources */,
+				7D951AE31541FC3400117F52 /* modal-background-hd.png in Resources */,
+				7D951AE41541FC3400117F52 /* modal-background.png in Resources */,
+				7D951AE81541FC4500117F52 /* modal-button-hd-ipad.png in Resources */,
+				7D951AE91541FC4500117F52 /* modal-button-hd.png in Resources */,
+				7D951AEA1541FC4500117F52 /* modal-button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1976,6 +2013,7 @@
 				7D840729152BE6C700321943 /* CCScrollLayer.m in Sources */,
 				7D17D7961538335100A1C864 /* PlayerLevelSelectScene.m in Sources */,
 				7DD27E8F153E189B001B2EFF /* CCMenuItemImageWithLabel.m in Sources */,
+				7D951ADD1541F13A00117F52 /* ModalAlert.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

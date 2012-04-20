@@ -15,6 +15,7 @@
 #import "TitleScene.h"
 #import "GameSingleton.h"
 #import "CCMenuItemImageWithLabel.h"
+#import "ModalAlert.h"
 
 // GameScene
 @interface GameScene : CCLayer

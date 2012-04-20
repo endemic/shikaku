@@ -78,27 +78,40 @@
         
         // Add "reset" and "quit" buttons
         CCMenuItemImageWithLabel *resetButton = [CCMenuItemImageWithLabel buttonWithText:@"RESET" block:^(id sender) {
-            // TODO: Show confirmation popup here
-            // Remove squares from layer
-            for (int i = 0; i < [squares count]; i++) 
-            {
-                RoundRectNode *r = [squares objectAtIndex:i];
-                [self removeChild:r cleanup:YES];
-            }
-            
-            // Remove from organizational array
-            [squares removeAllObjects];
+            // Show confirmation popup here
+            [ModalAlert Ask:@"RESET PUZZLE?" onLayer:self yesBlock:^{
+                // Remove squares from layer
+                for (int i = 0; i < [squares count]; i++) 
+                {
+                    RoundRectNode *r = [squares objectAtIndex:i];
+                    [self removeChild:r cleanup:YES];
+                }
+                
+                // Remove from organizational array
+                [squares removeAllObjects];
+                
+                 [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+            } noBlock:^{
+                [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+            }];
+
             
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
         }];
         
         CCMenuItemImageWithLabel *quitButton = [CCMenuItemImageWithLabel buttonWithText:@"QUIT" block:^(id sender) {
-            // TODO: Show confirmation popup here
+            // Show confirmation popup here
+            [ModalAlert Ask:@"QUIT PUZZLE?" onLayer:self yesBlock:^{                
+                [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+                
+                CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
+                [[CCDirector sharedDirector] replaceScene:transition];
+                
+            } noBlock:^{
+                [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+            }];
             
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
-            
-            CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
-            [[CCDirector sharedDirector] replaceScene:transition];
         }];
         
         CCMenu *menu = [CCMenu menuWithItems:quitButton, resetButton, nil];
@@ -623,8 +636,16 @@
     [defaults setObject:levelStatus forKey:@"levelStatus"];
     [defaults synchronize];
     
-    CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
-    [[CCDirector sharedDirector] replaceScene:transition];
+    // Unschedule timer
+    [self unschedule:@selector(updateTimer:)];
+    
+    // Show modal alert
+    [ModalAlert Tell:@"YOU WIN!" onLayer:self okBlock:^{
+        [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+        
+        CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
+        [[CCDirector sharedDirector] replaceScene:transition]; 
+    }];
 }
 
 /**
