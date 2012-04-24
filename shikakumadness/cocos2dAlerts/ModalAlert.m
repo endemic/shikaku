@@ -52,7 +52,7 @@
     
     id moveOut = [CCMoveTo actionWithDuration:0.4 position:ccp(windowSize.width / 2, windowSize.height / 1.5)];
 	id easeOut = [CCEaseBackIn actionWithAction:moveOut];
-	id fadeOut = [CCFadeOut actionWithDuration:0.3];
+	id fadeOut = [CCFadeTo actionWithDuration:0.3 opacity:0];
 	
 	id hide = [CCSpawn actions:easeOut, fadeOut, nil];
     
@@ -61,8 +61,8 @@
     
     // in parallel, fadeout and remove cover layer and execute block 
     // (note: you can't use CCFadeOut since we don't start at opacity 1!)
-    [coverLayer runAction:[CCSequence actions:
-                           [CCFadeTo actionWithDuration:kAnimationTime opacity:0], 
+    [coverLayer runAction:[CCSpawn actions:
+                           [CCFadeTo actionWithDuration:0.3 opacity:0], 
                            [CCCallBlock actionWithBlock:^{
                                 [coverLayer removeFromParentAndCleanup:YES];
                                 if (block) block();
@@ -155,15 +155,15 @@
 
 
 + (void) Ask: (NSString *) question onLayer: (CCLayer *) layer yesBlock: (void(^)())yesBlock noBlock: (void(^)())noBlock {
-    [self ShowAlert:question onLayer:layer withOpt1:@"Yes" withOpt1Block:yesBlock andOpt2:@"No" withOpt2Block:noBlock];
+    [self ShowAlert:question onLayer:layer withOpt1:@"YES" withOpt1Block:yesBlock andOpt2:@"NO" withOpt2Block:noBlock];
 }
 
 + (void) Confirm: (NSString *) question onLayer: (CCLayer *) layer okBlock: (void(^)())okBlock cancelBlock: (void(^)())cancelBlock {
-    [self ShowAlert:question onLayer:layer withOpt1:@"Ok" withOpt1Block: okBlock andOpt2:@"Cancel" withOpt2Block:cancelBlock];
+    [self ShowAlert:question onLayer:layer withOpt1:@"OK" withOpt1Block: okBlock andOpt2:@"CANCEL" withOpt2Block:cancelBlock];
 }
 
 + (void) Tell: (NSString *) statement onLayer: (CCLayer *) layer okBlock: (void(^)())okBlock {
-    [self ShowAlert:statement onLayer:layer withOpt1:@"Ok" withOpt1Block: okBlock andOpt2:nil withOpt2Block:nil];
+    [self ShowAlert:statement onLayer:layer withOpt1:@"OK" withOpt1Block: okBlock andOpt2:nil withOpt2Block:nil];
 }
 
 @end

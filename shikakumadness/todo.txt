@@ -1,30 +1,11 @@
 TODO
 ====
 
+* Re-do fonts to have 40px (at 4x) drop shadow
 * Figure out a way to warn user if store is not available
-* Figure out a way to show how many puzzles a user has completed
-* Add "confirm" popups
+* Fix "confirm" popups to look/behave a bit better
 * Create some music
 * Program a tutorial
+* SHIP
 
-
-* Notes on icon
-    1. Border needs to be thicker
-    3. More color... the white background is too flat
-    5. Make clue backgrounds lighter so they don't look black
-
-FUTURE RELEASES
-===============
-* Implement level editor/sharing feature
-    * Implement data verification on Rails app
-    * Default-shikaku.png & Default-shikaku@2x.png is the convention for custom launch screens when using URLs to load content
-
-* More IAP packs
-
-* Create auto-generating puzzle algorithm
-    * Investigate "packing" algorithms
-    * Should create puzzles of a specified difficulty
-    * Need more ideas of what constitutes an easy/hard puzzle
-        * Easy puzzles have obvious hints in the corners
-        * Easy puzzles have odd hint numbers, such as 3, 5, 7, 9
-        * Easy puzzles have clues grouped closer together
+Drop shadow: 40px (4x) 20px (2x) 10px (1x)

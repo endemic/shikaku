@@ -10,11 +10,20 @@
 #import "cocos2d.h"
 #import "GameSingleton.h"
 
-@interface CCMenuItemImageWithLabel : CCMenuItemImage 
+@interface CCMenuItemImageWithLabel : CCMenuItemImage
 {
+    // Label w/ text on the button
+    CCLabelTTF *label;
+    
+    NSString *iPadSuffix;
+    int fontMultiplier;
 }
 
+@property (nonatomic, retain) CCLabelTTF *label;
+@property (nonatomic, retain) NSString *iPadSuffix;
+@property (nonatomic) int fontMultipler;
+
 + (id)itemFromNormalImage:(NSString *)value selectedImage:(NSString *)value2 text:(NSString *)text block:(void(^)(id sender))block;
-+ (id)buttonWithText:(NSString *)text block:(void(^)(id sender))block;
++ (id)itemWithText:(NSString *)text block:(void(^)(id sender))block;
 
 @end

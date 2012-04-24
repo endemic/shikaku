@@ -77,7 +77,7 @@
         [self addChild:grid z:0];
         
         // Add "reset" and "quit" buttons
-        CCMenuItemImageWithLabel *resetButton = [CCMenuItemImageWithLabel buttonWithText:@"RESET" block:^(id sender) {
+        CCMenuItemImageWithLabel *resetButton = [CCMenuItemImageWithLabel itemWithText:@"RESET" block:^(id sender) {
             // Show confirmation popup here
             [ModalAlert Ask:@"RESET PUZZLE?" onLayer:self yesBlock:^{
                 // Remove squares from layer
@@ -99,7 +99,7 @@
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
         }];
         
-        CCMenuItemImageWithLabel *quitButton = [CCMenuItemImageWithLabel buttonWithText:@"QUIT" block:^(id sender) {
+        CCMenuItemImageWithLabel *quitButton = [CCMenuItemImageWithLabel itemWithText:@"QUIT" block:^(id sender) {
             // Show confirmation popup here
             [ModalAlert Ask:@"QUIT PUZZLE?" onLayer:self yesBlock:^{                
                 [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];

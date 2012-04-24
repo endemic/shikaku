@@ -1,0 +1,15 @@
+FUTURE RELEASES
+===============
+* Implement level editor/sharing feature
+    * Implement data verification on Rails app
+    * Default-shikaku.png & Default-shikaku@2x.png is the convention for custom launch screens when using URLs to load content
+
+* More IAP packs
+
+* Create auto-generating puzzle algorithm
+    * Investigate "packing" algorithms
+    * Should create puzzles of a specified difficulty
+    * Need more ideas of what constitutes an easy/hard puzzle
+        * Easy puzzles have obvious hints in the corners
+        * Easy puzzles have odd hint numbers, such as 3, 5, 7, 9
+        * Easy puzzles have clues grouped closer together

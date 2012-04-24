@@ -118,7 +118,7 @@
         [self updateStatusForPage:selectedLevelIndex];
         
         // Set up the solve button
-        CCMenuItemImageWithLabel *solveButton = [CCMenuItemImageWithLabel buttonWithText:@"SOLVE" block:^(id sender) {
+        CCMenuItemImageWithLabel *solveButton = [CCMenuItemImageWithLabel itemWithText:@"SOLVE" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
             CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[GameScene scene]];

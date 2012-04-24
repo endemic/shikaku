@@ -59,7 +59,7 @@
         [self addChild:title];
         
         // Create some buttons
-        CCMenuItemImageWithLabel *playButton = [CCMenuItemImageWithLabel buttonWithText:@"PLAY" block:^(id sender) {
+        CCMenuItemImageWithLabel *playButton = [CCMenuItemImageWithLabel itemWithText:@"PLAY" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
             CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[DifficultySelectScene scene]];
@@ -73,7 +73,7 @@
 //            [[CCDirector sharedDirector] replaceScene:transition];
 //        }];
         
-        CCMenuItemImageWithLabel *helpButton = [CCMenuItemImageWithLabel buttonWithText:@"HELP" block:^(id sender) {
+        CCMenuItemImageWithLabel *helpButton = [CCMenuItemImageWithLabel itemWithText:@"HELP" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
             [GameSingleton sharedGameSingleton].levelToLoad = @"tutorial.json"; // Load the tutorial
@@ -82,7 +82,7 @@
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
 
-        CCMenuItemImageWithLabel *aboutButton = [CCMenuItemImageWithLabel buttonWithText:@"ABOUT" block:^(id sender) {
+        CCMenuItemImageWithLabel *aboutButton = [CCMenuItemImageWithLabel itemWithText:@"ABOUT" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
             CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[AboutScene scene]];
