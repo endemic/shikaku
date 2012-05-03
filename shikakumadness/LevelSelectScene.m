@@ -69,11 +69,11 @@
         [levelStatus retain];
         
         // Set up "back" button
-        CCMenuItemImage *backButton = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"back-button%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"back-button%@.png", iPadSuffix] block:^(id sender) {
+        CCMenuItemImageWithLabel *backButton = [CCMenuItemImageWithLabel itemWithText:@"BACK" size:@"small" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
             CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[TitleScene scene]];
-            [[CCDirector sharedDirector] replaceScene:transition];
+            [[CCDirector sharedDirector] replaceScene:transition];            
         }];
 
         CCMenu *topMenu = [CCMenu menuWithItems:backButton, nil];

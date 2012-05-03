@@ -12,6 +12,7 @@
 #import "LevelSelectScene.h"
 #import "GameSingleton.h"
 #import "StoreKitSingleton.h"
+#import "CCMenuItemImageWithLabel.h"
 
 @interface DifficultySelectScene : CCLayer 
 {
@@ -19,7 +20,7 @@
     SKProduct *easyProduct, *mediumProduct, *hardProduct;
     
     // Store buttons in order to change their contents based on purchase
-    CCMenuItemImage *easyButton, *mediumButton, *hardButton;
+    CCMenuItemImageWithLabel *easyButton, *mediumButton, *hardButton;
     
     // Either show the cost for the item, or else show how many levels completed
     CCLabelTTF *beginnerLabel, *easyLabel, *mediumLabel, *hardLabel;

@@ -14,9 +14,6 @@
 {
     // Label w/ text on the button
     CCLabelTTF *label;
-    
-    NSString *iPadSuffix;
-    int fontMultiplier;
 }
 
 @property (nonatomic, retain) CCLabelTTF *label;
@@ -25,5 +22,6 @@
 
 + (id)itemFromNormalImage:(NSString *)value selectedImage:(NSString *)value2 text:(NSString *)text block:(void(^)(id sender))block;
 + (id)itemWithText:(NSString *)text block:(void(^)(id sender))block;
++ (id)itemWithText:(NSString *)text size:(NSString *)size block:(void(^)(id sender))block;
 
 @end

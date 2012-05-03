@@ -53,28 +53,24 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeKitSuccess:) name:@"StoreKitSuccess" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeKitFailure:) name:@"StoreKitFailure" object:nil];
         
-        // Set up text-based menu items
-//        [CCMenuItemFont setFontName:@"insolent.otf"];
-//        [CCMenuItemFont setFontSize:24.0];
-        
         // Add background
         CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
         background.position = ccp(windowSize.width / 2, windowSize.height / 2);
         [self addChild:background];
         
         // Set up "back" & "restore" buttons
-        CCMenuItemImage *backButton = [CCMenuItemImage itemFromNormalImage:@"back-button.png" selectedImage:@"back-button.png" block:^(id sender) {
+        CCMenuItemImageWithLabel *backButton = [CCMenuItemImageWithLabel itemWithText:@"BACK" size:@"small" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
             CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[TitleScene scene]];
-            [[CCDirector sharedDirector] replaceScene:transition];
+            [[CCDirector sharedDirector] replaceScene:transition];            
         }];
         
-        CCMenuItemImage *restoreButton = [CCMenuItemImage itemFromNormalImage:@"restore-button.png" selectedImage:@"restore-button.png" block:^(id sender) {
+        CCMenuItemImageWithLabel *restoreButton = [CCMenuItemImageWithLabel itemWithText:@"RESTORE" size:@"small" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
             // Init restoreCompletedTransactions
-            [[StoreKitSingleton sharedStoreKitSingleton] restore];
+            [[StoreKitSingleton sharedStoreKitSingleton] restore];            
         }];
         
         CCMenu *topMenu = [CCMenu menuWithItems:backButton, restoreButton, nil];
@@ -88,14 +84,14 @@
         [self addChild:title];
         
         // Set up a menu based on products returned from the StoreKit singleton
-        CCMenuItemImage *beginnerButton = [CCMenuItemImage itemFromNormalImage:@"beginner-button.png" selectedImage:@"beginner-button.png" block:^(id sender) {
+        CCMenuItemImageWithLabel *beginnerButton = [CCMenuItemImageWithLabel itemWithText:@"BEGINNER" size:@"large" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
             // Set difficulty in singleton
             [GameSingleton sharedGameSingleton].difficulty = @"beginner";
             
             CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
-            [[CCDirector sharedDirector] replaceScene:transition];
+            [[CCDirector sharedDirector] replaceScene:transition];            
         }];
         
         // Iterate through the products to assign to local variables
@@ -127,7 +123,7 @@
         // Check for IAP receipts to "unlock" buttons
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        easyButton = [CCMenuItemImage itemFromNormalImage:@"easy-button-locked.png" selectedImage:@"easy-button-locked.png" block:^(id sender) {
+        easyButton = [CCMenuItemImageWithLabel itemWithText:@"EASY" size:@"large" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
             if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.easy.receipt"])
@@ -144,7 +140,7 @@
             }
         }];
         
-        mediumButton = [CCMenuItemImage itemFromNormalImage:@"medium-button-locked.png" selectedImage:@"medium-button-locked.png" block:^(id sender) {
+        mediumButton = [CCMenuItemImageWithLabel itemWithText:@"MEDIUM" size:@"large" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
             if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.medium.receipt"])
@@ -161,7 +157,7 @@
             }
         }];
         
-        hardButton = [CCMenuItemImage itemFromNormalImage:@"hard-button-locked.png" selectedImage:@"hard-button-locked.png" block:^(id sender) {
+        hardButton = [CCMenuItemImageWithLabel itemWithText:@"HARD" size:@"large" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
             if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.hard.receipt"])
@@ -204,24 +200,24 @@
         if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.easy.receipt"])
         {
             CCLOG(@"User has easy receipt!");
-            CCSprite *s = [CCSprite spriteWithFile:@"easy-button.png"];
-            [easyButton setNormalImage:s];
+//            CCSprite *s = [CCSprite spriteWithFile:@"easy-button.png"];
+//            [easyButton setNormalImage:s];
             easyLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", [self getCompleteCountForDifficulty:@"easy"]];
         }
         
         if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.medium.receipt"])
         {
             CCLOG(@"User has medium receipt!");
-            CCSprite *s = [CCSprite spriteWithFile:@"medium-button.png"];
-            [mediumButton setNormalImage:s];
+//            CCSprite *s = [CCSprite spriteWithFile:@"medium-button.png"];
+//            [mediumButton setNormalImage:s];
             mediumLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", [self getCompleteCountForDifficulty:@"medium"]];
         }
         
         if ([defaults objectForKey:@"com.ganbarugames.shikakumadness.hard.receipt"])
         {
             CCLOG(@"User has hard receipt!");
-            CCSprite *s = [CCSprite spriteWithFile:@"hard-button.png"];
-            [hardButton setNormalImage:s];
+//            CCSprite *s = [CCSprite spriteWithFile:@"hard-button.png"];
+//            [hardButton setNormalImage:s];
             hardLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", [self getCompleteCountForDifficulty:@"hard"]];
         }
         
