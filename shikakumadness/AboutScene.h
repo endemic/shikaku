@@ -11,13 +11,12 @@
 #import "GameSingleton.h"
 #import "TitleScene.h"
 
-@interface AboutScene : CCLayer 
+@interface AboutScene : CCLayer <UIAlertViewDelegate>
 {
-    // String to be appended to sprite filenames if running on iPad
-	NSString *iPadSuffix;
-	int fontMultiplier;
-    
     CGSize windowSize;
+    
+    // Adjust font sizes/UI placement based on if iPad/iPhone
+	int fontMultiplier;
     CGPoint iPadOffset;
 }
 

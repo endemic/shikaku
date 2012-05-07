@@ -54,7 +54,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeKitFailure:) name:@"StoreKitFailure" object:nil];
         
         // Add background
-        CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
+        CCSprite *background = [CCSprite spriteWithFile:@"background%@.png"];
         background.position = ccp(windowSize.width / 2, windowSize.height / 2);
         [self addChild:background];
         
@@ -79,7 +79,7 @@
         [self addChild:topMenu];
         
         // Add a title graphic
-        CCSprite *title = [CCSprite spriteWithFile:[NSString stringWithFormat:@"difficulty-title%@.png", iPadSuffix]];
+        CCSprite *title = [CCSprite spriteWithFile:@"difficulty-title.png"];
         title.position = ccp(windowSize.width / 2, windowSize.height - (100 * fontMultiplier) - iPadOffset.y);
         [self addChild:title];
         
@@ -175,24 +175,24 @@
         }];
         
         // Try to add text onto buttons here
-        beginnerLabel = [CCLabelTTF labelWithString:@"0/30\ncomplete" dimensions:CGSizeMake(beginnerButton.contentSize.width / 2, beginnerButton.contentSize.height / 2) alignment:CCTextAlignmentRight fontName:@"insolent.otf" fontSize:14.0];
+        beginnerLabel = [CCLabelTTF labelWithString:@"0/30\ncomplete" dimensions:CGSizeMake(beginnerButton.contentSize.width / 2, beginnerButton.contentSize.height / 2) alignment:CCTextAlignmentRight fontName:@"insolent.otf" fontSize:14.0 * fontMultiplier];
         beginnerLabel.color = ccc3(0, 0, 0);
         beginnerLabel.position = ccp(beginnerButton.contentSize.width - (95 * fontMultiplier), 27 * fontMultiplier);
         [beginnerButton addChild:beginnerLabel];
         
         beginnerLabel.string = [NSString stringWithFormat:@"%i/30\ncomplete", [self getCompleteCountForDifficulty:@"beginner"]];
         
-        easyLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@\ntap to buy", easyPrice] dimensions:CGSizeMake(easyButton.contentSize.width / 2, easyButton.contentSize.height / 2) alignment:CCTextAlignmentRight fontName:@"insolent.otf" fontSize:14.0];
+        easyLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@\ntap to buy", easyPrice] dimensions:CGSizeMake(easyButton.contentSize.width / 2, easyButton.contentSize.height / 2) alignment:CCTextAlignmentRight fontName:@"insolent.otf" fontSize:14.0 * fontMultiplier];
         easyLabel.color = ccc3(0, 0, 0);
         easyLabel.position = ccp(easyButton.contentSize.width - (95 * fontMultiplier), 27 * fontMultiplier);
         [easyButton addChild:easyLabel];
         
-        mediumLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@\ntap to buy", mediumPrice] dimensions:CGSizeMake(mediumButton.contentSize.width / 2, mediumButton.contentSize.height / 2) alignment:CCTextAlignmentRight fontName:@"insolent.otf" fontSize:14.0];
+        mediumLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@\ntap to buy", mediumPrice] dimensions:CGSizeMake(mediumButton.contentSize.width / 2, mediumButton.contentSize.height / 2) alignment:CCTextAlignmentRight fontName:@"insolent.otf" fontSize:14.0 * fontMultiplier];
         mediumLabel.color = ccc3(0, 0, 0);
         mediumLabel.position = ccp(easyButton.contentSize.width - (95 * fontMultiplier), 27 * fontMultiplier);
         [mediumButton addChild:mediumLabel];
         
-        hardLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@\ntap to buy", hardPrice] dimensions:CGSizeMake(hardButton.contentSize.width / 2, hardButton.contentSize.height / 2) alignment:CCTextAlignmentRight fontName:@"insolent.otf" fontSize:14.0];
+        hardLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@\ntap to buy", hardPrice] dimensions:CGSizeMake(hardButton.contentSize.width / 2, hardButton.contentSize.height / 2) alignment:CCTextAlignmentRight fontName:@"insolent.otf" fontSize:14.0 * fontMultiplier];
         hardLabel.color = ccc3(0, 0, 0);
         hardLabel.position = ccp(hardButton.contentSize.width - (95 * fontMultiplier), 27 * fontMultiplier);
         [hardButton addChild:hardLabel];

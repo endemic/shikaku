@@ -54,7 +54,7 @@
 	
 	// Allows player to progress through the tutorial instructions
 	CCMenu *tutorialMenu;
-	CCMenuItemImage *tutorialButton;
+	CCMenuItemImageWithLabel *tutorialButton;
 	
 	// Highlights correct answers to progress thru tutorial
 	CCSprite *tutorialHighlight;
@@ -64,7 +64,6 @@
     CGPoint offset;
     
     // Info about platform
-    NSString *iPadSuffix;
     int fontMultiplier;
     CGPoint iPadOffset;
 }

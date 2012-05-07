@@ -37,24 +37,22 @@
         // Determine offset of grid
         if ([GameSingleton sharedGameSingleton].isPad)
         {
-            iPadSuffix = @"-hd";
             fontMultiplier = 2;
             iPadOffset = ccp(64, 32);
         }
         else 
         {
-            iPadSuffix = @"";
             fontMultiplier = 1;
             iPadOffset = ccp(0, 0);
         }
         
         // Add background
-        CCSprite *background = [CCSprite spriteWithFile:[NSString stringWithFormat:@"background%@.png", iPadSuffix]];
+        CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
         background.position = ccp(windowSize.width / 2, windowSize.height / 2);
         [self addChild:background];
         
         // Add title image
-        CCSprite *title = [CCSprite spriteWithFile:[NSString stringWithFormat:@"logo%@.png", iPadSuffix]];
+        CCSprite *title = [CCSprite spriteWithFile:@"logo.png"];
         title.position = ccp(windowSize.width / 2, windowSize.height - title.contentSize.height);
         [self addChild:title];
         
@@ -105,7 +103,8 @@
 //        [self addChild:rightMenu];
         
         // Add copyright text
-        CCSprite *copyright = [CCSprite spriteWithFile:[NSString stringWithFormat:@"copyright%@.png", iPadSuffix]];
+        CCLabelBMFont *copyright = [CCLabelBMFont labelWithString:@"(c)2012 GANBARU GAMES" fntFile:@"insolent-24.fnt" width:windowSize.width alignment:CCTextAlignmentCenter];
+//        CCSprite *copyright = [CCSprite spriteWithFile:[NSString stringWithFormat:@"copyright%@.png", iPadSuffix]];
         copyright.position = ccp(windowSize.width / 2, copyright.contentSize.height + iPadOffset.y);
         [self addChild:copyright];
 	}

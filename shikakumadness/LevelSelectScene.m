@@ -51,7 +51,7 @@
         }
         
         // Add background
-        CCSprite *background = [CCSprite spriteWithFile:[NSString stringWithFormat:@"background%@.png", iPadSuffix]];
+        CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
         background.position = ccp(windowSize.width / 2, windowSize.height / 2);
         [self addChild:background];
         
@@ -81,7 +81,7 @@
         [self addChild:topMenu];
         
         // Create "status" label
-        statusLabel = [CCLabelBMFont labelWithString:@"" fntFile:[NSString stringWithFormat:@"insolent-24%@.fnt", iPadSuffix] width:windowSize.width / 1.2 alignment:CCTextAlignmentLeft];
+        statusLabel = [CCLabelBMFont labelWithString:@"" fntFile:@"insolent-24.fnt" width:windowSize.width / 1.2 alignment:CCTextAlignmentCenter];
         statusLabel.position = ccp(windowSize.width / 2, windowSize.height / 4);
         [self addChild:statusLabel];
         
@@ -204,7 +204,7 @@
         // Create a layer
         CCLayer *layer = [CCLayer node];
         
-        CCSprite *previewBackground = [CCSprite spriteWithFile:[NSString stringWithFormat:@"preview-background%@.png", iPadSuffix]];
+        CCSprite *previewBackground = [CCSprite spriteWithFile:@"preview-background%@.png"];
         previewBackground.position = ccp(windowSize.width / 2, windowSize.height - 180 * fontMultiplier - iPadOffset.y);
         [layer addChild:previewBackground];
         
@@ -229,7 +229,7 @@
             
             Clue *c = [Clue clueWithNumber:value];
             c.position = ccp(x * previewBlockSize + previewBlockSize / 2, y * previewBlockSize + previewBlockSize / 2);
-            c.scale = 0.625;
+            c.scale = 0.63;
             [previewBackground addChild:c];
         }
         

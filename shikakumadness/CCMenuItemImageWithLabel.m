@@ -61,7 +61,7 @@
     }
     
     // Create button
-    CCMenuItemImageWithLabel *item = [self itemFromNormalImage:[NSString stringWithFormat:@"button-background%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"button-background-selected%@.png", iPadSuffix] disabledImage:nil block:block];
+    CCMenuItemImageWithLabel *item = [self itemFromNormalImage:@"button-background.png" selectedImage:@"button-background-selected.png" disabledImage:nil block:block];
     
     // Create label + append to button
     item.label = [CCLabelTTF labelWithString:text dimensions:CGSizeMake(item.contentSize.width, item.contentSize.height) alignment:CCTextAlignmentCenter fontName:kFontName fontSize:kFontSize * fontMultiplier];
@@ -89,20 +89,20 @@
     
     if ([size isEqualToString:@"small"])
     {
-        item = [self itemFromNormalImage:[NSString stringWithFormat:@"small-button-background%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"small-button-background-selected%@.png", iPadSuffix] disabledImage:nil block:block];
+        item = [self itemFromNormalImage:@"small-button-background.png" selectedImage:@"small-button-background-selected.png" disabledImage:nil block:block];
         item.label = [CCLabelTTF labelWithString:text dimensions:CGSizeMake(item.contentSize.width, item.contentSize.height) alignment:CCTextAlignmentCenter fontName:kFontName fontSize:14 * fontMultiplier];
         item.label.position = ccp(item.contentSize.width / 2.1, item.contentSize.height / 10);
     }
     else if ([size isEqualToString:@"large"])
     {
-        item = [self itemFromNormalImage:[NSString stringWithFormat:@"large-button-background%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"large-button-background-selected%@.png", iPadSuffix] disabledImage:nil block:block];
+        item = [self itemFromNormalImage:@"large-button-background.png" selectedImage:@"large-button-background-selected.png" disabledImage:nil block:block];
         item.label = [CCLabelTTF labelWithString:text dimensions:CGSizeMake(item.contentSize.width, item.contentSize.height) alignment:CCTextAlignmentLeft fontName:kFontName fontSize:26 * fontMultiplier];
         item.label.position = ccp(item.contentSize.width / 1.8, item.contentSize.height / 8);
     }
     // Default
     else
     {
-        item = [self itemFromNormalImage:[NSString stringWithFormat:@"button-background%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"button-background-selected%@.png", iPadSuffix] disabledImage:nil block:block];
+        item = [self itemFromNormalImage:@"button-background.png" selectedImage:@"button-background-selected.png" disabledImage:nil block:block];
         item.label = [CCLabelTTF labelWithString:text dimensions:CGSizeMake(item.contentSize.width, item.contentSize.height) alignment:CCTextAlignmentCenter fontName:kFontName fontSize:kFontSize * fontMultiplier];
         item.label.position = ccp(item.contentSize.width / 2.1, item.contentSize.height / 8);
     }

@@ -20,7 +20,6 @@
 @interface TitleScene : CCLayer 
 {
     // String to be appended to sprite filenames if running on iPad
-	NSString *iPadSuffix;
 	int fontMultiplier;
     
     CGSize windowSize;

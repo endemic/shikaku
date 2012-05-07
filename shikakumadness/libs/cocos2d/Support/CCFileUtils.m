@@ -36,7 +36,7 @@ static NSFileManager *__localFileManager=nil;
 #ifdef  __IPHONE_OS_VERSION_MAX_ALLOWED
 
 static NSString *__suffixiPhoneRetinaDisplay =@"-hd";
-static NSString *__suffixiPad =@"-ipad";
+static NSString *__suffixiPad =@"-hd";
 static NSString *__suffixiPadRetinaDisplay =@"-ipadhd";
 
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED

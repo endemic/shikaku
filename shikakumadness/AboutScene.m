@@ -37,13 +37,11 @@
         // Determine offset of grid
         if ([GameSingleton sharedGameSingleton].isPad)
         {
-            iPadSuffix = @"-ipad";
             fontMultiplier = 2;
             iPadOffset = ccp(64, 32);
         }
         else 
         {
-            iPadSuffix = @"";
             fontMultiplier = 1;
             iPadOffset = ccp(0, 0);
         }
@@ -65,11 +63,94 @@
         topMenu.position = ccp((55 * fontMultiplier) + iPadOffset.x, windowSize.height - (20 * fontMultiplier) - iPadOffset.y);
         [self addChild:topMenu];
         
-        CCLabelTTF *credits = [CCLabelTTF labelWithString:@"Designed and Programmed by Nathan Demick\n\nShikaku concept by Nikoli" dimensions:CGSizeMake(windowSize.width / 1.5, windowSize.height / 2) alignment:CCTextAlignmentCenter fontName:@"insolent.otf" fontSize:20.0];
-        credits.position = ccp(windowSize.width / 2, windowSize.height / 2);
+        CCLabelBMFont *credits = [CCLabelBMFont labelWithString:@"Designed and Programmed by Nathan Demick\n\nShikaku rules\nby Nikoli" fntFile:@"insolent-24.fnt" width:windowSize.width / 1.25 alignment:CCTextAlignmentCenter];
+        credits.position = ccp(windowSize.width / 2, windowSize.height / 1.5);
         [self addChild:credits];
+        
+        
+        // Create "rate on App Store" button
+        CCMenuItemImageWithLabel *rateButton = [CCMenuItemImageWithLabel itemWithText:@"RATE" block:^(id sender) {
+			// Play SFX
+			[[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+			
+			// Create "go to App Store?" alert
+			UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Rate on App Store?"
+																 message:@"I appreciate your feedback. Thanks for playing my game!"
+																delegate:self
+													   cancelButtonTitle:@"Cancel"
+													   otherButtonTitles:@"Rate", nil] autorelease];
+			[alertView setTag:1];
+			[alertView show];
+        }];
+		
+		// Create "more games" button
+        CCMenuItemImageWithLabel *moreGamesButton = [CCMenuItemImageWithLabel itemWithText:@"MORE GAMES" block:^(id sender) {
+			// Play SFX
+			[[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
+			
+			// Create "go to App Store?" alert
+			UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Go to App Store?"
+																 message:@"Check my other games!"
+																delegate:self
+													   cancelButtonTitle:@"Cancel"
+													   otherButtonTitles:@"Go", nil] autorelease];
+			[alertView setTag:2];
+			[alertView show];            
+        }];
+        
+        CCMenu *iTunesMenu = [CCMenu menuWithItems:rateButton, moreGamesButton, nil];
+		[iTunesMenu alignItemsVerticallyWithPadding:10];
+		iTunesMenu.position = ccp(windowSize.width / 2, rateButton.contentSize.height * 2);
+		[self addChild:iTunesMenu z:1];
 	}
 	return self;
+}
+
+/**
+ * Handle clicking of the alert view
+ */
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	// "Rate" alert
+	if (alertView.tag == 1)
+	{
+		switch (buttonIndex) 
+		{
+			case 0:
+				// Do nothing - dismiss
+				break;
+			case 1:
+#if TARGET_IPHONE_SIMULATOR
+				CCLOG(@"App Store is not supported on the iOS simulator. Unable to open App Store page.");
+#else
+				// they want to rate it
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=467395560"]];
+#endif
+				break;
+			default:
+				break;
+		}
+	}
+	// "More games" alert
+	else if (alertView.tag == 2)
+	{
+		switch (buttonIndex) 
+		{
+			case 0:
+				// Do nothing - dismiss
+				break;
+			case 1:
+#if TARGET_IPHONE_SIMULATOR
+				CCLOG(@"App Store is not supported on the iOS simulator. Unable to open App Store page.");
+#else
+				// they want to see more games
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.com/apps/ganbarugames"]];
+#endif
+				break;
+			default:
+				break;
+		}
+	}
 }
 
 @end

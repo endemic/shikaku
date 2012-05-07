@@ -41,7 +41,6 @@
             iPadOffset = ccp(32, 16);
             offset = ccp(32, 66);   // Determine offset of grid
             blockSize = 64;
-            iPadSuffix = @"-ipad";
             fontMultiplier = 2;
         }
         else 
@@ -49,7 +48,6 @@
             iPadOffset = ccp(0, 0);
             offset = ccp(0, 25);
             blockSize = 32;
-            iPadSuffix = @"";
             fontMultiplier = 1;
         }
         
@@ -67,13 +65,13 @@
         selection.visible = NO;
         
         // Add background
-		CCSprite *background = [CCSprite spriteWithFile:[NSString stringWithFormat:@"background%@.png", iPadSuffix]];
+		CCSprite *background = [CCSprite spriteWithFile:@"background%@.png"];
         background.position = ccp(windowSize.width / 2, windowSize.height / 2);
         [self addChild:background z:0];
         
         // Add grid
-        CCSprite *grid = [CCSprite spriteWithFile:[NSString stringWithFormat:@"grid%@.png", iPadSuffix]];
-        grid.position = ccp(windowSize.width / 2, grid.contentSize.height / 2 + iPadOffset.y + (25 * fontMultiplier));
+        CCSprite *grid = [CCSprite spriteWithFile:@"grid.png"];
+        grid.position = ccp(windowSize.width / 2 + (3.5 * fontMultiplier), grid.contentSize.height / 2 + iPadOffset.y + (25 * fontMultiplier)); // in the x value, 3.5 is half the shadow width
         [self addChild:grid z:0];
         
         // Add "reset" and "quit" buttons
@@ -120,12 +118,12 @@
         [self addChild:menu];
         
         // Add "area" label
-        areaLabel = [CCLabelBMFont labelWithString:@"AREA:\n   -" fntFile:[NSString stringWithFormat:@"insolent-24%@.fnt", iPadSuffix] width:windowSize.width / 2 alignment:CCTextAlignmentLeft];
+        areaLabel = [CCLabelBMFont labelWithString:@"AREA:\n   -" fntFile:@"insolent-24.fnt" width:windowSize.width / 2 alignment:CCTextAlignmentLeft];
         areaLabel.position = ccp(60 * fontMultiplier + iPadOffset.x, 380 * fontMultiplier + iPadOffset.y);
         [self addChild:areaLabel];
         
         // Add "timer" label
-        timerLabel = [CCLabelBMFont labelWithString:@"TIME:    \n   00:00" fntFile:[NSString stringWithFormat:@"insolent-24%@.fnt", iPadSuffix] width:windowSize.width / 2 alignment:CCTextAlignmentLeft];
+        timerLabel = [CCLabelBMFont labelWithString:@"TIME:    \n   00:00" fntFile:@"insolent-24.fnt" width:windowSize.width / 2 alignment:CCTextAlignmentLeft];
         timerLabel.position = ccp(235 * fontMultiplier + iPadOffset.x, 380 * fontMultiplier + iPadOffset.y);
         [self addChild:timerLabel];
         
@@ -155,7 +153,7 @@
 			tutorialStep = 1;
             
 			// Set up the "next" button that progresses thru tutorial steps
-			tutorialButton = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"tutorial-next-button%@.png", iPadSuffix] selectedImage:[NSString stringWithFormat:@"tutorial-next-button-selected%@.png", iPadSuffix] block:^(id sender) {
+            tutorialButton = [CCMenuItemImageWithLabel itemWithText:@"NEXT" size:@"small" block:^(id sender) {
 				// Play SFX
 				[[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
 				
@@ -310,12 +308,10 @@
         // Determine if we need to delete a square here
         for (int i = 0; i < [squares count]; i++)
         {
-            RoundRectNode *r = [squares objectAtIndex:i];
-            
-            // RoundRectNode origin is upper left
-            // CGRect origin is lower left
-            
+            RoundRectNode *r = [squares objectAtIndex:i];            
             int width = r.size.width, height = r.size.height;
+            
+            // RoundRectNode origin is upper left; CGRect origin is lower left
             CGRect rectBounds = CGRectMake(r.position.x, r.position.y - height, width, height);
             CGRect touchBounds = CGRectMake(touchPoint.x, touchPoint.y, 1, 1);		// 1x1 square
             
@@ -410,6 +406,9 @@
             
             // Play SFX
             [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
+            
+            // Update the "area" label
+            areaLabel.string = [NSString stringWithFormat:@"AREA:\n   %i", width * height];
         }
     }
     
@@ -450,11 +449,11 @@
             
             // Play SFX
             [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
+            
+            // Update the "area" label
+            areaLabel.string = [NSString stringWithFormat:@"AREA:\n   %i", width * height];
         }
     }
-    
-    // Update the "area" label
-    areaLabel.string = [NSString stringWithFormat:@"AREA:\n   %i", width * height];
     
     // Store the "previous" value for each row/col
     previousCol = touchCol;
@@ -512,13 +511,12 @@
             }
         }
         
-        
         // Reset the "area" label
         areaLabel.string = @"AREA:\n   -";
+        
+        // Hide the original "selection" roundrect
+        selection.visible = NO;
     } 
-    
-    // Hide the original "selection" roundrect
-    selection.visible = NO;
     
     // Check to see if the puzzle was completed successfully
     if ([self checkSolution])
@@ -696,7 +694,7 @@
 			break;
 		case 2:
 			// Blink over clue areas
-			tutorialHighlight = [CCSprite spriteWithFile:[NSString stringWithFormat:@"2%@.png", iPadSuffix]];
+			tutorialHighlight = [CCSprite spriteWithFile:@"2.png"];
 			tutorialHighlight.position = ccp(100 * fontMultiplier + iPadOffset.x, 269 * fontMultiplier + iPadOffset.y);
 			[self addChild:tutorialHighlight z:1];
 			break;
@@ -708,7 +706,7 @@
 			break;
 		case 5:
 			// Highlight first column blocks
-			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"5%@.png", iPadSuffix]]];
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:@"5%@.png"]];
 			tutorialHighlight.opacity = 255;
 			
 			// Hide the button and set it to inactive
@@ -717,7 +715,7 @@
 			break;
 		case 6:
 			// Highlight second column clues
-			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"6%@.png", iPadSuffix]]];
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:@"6%@.png"]];
 			break;
 		case 7:
 			// Highlight second column clues
@@ -725,11 +723,11 @@
 		case 8:
 			// Hightlight third column clues
             
-			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"8%@.png", iPadSuffix]]];
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:@"8%@.png"]];
 			break;
 		case 9:
 			// Highlight correct third column blocks
-			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"9%@.png", iPadSuffix]]];
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:@"9%@.png"]];
 			tutorialHighlight.opacity = 255;
 			
 			// Hide the button and set it to inactive
@@ -742,7 +740,7 @@
 			break;
 		case 12:
 			// Blink on correct fourth column blocks
-			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"12%@.png", iPadSuffix]]];
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:@"12%@.png"]];
 			
 			// Hide the button and set it to inactive
 			tutorialButton.opacity = 0;
@@ -754,7 +752,7 @@
 			[tutorialButton setIsEnabled:NO];
 			
 			// Highlight open blocks in fourth column
-			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"13%@.png", iPadSuffix]]];
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:@"13%@.png"]];
 			break;
 		case 14:
 			// Hide the button and set it to inactive
@@ -762,10 +760,10 @@
 			[tutorialButton setIsEnabled:NO];
 			
 			// Highlight all open blocks in fifth column
-			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"14%@.png", iPadSuffix]]];
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:@"14%@.png"]];
 			break;
 		case 15:
-			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"15%@.png", iPadSuffix]]];
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:@"15%@.png"]];
 			// Hide the button and set it to inactive
 			tutorialButton.opacity = 0;
 			[tutorialButton setIsEnabled:NO];
@@ -773,14 +771,14 @@
 		case 16:
 			// Blink over open square in first row
 			tutorialHighlight.opacity = 255;
-			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"16%@.png", iPadSuffix]]];
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:@"16%@.png"]];
 			
 			tutorialButton.opacity = 0;
 			[tutorialButton setIsEnabled:NO];
 			break;
 		case 17:
 			// Blink over 2nd, 3rd, and 4th rows
-			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:[NSString stringWithFormat:@"17%@.png", iPadSuffix]]];
+			[tutorialHighlight setTexture:[[CCTextureCache sharedTextureCache] addImage:@"17%@.png"]];
 			
 			tutorialButton.opacity = 0;
 			[tutorialButton setIsEnabled:NO];
@@ -806,7 +804,7 @@
 	// Create the background sprite if it doesn't exist
 	if (!textWindowBackground)
 	{
-		textWindowBackground = [CCSprite spriteWithFile:[NSString stringWithFormat:@"text-window-background%@.png", iPadSuffix]];
+		textWindowBackground = [CCSprite spriteWithFile:@"text-window-background%@.png"];
 		[self addChild:textWindowBackground z:5];		// Should be on top of everything
 	}
 	
