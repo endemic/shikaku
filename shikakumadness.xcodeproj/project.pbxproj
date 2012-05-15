@@ -314,6 +314,7 @@
 		7D951AE91541FC4500117F52 /* modal-button-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D951AE61541FC4500117F52 /* modal-button-hd.png */; };
 		7D951AEA1541FC4500117F52 /* modal-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D951AE71541FC4500117F52 /* modal-button.png */; };
 		7D9D1A4215459A2C0032A862 /* next-version.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D9D1A4115459A2C0032A862 /* next-version.txt */; };
+		7DAE5F6415592BBD0089B6E1 /* tutorial.json in Resources */ = {isa = PBXBuildFile; fileRef = 7DAE5F6315592BBD0089B6E1 /* tutorial.json */; };
 		7DD02920153EC3060013E673 /* button-background-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DD0291A153EC3060013E673 /* button-background-ipadhd.png */; };
 		7DD02921153EC3060013E673 /* button-background-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DD0291B153EC3060013E673 /* button-background-hd.png */; };
 		7DD02922153EC3060013E673 /* button-background-selected-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DD0291C153EC3060013E673 /* button-background-selected-ipadhd.png */; };
@@ -770,6 +771,7 @@
 		7D951AE61541FC4500117F52 /* modal-button-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "modal-button-hd.png"; sourceTree = "<group>"; };
 		7D951AE71541FC4500117F52 /* modal-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "modal-button.png"; sourceTree = "<group>"; };
 		7D9D1A4115459A2C0032A862 /* next-version.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "next-version.txt"; sourceTree = "<group>"; };
+		7DAE5F6315592BBD0089B6E1 /* tutorial.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tutorial.json; sourceTree = "<group>"; };
 		7DD0291A153EC3060013E673 /* button-background-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button-background-ipadhd.png"; sourceTree = "<group>"; };
 		7DD0291B153EC3060013E673 /* button-background-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button-background-hd.png"; sourceTree = "<group>"; };
 		7DD0291C153EC3060013E673 /* button-background-selected-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button-background-selected-ipadhd.png"; sourceTree = "<group>"; };
@@ -1352,6 +1354,7 @@
 		7D17D6B115382DB400A1C864 /* puzzles */ = {
 			isa = PBXGroup;
 			children = (
+				7DAE5F6315592BBD0089B6E1 /* tutorial.json */,
 				7D17D6B215382DB400A1C864 /* beginner */,
 				7D17D6D115382DB400A1C864 /* easy */,
 				7D17D6ED15382DB400A1C864 /* hard */,
@@ -1783,6 +1786,7 @@
 				7D179DDD1555ABF400AFD175 /* grid-ipadhd.png in Resources */,
 				7D179DDE1555ABF400AFD175 /* preview-background-ipadhd.png in Resources */,
 				7D3A1CDB1556FD6E00E797E7 /* background-ipadhd.png in Resources */,
+				7DAE5F6415592BBD0089B6E1 /* tutorial.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -60,7 +60,7 @@
         CCMenuItemImageWithLabel *playButton = [CCMenuItemImageWithLabel itemWithText:@"PLAY" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
-            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[DifficultySelectScene scene]];
+            CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[DifficultySelectScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
         
@@ -74,16 +74,16 @@
         CCMenuItemImageWithLabel *helpButton = [CCMenuItemImageWithLabel itemWithText:@"HELP" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
-            [GameSingleton sharedGameSingleton].levelToLoad = @"tutorial.json"; // Load the tutorial
+            [GameSingleton sharedGameSingleton].levelToLoad = @"tutorial"; // Load the tutorial
             
-            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[GameScene scene]];
+            CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[GameScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
 
         CCMenuItemImageWithLabel *aboutButton = [CCMenuItemImageWithLabel itemWithText:@"ABOUT" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
-            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[AboutScene scene]];
+            CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[AboutScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
         

@@ -1,11 +1,9 @@
 TODO
 ====
 
-* Re-do fonts to have 40px (at 4x) drop shadow
-* Figure out a way to warn user if store is not available
-* Fix "confirm" popups to look/behave a bit better
-* Create some music
+* Create styled copyright text
+* Create @4x main logo
+* Fix the placement of squares on iPad
 * Program a tutorial
-* SHIP
 
-Drop shadow: 40px (4x) 20px (2x) 10px (1x)
+* SHIP

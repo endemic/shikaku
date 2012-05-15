@@ -61,7 +61,7 @@
     
     // in parallel, fadeout and remove cover layer and execute block 
     // (note: you can't use CCFadeOut since we don't start at opacity 1!)
-    [coverLayer runAction:[CCSpawn actions:
+    [coverLayer runAction:[CCSequence actions:
                            [CCFadeTo actionWithDuration:0.3 opacity:0], 
                            [CCCallBlock actionWithBlock:^{
                                 [coverLayer removeFromParentAndCleanup:YES];
@@ -106,6 +106,7 @@
                                                                         // close alert and call opt1block when first button is pressed
                                                                         [self CloseAlert:dialog onCoverLayer: coverLayer executingBlock:opt1Block];
                                                                     } ];
+    // TODO: fix position
     opt1Button.position = ccp(dialog.textureRect.size.width * (opt2 ? 0.27f:0.5f), opt1Button.contentSize.height * 0.8f);
 
     CCLabelTTF *opt1Label = [CCLabelTTF labelWithString:opt1 dimensions:opt1Button.contentSize alignment:UITextAlignmentCenter 
@@ -124,6 +125,7 @@
                                                           [self CloseAlert:dialog onCoverLayer: coverLayer executingBlock:opt2Block];
                                                       } ];
         
+        // TODO: Fix position
         opt2Button.position = ccp(dialog.textureRect.size.width * 0.73f, opt1Button.contentSize.height * 0.8f);
 
         CCLabelTTF *opt2Label = [CCLabelTTF labelWithString:opt2 dimensions:opt2Button.contentSize alignment:UITextAlignmentCenter 

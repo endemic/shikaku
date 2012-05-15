@@ -37,20 +37,8 @@
 		// ask director the the window size
 		CGSize windowSize = [[CCDirector sharedDirector] winSize];
 		
-		// This string gets appended onto all image filenames based on whether the game is on iPad or not
-		if ([GameSingleton sharedGameSingleton].isPad)
-		{
-			hdSuffix = @"-Portrait~ipad";
-			fontMultiplier = 2;
-		}
-		else
-		{
-			hdSuffix = @"";
-			fontMultiplier = 1;
-		}
-		
 		// Show the "default" image
-		CCSprite *bg = [CCSprite spriteWithFile:[NSString stringWithFormat:@"Default%@.png", hdSuffix]];
+		CCSprite *bg = [CCSprite spriteWithFile:@"Default.png"];
 		[bg setPosition:ccp(windowSize.width / 2, windowSize.height / 2)];
 		[self addChild:bg];
 		

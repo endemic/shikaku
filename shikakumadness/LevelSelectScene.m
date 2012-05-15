@@ -37,14 +37,12 @@
         // Determine offset of grid
         if ([GameSingleton sharedGameSingleton].isPad)
         {
-            iPadSuffix = @"-hd";
             fontMultiplier = 2;
             previewBlockSize = 40;
             iPadOffset = ccp(64, 32);   // 64px gutters on left/right, 32px on top/bottom
         }
         else 
         {
-            iPadSuffix = @"";
             fontMultiplier = 1;
             previewBlockSize = 20;
             iPadOffset = ccp(0, 0);
@@ -72,7 +70,7 @@
         CCMenuItemImageWithLabel *backButton = [CCMenuItemImageWithLabel itemWithText:@"BACK" size:@"small" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
-            CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[TitleScene scene]];
+            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[TitleScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];            
         }];
 
@@ -121,7 +119,7 @@
         CCMenuItemImageWithLabel *solveButton = [CCMenuItemImageWithLabel itemWithText:@"SOLVE" block:^(id sender) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
             
-            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[GameScene scene]];
+            CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[GameScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];
         }];
         
@@ -204,11 +202,9 @@
         // Create a layer
         CCLayer *layer = [CCLayer node];
         
-        CCSprite *previewBackground = [CCSprite spriteWithFile:@"preview-background%@.png"];
-        previewBackground.position = ccp(windowSize.width / 2, windowSize.height - 180 * fontMultiplier - iPadOffset.y);
+        CCSprite *previewBackground = [CCSprite spriteWithFile:@"preview-background.png"];
+        previewBackground.position = ccp(windowSize.width / 2, windowSize.height - (180 * fontMultiplier) - iPadOffset.y);
         [layer addChild:previewBackground];
-        
-//        NSString *pathToFile = [documentsDirectory stringByAppendingPathComponent:[directoryContent objectAtIndex:i]];
         
         // Get JSON data out of file, and parse into dictionary
         NSString *filename = [levels objectAtIndex:i];

@@ -27,14 +27,12 @@
 + (Clue *)clueWithNumber:(int)number
 {
     int fontMultiplier = 1;
-    NSString *iPadSuffix = @"";
     if ([GameSingleton sharedGameSingleton].isPad)
     {
-        iPadSuffix = @"-hd";
         fontMultiplier = 2;
     }
     
-    Clue *c = [self spriteWithFile:[NSString stringWithFormat:@"clue-background%@.png", iPadSuffix]];
+    Clue *c = [self spriteWithFile:@"clue-background.png"];
     c.value = number;
     
     CCLabelTTF *label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%i", number] 

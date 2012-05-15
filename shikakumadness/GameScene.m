@@ -65,7 +65,7 @@
         selection.visible = NO;
         
         // Add background
-		CCSprite *background = [CCSprite spriteWithFile:@"background%@.png"];
+		CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
         background.position = ccp(windowSize.width / 2, windowSize.height / 2);
         [self addChild:background z:0];
         
@@ -102,7 +102,7 @@
             [ModalAlert Ask:@"QUIT PUZZLE?" onLayer:self yesBlock:^{                
                 [[SimpleAudioEngine sharedEngine] playEffect:@"button.caf"];
                 
-                CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
+                CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
                 [[CCDirector sharedDirector] replaceScene:transition];
                 
             } noBlock:^{
@@ -113,8 +113,8 @@
         }];
         
         CCMenu *menu = [CCMenu menuWithItems:quitButton, resetButton, nil];
-        menu.position = ccp(windowSize.width / 2, windowSize.height - quitButton.contentSize.height / 1.5);
-        [menu alignItemsHorizontallyWithPadding:20.0];
+        menu.position = ccp(windowSize.width / 2, windowSize.height - quitButton.contentSize.height / 1.5 - iPadOffset.y);
+        [menu alignItemsHorizontallyWithPadding:20.0 * fontMultiplier];
         [self addChild:menu];
         
         // Add "area" label
@@ -143,11 +143,11 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Could not load puzzle." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [alert show];
             
-            [[CCDirector sharedDirector] replaceScene:[LevelSelectScene scene]];
+            [[CCDirector sharedDirector] replaceScene:[TitleScene scene]];
         }
         
         // Determine if the level is the tutorial or not
-        if ([[GameSingleton sharedGameSingleton].levelToLoad isEqualToString:@"tutorial.json"])
+        if ([[GameSingleton sharedGameSingleton].levelToLoad isEqualToString:@"tutorial"])
         {
             isTutorial = YES;
 			tutorialStep = 1;
@@ -209,7 +209,7 @@
                 y = [(NSNumber *)[val objectAtIndex:1] intValue];
             
             Clue *c = [Clue clueWithNumber:value];
-            c.position = ccp(x * blockSize + offset.x + blockSize / 2, y * blockSize + offset.y + blockSize / 2);
+            c.position = ccp(x * blockSize + offset.x + blockSize / 2 + iPadOffset.x, y * blockSize + offset.y + blockSize / 2);
             [self addChild:c z:2];
             
             // Add clue to the organization array
@@ -327,7 +327,7 @@
         
 //        selection.visible = YES;
         selection.size = CGSizeMake(blockSize, blockSize);  // Default size
-        selection.position = ccp((touchCol * blockSize) + offset.x, (touchRow * blockSize) + (offset.y + blockSize));
+        selection.position = ccp((touchCol * blockSize) + offset.x + iPadOffset.x, (touchRow * blockSize) + (offset.y + blockSize));
 	}
 }
 
@@ -362,6 +362,16 @@
         touchCol = 0;
     }
     
+    // Determine whether the player has moved enough to show the square here
+    if (ccpDistance(touchPoint, touchStart) > 5 && selection.visible == NO)
+    {
+        selection.visible = YES;
+        areaLabel.string = @"AREA:\n   1";
+        
+        // Play SFX
+        [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
+    }
+    
     // Determine the width/height of the selection by subtracting the start from the current touch row/col
     int width = abs(startCol - touchCol) + 1,
         height = abs(startRow - touchRow) + 1;
@@ -370,7 +380,6 @@
     // y-axis
     if (touchRow != previousRow)
     {
-        selection.visible = YES;
         BOOL overlap = NO;
         
         // Determine if new size would overlap an existing square
@@ -392,8 +401,7 @@
         }
         
         if (overlap == NO)
-        {
-            
+        {   
             // Change height
             selection.size = CGSizeMake(selection.size.width, height * blockSize);
             
@@ -408,14 +416,14 @@
             [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
             
             // Update the "area" label
-            areaLabel.string = [NSString stringWithFormat:@"AREA:\n   %i", width * height];
+            int area = selection.size.width * selection.size.height / (selection.blockSize * selection.blockSize);
+            areaLabel.string = [NSString stringWithFormat:@"AREA:\n   %i", area];
         }
     }
     
     // x-axis
     if (touchCol != previousCol)
     {
-        selection.visible = YES;
         BOOL overlap = NO;
         
         // Determine if new size would overlap an existing square
@@ -451,7 +459,8 @@
             [[SimpleAudioEngine sharedEngine] playEffect:@"mark.caf"];
             
             // Update the "area" label
-            areaLabel.string = [NSString stringWithFormat:@"AREA:\n   %i", width * height];
+            int area = selection.size.width * selection.size.height / (selection.blockSize * selection.blockSize);
+            areaLabel.string = [NSString stringWithFormat:@"AREA:\n   %i", area];
         }
     }
     
@@ -651,32 +660,25 @@
  */
 - (void)showTutorial
 {
-	NSArray *instructions = [NSArray arrayWithObjects:@"Welcome to Nonogram Madness! Nonograms are logic puzzles that reveal an image when solved.", 
-                             /* 2 */			@"Solve each puzzle using the numeric clues on the top and left of the grid.",
-                             /* 3 */			@"Each number represents squares in the grid that are \"filled\" in a row or column.",
-                             /* 4 */			@"Clues with multiple numbers mean a gap of one (or more) between filled squares.",
-                             /* 5 */			@"Look at the first column. The clue is \"5\". Tap \"fill\" then tap all 5 squares.",
+	NSArray *instructions = [NSArray arrayWithObjects:@"Welcome to Shikaku Madness! Shikaku are logic puzzles where you try to cover a grid with rectangles.", 
+                             /* 2 */		@"Solve each puzzle using the numeric clues placed on the grid.",
+                             /* 3 */		@"Each number represents the size of the square or rectangle that covers it.",
+                             /* 4 */		@"Each rectangle can only contain one clue, and they can't overlap either.",
+                             /* 5 */		@"Tap and drag on the grid to draw a square. If you make a mistake, tap a square to remove it.",
+                             /* 6 */		@"A good place to start drawing squares is in corners. Look at the \"7\" in the upper left.",
+                             /* 7 */		@"A rectangle can only overlap one clue, so there's only has one place for that one.",
                              // Action
-                             /* 6 */			@"The second column is harder. We don't know where the two single filled squares are.",
-                             /* 7 */			@"Skip difficult rows or columns and come back to them later.",
-                             /* 8 */			@"Look at the third column. The clue is \"1 1 1\". There's a gap between each filled square.",
-                             /* 9 */			@"Make sure the \"fill\" button is selected, then fill in three squares with a gap between each.",
-                             // Action
+                             /* 8 */		@"Look at the third column. The clue is \"1 1 1\". There's a gap between each filled square.",
+                             /* 9 */		@"Make sure the \"fill\" button is selected, then fill in three squares with a gap between each.",
                              /* 10 */		@"You can use the \"mark\" action to protect blocks that are supposed to be empty.",
                              /* 11 */		@"Erase a marked square by tapping it again. Don't worry about making a mistake.",
                              /* 12 */		@"Tap \"mark\" and mark the empty squares so you don't accidentally try to fill them in later.",
-                             // Action
                              /* 13 */		@"Check out the fourth column. The clue is \"1 3\". Fill one square, leave a gap, then fill three more.",
-                             // Action
                              /* 14 */		@"The fifth column is empty. \"Mark\" all those squares to show they don't need to be filled in.",
-                             // Action
                              /* 15 */		@"Let's move on to clues in the rows. The first row has four sequential filled squares.",
                              /* 16 */		@"Fill in the only open square in this row to complete it.",
-                             // Action
                              /* 17 */		@"The second, third, and fourth rows are already complete. Mark all the open squares in them.",
-                             // Action
                              /* 18 */		@"Use what you've learned so far to finish the puzzle. I'm sure you can figure it out.",
-                             // Action
 							 nil];	
 	
 	// Show the instructional text for the current step
@@ -804,14 +806,15 @@
 	// Create the background sprite if it doesn't exist
 	if (!textWindowBackground)
 	{
-		textWindowBackground = [CCSprite spriteWithFile:@"text-window-background%@.png"];
+//		textWindowBackground = [CCSprite spriteWithFile:@"text-window-background.png"];
+        textWindowBackground = [CCSprite spriteWithFile:@"modal-background.png"];
 		[self addChild:textWindowBackground z:5];		// Should be on top of everything
 	}
 	
 	// Create the label if it doesn't exist
 	if (!textWindowLabel)
 	{
-		int defaultFontSize = 12;
+		int defaultFontSize = 16;
 		textWindowLabel = [CCLabelTTF labelWithString:text dimensions:CGSizeMake(textWindowBackground.contentSize.width - 20 * fontMultiplier, textWindowBackground.contentSize.height - 20 * fontMultiplier) alignment:CCTextAlignmentLeft fontName:@"insolent.otf" fontSize:defaultFontSize * fontMultiplier];
 		textWindowLabel.position = ccp(textWindowBackground.contentSize.width / 2, textWindowBackground.contentSize.height / 2);
 		textWindowLabel.color = ccc3(0, 0, 0);

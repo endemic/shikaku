@@ -29,7 +29,6 @@
     NSString *easyPrice, *mediumPrice, *hardPrice;
     
     // Helper vars to deal w/ iPad size diff
-	NSString *iPadSuffix;
 	int fontMultiplier;
     CGPoint iPadOffset;
     CGSize windowSize;

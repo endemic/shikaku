@@ -38,13 +38,11 @@
         // Determine offset of grid
         if ([GameSingleton sharedGameSingleton].isPad)
         {
-            iPadSuffix = @"-hd";
             fontMultiplier = 2;
             iPadOffset = ccp(64, 32);   // 64px gutters on left/right, 32px on top/bottom
         }
         else 
         {
-            iPadSuffix = @"";
             fontMultiplier = 1;
             iPadOffset = ccp(0, 0);
         }
@@ -54,7 +52,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeKitFailure:) name:@"StoreKitFailure" object:nil];
         
         // Add background
-        CCSprite *background = [CCSprite spriteWithFile:@"background%@.png"];
+        CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
         background.position = ccp(windowSize.width / 2, windowSize.height / 2);
         [self addChild:background];
         
@@ -90,7 +88,7 @@
             // Set difficulty in singleton
             [GameSingleton sharedGameSingleton].difficulty = @"beginner";
             
-            CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
+            CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
             [[CCDirector sharedDirector] replaceScene:transition];            
         }];
         
@@ -131,7 +129,7 @@
                 // Set difficulty in singleton
                 [GameSingleton sharedGameSingleton].difficulty = @"easy";
                 
-                CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
+                CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
                 [[CCDirector sharedDirector] replaceScene:transition];
             }
             else
@@ -148,7 +146,7 @@
                 // Set difficulty in singleton
                 [GameSingleton sharedGameSingleton].difficulty = @"medium";
                 
-                CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
+                CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
                 [[CCDirector sharedDirector] replaceScene:transition];
             }
             else
@@ -165,7 +163,7 @@
                 // Set difficulty in singleton
                 [GameSingleton sharedGameSingleton].difficulty = @"hard";
                 
-                CCTransitionMoveInB *transition = [CCTransitionMoveInB transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
+                CCTransitionMoveInT *transition = [CCTransitionMoveInT transitionWithDuration:0.5 scene:[LevelSelectScene scene]];
                 [[CCDirector sharedDirector] replaceScene:transition];
             }
             else
